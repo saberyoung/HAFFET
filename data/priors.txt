@@ -1,0 +1,1 @@
+ZTF20aajcdad gp_type=0 nsteps=20000 fit_type=1 pl_type=0
