@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>kobe.KBpointings.tilings.groupp &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kobe.KBpointings.tilings.rankp" href="kobe.KBpointings.tilings.rankp.html" />
+    <link rel="prev" title="kobe.KBpointings.tilings.generatep_trigger" href="kobe.KBpointings.tilings.generatep_trigger.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="kobe-kbpointings-tilings-groupp">
+<h1>kobe.KBpointings.tilings.groupp<a class="headerlink" href="#kobe-kbpointings-tilings-groupp" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="kobe.KBpointings.tilings.groupp">
+<code class="sig-prename descclassname">tilings.</code><code class="sig-name descname">groupp</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">obra</em>, <em class="sig-param">obdec</em><span class="sig-paren">)</span><a class="headerlink" href="#kobe.KBpointings.tilings.groupp" title="Permalink to this definition">¶</a></dt>
+<dd><p>group sub-tilings to a joint tiling</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>obra</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>tiling field of view in ra direction to group pointings</p>
+</dd>
+<dt><strong>obdec</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>tiling field of view in dec direction to group pointings</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">kobe</span> <span class="kn">import</span> <span class="n">tilings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">=</span><span class="n">tilings</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">generatep</span><span class="p">(</span><span class="n">limra</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">],</span> <span class="n">limdec</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span> <span class="n">fovra</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fovdec</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>             
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">groupp</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&lt;Table length=682&gt;</span>
+<span class="go">n      ra      dec    fovra   fovdec</span>
+<span class="go">int64 float64  float64 float64 float64</span>
+<span class="go">----- -------- ------- ------- -------</span>
+<span class="go">0  1.06418    20.0     1.0     1.0</span>
+<span class="go">0  2.12836    20.0     1.0     1.0</span>
+<span class="go">0  3.19253    20.0     1.0     1.0</span>
+<span class="go">1  4.25671    20.0     1.0     1.0</span>
+<span class="go">1  5.32089    20.0     1.0     1.0</span>
+<span class="go">1  6.38507    20.0     1.0     1.0</span>
+<span class="go">2  7.44924    20.0     1.0     1.0</span>
+<span class="gp">... </span>     <span class="o">...</span>     <span class="o">...</span>     <span class="o">...</span>     <span class="o">...</span>
+<span class="go">88 32.16899    39.0     1.0     1.0</span>
+<span class="go">88 33.45575    39.0     1.0     1.0</span>
+<span class="go">89 34.74251    39.0     1.0     1.0</span>
+<span class="go">89 36.02927    39.0     1.0     1.0</span>
+<span class="go">90 37.31603    39.0     1.0     1.0</span>
+<span class="go">90 38.60279    39.0     1.0     1.0</span>
+<span class="go">90 39.88955    39.0     1.0     1.0</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a><ul>
+  <li><a href="kobe.KBpointings.tilings.html">kobe.KBpointings.tilings</a><ul>
+      <li>Previous: <a href="kobe.KBpointings.tilings.generatep_trigger.html" title="previous chapter">kobe.KBpointings.tilings.generatep_trigger</a></li>
+      <li>Next: <a href="kobe.KBpointings.tilings.rankp.html" title="next chapter">kobe.KBpointings.tilings.rankp</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/kobe.KBpointings.tilings.groupp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

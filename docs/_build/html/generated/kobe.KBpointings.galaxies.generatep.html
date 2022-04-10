@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>kobe.KBpointings.galaxies.generatep &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kobe.KBpointings.galaxies.generatep_trigger" href="kobe.KBpointings.galaxies.generatep_trigger.html" />
+    <link rel="prev" title="kobe.KBpointings.galaxies" href="kobe.KBpointings.galaxies.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="kobe-kbpointings-galaxies-generatep">
+<h1>kobe.KBpointings.galaxies.generatep<a class="headerlink" href="#kobe-kbpointings-galaxies-generatep" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="kobe.KBpointings.galaxies.generatep">
+<code class="sig-prename descclassname">galaxies.</code><code class="sig-name descname">generatep</code><span class="sig-paren">(</span><em class="sig-param">self, catalog='GLADE', filter='B', size=-1, limra=[0, 360.0], limdec=[-89, 89], limdist=[0, 1000], limmag=[-18, -99], returndata=False, **kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#kobe.KBpointings.galaxies.generatep" title="Permalink to this definition">¶</a></dt>
+<dd><p>generate galaxies by querying Vizier</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>limra</strong><span class="classifier"><cite>range</cite></span></dt><dd><p>galaxies: ra range, default: [0, 360]</p>
+</dd>
+<dt><strong>limdec</strong><span class="classifier"><cite>range</cite></span></dt><dd><p>galaxies: dec range, default: [-90, 90]</p>
+</dd>
+<dt><strong>limdist</strong><span class="classifier"><cite>range</cite></span></dt><dd><p>galaxies: distance range, default: [0, 1000]</p>
+</dd>
+<dt><strong>limmag</strong><span class="classifier"><cite>range</cite></span></dt><dd><p>galaxies: absolute magnitude range, default: [-18, -99]</p>
+</dd>
+<dt><strong>catalog</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>Vizier galaxy catalog, options: <cite>GWGC</cite>, <cite>GLADE</cite>, default: GLADE</p>
+</dd>
+<dt><strong>filter</strong><span class="classifier"><cite>string</cite></span></dt><dd><p>magnitude filter. 
+<cite>B</cite> and <cite>K</cite> are available for <cite>GLADE</cite> 
+while only <cite>B</cite> available for <cite>GLADE</cite>
+default: B</p>
+</dd>
+<dt><strong>size</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>size of the querying galaxies, -1 for the full query. default: -1</p>
+</dd>
+<dt><strong>clobber</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if any products already available in self, clobber=True will redo it</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">kobe</span> <span class="kn">import</span> <span class="n">galaxies</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">galaxies</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">generatep</span><span class="p">(</span><span class="n">limdec</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">90</span><span class="p">],</span> <span class="n">limdist</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">40</span><span class="p">])</span>
+<span class="go">INFO:kobe.KBtelescope:2492 galaxies selected from VII/281</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&lt;Table length=2492&gt;</span>
+<span class="go">n                    name                      ra        dec       distance     mag</span>
+<span class="go">int64                 str62                   float64    float64     float64    float64</span>
+<span class="go">----- -------------------------------------- ---------- --------- ------------- --------</span>
+<span class="go">0 28655:NGC3034:NGC3034:09555243+6940469  148.96846 69.679703 4.70228466231 -19.2115</span>
+<span class="go">1 42407:NGC4594:NGC4594:12395949-1137230 189.997894 -11.62307 3.65995814653 -19.2974</span>
+<span class="go">2            --:---:---:12564369+2140575 194.182068 21.682659 3.87868462045 -18.6564</span>
+<span class="go">3 41220:NGC4472:NGC4472:12294679+0800014 187.444992   8.00041 14.6955181559 -20.9739</span>
+<span class="go">4 47404:NGC5194:NGC5194:13295269+4711429 202.469574 47.195259 2.49371678269 -18.3042</span>
+<span class="go">5 10266:NGC1068:NGC1068:02424077-0000478   40.66988  -0.01329 18.4142043388 -21.9158</span>
+<span class="go">6 42831:NGC4649:NGC4649:12434000+1133093 190.916702  11.55261 16.4529675514 -21.3112</span>
+<span class="go">7 33550:NGC3521:NGC3521:11054859-0002092 166.452469   -0.0359 11.2915350655 -20.8638</span>
+<span class="go">8 41361:NGC4486:NGC4486:12304942+1223279 187.705933   12.3911 18.5306296927 -21.4225</span>
+<span class="go">9 29265:NGC3115:NGC3115:10051397-0743068 151.308243  -7.71858 6.51337285663   -19.04</span>
+<span class="go">10              34695:NGC3627:NGC3627:---    170.062   12.9916 12.9133823516 -21.1252</span>
+<span class="go">11   14508:IC0356:IC0356:04074690+6948447   61.94545 69.812431 16.4486586923 -20.9407</span>
+<span class="go">12              69327:NGC7331:NGC7331:---    339.267  34.41562 18.1813685082 -21.6281</span>
+<span class="go">13              27077:NGC2903:NGC2903:---    143.042  21.50141 10.9303004689 -21.0632</span>
+<span class="gp">... </span>                                   <span class="o">...</span>        <span class="o">...</span>       <span class="o">...</span>           <span class="o">...</span>      <span class="o">...</span>
+<span class="go">2477                  34426:NGC3607:---:---    169.227  18.05301 24.9589462382 -21.0361</span>
+<span class="go">2478                 38905:UGC07207:---:---     183.08  37.01366  21.227046734 -18.3744</span>
+<span class="go">2479                  49354:NGC5354:---:---    208.362  40.30397 38.9986946803 -20.7053</span>
+<span class="go">2480                  60315:NGC6368:---:---    261.798  11.54362 32.8410432488 -20.7821</span>
+<span class="go">2481               135878:PGC135878:---:---    344.386    -2.501 38.2733015989 -18.3245</span>
+<span class="go">2482               166072:PGC166072:---:---    50.7864   62.7893 8.30849177211 -18.3676</span>
+<span class="go">2483             2801052:PGC2801052:---:---    315.851  57.28721 13.5503403375 -18.7498</span>
+<span class="go">2484                2802656:NGC5904:---:---    229.639   2.08277 2.39941051318 -19.5605</span>
+<span class="go">2485              38897:NGC4173:NGC4173:---    183.089  29.20702 21.0457642607 -19.2158</span>
+<span class="go">2486     --:---:SDSSJ022739.95-010913.2:---    36.9165  -1.15368 21.2227303453  -18.494</span>
+<span class="go">2487     --:---:SDSSJ123616.69+260006.9:---     189.07  26.00194 25.2571985761 -18.3719</span>
+<span class="go">2488     --:---:SDSSJ123626.88+255738.2:---    189.112  25.96063 20.7004974885 -18.9699</span>
+<span class="go">2489     --:---:SDSSJ122250.38+155056.9:---     185.71  15.84916 24.8768244613  -18.159</span>
+<span class="go">2490     --:---:SDSSJ124211.24+074016.0:---    190.547    7.6711 29.7521819633 -18.0476</span>
+<span class="go">2491                     --:---:NGC5496:---    212.908  -1.15744 23.4249708242 -18.3384</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a><ul>
+  <li><a href="kobe.KBpointings.galaxies.html">kobe.KBpointings.galaxies</a><ul>
+      <li>Previous: <a href="kobe.KBpointings.galaxies.html" title="previous chapter">kobe.KBpointings.galaxies</a></li>
+      <li>Next: <a href="kobe.KBpointings.galaxies.generatep_trigger.html" title="next chapter">kobe.KBpointings.galaxies.generatep_trigger</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/kobe.KBpointings.galaxies.generatep.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

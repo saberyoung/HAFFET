@@ -1,0 +1,876 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>kobe.KBschedule.schedule &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kobe.KBschedule.schedule.add_observatory" href="kobe.KBschedule.schedule.add_observatory.html" />
+    <link rel="prev" title="schedule – makeing telescope schedule" href="../schedule.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="kobe-kbschedule-schedule">
+<h1>kobe.KBschedule.schedule<a class="headerlink" href="#kobe-kbschedule-schedule" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="kobe.KBschedule.schedule">
+<em class="property">class </em><code class="sig-prename descclassname">kobe.KBschedule.</code><code class="sig-name descname">schedule</code><span class="sig-paren">(</span><em class="sig-param">logger=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#kobe.KBschedule.schedule" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>candidates</strong></dt><dd></dd>
+<dt><strong>frame</strong></dt><dd></dd>
+<dt><strong>hpd1</strong></dt><dd></dd>
+<dt><strong>hpd2</strong></dt><dd></dd>
+<dt><strong>hpd3</strong></dt><dd></dd>
+<dt><strong>hphdr</strong></dt><dd></dd>
+<dt><strong>hpmap</strong></dt><dd></dd>
+<dt><strong>hpmapc</strong></dt><dd></dd>
+<dt><strong>lc</strong></dt><dd></dd>
+<dt><strong>location</strong></dt><dd></dd>
+<dt><strong>obs</strong></dt><dd></dd>
+<dt><strong>obsname</strong></dt><dd></dd>
+<dt><strong>obstime</strong></dt><dd></dd>
+<dt><strong>pointings</strong></dt><dd></dd>
+<dt><strong>telname</strong></dt><dd></dd>
+<dt><strong>voinf</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacent_move</span></code>(self, ra, dec, ral, decl[, …])</p></td>
+<td><p>set the next step of a pointing list</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">altaz</span></code>(self[, ra, dec, theta, phi, pressure, …])</p></td>
+<td><p>calculate altazimuth</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrange_filter</span></code>(self[, data, add, filters])</p></td>
+<td><p>set telescope filter</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrange_time</span></code>(self[, data, add, ovhtime, exptime])</p></td>
+<td><p>set telescope observe time</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">at_night</span></code>(self[, twilight1, twilight2, …])</p></td>
+<td><p>Calculate fraction of the moon illuminated.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_airmass</span></code>(self[, ra, dec, theta, phi, …])</p></td>
+<td><p>calculate airmass for tilings</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dis_inf</span></code>(self[, ra, dec, theta, phi, nest])</p></td>
+<td><p>get trigger distance information, i.e.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dis_prob</span></code>(self[, ra, dec, theta, phi, …])</p></td>
+<td><p>calculate trigger probability for specific directions, based on distance informations for CBC GW, the distance mean, variance and normalization at each direction is provided by assuming the limiting distance of one telescope on target, e.g.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_dis_sigma</span></code>(self[, ra, dec, theta, phi, …])</p></td>
+<td><p>calculate at specific direction of CBC GW, if a distance is interesting or not</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_loc_area</span></code>(self[, cls])</p></td>
+<td><p>calculate sky localization region area (unit in sq.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_loc_contours</span></code>(self[, cls])</p></td>
+<td><p>calculate indices located in specific confidence level region of trigger map</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_loc_prob</span></code>(self[, ra, dec, theta, phi, …])</p></td>
+<td><p>calculate localization probability for specific regions if fov is None, return probability of input coordinates otherwise, calculate sum of one or a serios of vertices</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_moon_illumination</span></code>(self[, ephemeris, …])</p></td>
+<td><p>Calculate fraction of the moon illuminated.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_solar</span></code>(self[, solarobj, ra, dec, theta, …])</p></td>
+<td><p>calculate distance of tilings to solar object</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_sun_height</span></code>(self[, time, timeu, …])</p></td>
+<td><p>calculate sun height</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">candshow</span></code>(self[, showgrid])</p></td>
+<td><p>show candidates localization</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckdir</span></code>(self, \*\*kwargs)</p></td>
+<td><p>check working directory, see if it’s exists, and if readable/writable</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckpython</span></code>(self)</p></td>
+<td><p>check python version</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">closefig</span></code>(self, num)</p></td>
+<td><p>close a figure</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cmap</span></code>(self[, tracer, nside, nest])</p></td>
+<td><p>build a healpix map for candidates</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">common_ele</span></code>(self, list1, list2[, nullv])</p></td>
+<td><p>find the common elements of 2 lists</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_contours</span></code>(proportions, samples[, nside])</p></td>
+<td><p>Compute containment contour around desired level with meander</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">coo</span></code>(self, \*args[, nside])</p></td>
+<td><p>parse hpmap with ra, dec, error box</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cooplot</span></code>(self, _time, _deg[, ids, colors])</p></td>
+<td><p>show candidates airmass, etc at one observatory</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumprobshow</span></code>(self, \*\*kwargs)</p></td>
+<td><p>show cumulative probability</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_pointings_hpmap</span></code>(self[, data, cls, nest, …])</p></td>
+<td><p>remove tilings the probability that can cover targeting sources</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">deg2hms</span></code>(self, ra, dec)</p></td>
+<td><p>coordinate from deg to hms</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dic2txt</span></code>(self, _data[, split])</p></td>
+<td><p>read dictionary like object, generate standard texts</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_skymap</span></code>(self, url, wdir, fitsname, …)</p></td>
+<td><p>look up URL of sky map, download sky map, and parse FITS file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fits</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p>parser hpmap via skymap file  Parameters ———- hpfile :        <cite>string</cite>            file name or url of healpix fits</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code>(self, _list[, nullv])</p></td>
+<td><p>flatten a sequence if it’s a sequence of sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gcn_server</span></code>(_server, _port)</p></td>
+<td><p>get host and port so that pygcn could use for monitoring triggers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generatelc</span></code>(self[, db, tname, keys, argkeys, …])</p></td>
+<td><p>query lightcurve via OACAPI, <a class="reference external" href="https://github.com/astrocatalogs/OACAPI">https://github.com/astrocatalogs/OACAPI</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">genobs</span></code>(self[, filters, ovhtime, exptime, mode])</p></td>
+<td><p>set telescope name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getkeys</span></code>(self, kwargs[, _class])</p></td>
+<td><p>get specific kwargs</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hms2deg</span></code>(self, ra, dec)</p></td>
+<td><p>coordinate from hms to deg</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hpmapproj</span></code>(self, hpmap[, showtype])</p></td>
+<td><p>figure for healpix Map</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipix_in_box</span></code>(self, ra, dec, width, height, …)</p></td>
+<td><p>finding the healpix indices of a given box</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq</span></code>(o)</p></td>
+<td><p>Check if the object is a sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq_of_seq</span></code>(self, o)</p></td>
+<td><p>Check if the object is a sequence of sequences</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lcshow</span></code>(self[, filts, xlim, ylim, ls, vert, …])</p></td>
+<td><p>show targeting lightcurve</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow</span></code>(self[, cls, showhp, showtype, showgrid])</p></td>
+<td><p>show trigger via healpy</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow_all</span></code>(self[, showgrid, show_label, colors])</p></td>
+<td><p>show all pointings that were parsed so far, i.e.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow_obs</span></code>(self[, showgrid, show_label, colors])</p></td>
+<td><p>show pointings for a series of telescopes at one observatory, i.e.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow_tel</span></code>(self, \*\*kwargs)</p></td>
+<td><p>show pointings for a telescope, i.e.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">obsplot</span></code>(self, _time, _deg, \*\*kwargs)</p></td>
+<td><p>show sun height, etc at one observatory</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_frame</span></code>(self[, time, timeu, pressure, …])</p></td>
+<td><p>calculate altazimuth</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_root_coo</span></code>(self, root, nside, …)</p></td>
+<td><p>parse root object, try find ra,dec and localization of trigger used by kobe.triggers.root</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_root_skymap</span></code>(self, root, skymap_key)</p></td>
+<td><p>parse root object, try find healpix fits map url used by kobe.triggers.root</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_time</span></code>(self[, time, timeu])</p></td>
+<td><p>parse time for astronomical calculation</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_time_single</span></code>(self, _time, _timeu)</p></td>
+<td><p>support to parse_time</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_trigger</span></code>(self, \*\*kwargs)</p></td>
+<td><p>parser hpmay via root, fits, url, xml, and coo approach in order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_xml</span></code>(self, xmlfile)</p></td>
+<td><p>parse xmlfile via lxml used by kobe.triggers.xml</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_box_data</span></code>(self, _data[, showgrid, n, colors])</p></td>
+<td><p>plot a series of boxes with input data</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_coord</span></code>(self[, rot, bkgcolor])</p></td>
+<td><p>show specific coordinates in skymap</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lines</span></code>(self, ra, dec, hh, ww[, n, rot, …])</p></td>
+<td><p>plot a series of vertices</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_point_data</span></code>(self, _data[, showgrid, n, …])</p></td>
+<td><p>plot a series of dots with input data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_points</span></code>(self, ra, dec[, n, rot, colors])</p></td>
+<td><p>plot a series of dots</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_route</span></code>(self, _data[, rot, showgrid])</p></td>
+<td><p>plot the route of a series o pointings</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_sky</span></code>(self[, showgrid])</p></td>
+<td><p>plot horizon, galactic plane, sun and moon</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">projplot</span></code>(self, theta, phi, \*\*kwargs)</p></td>
+<td><p>call healpy projplot</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pygcn_monitor</span></code>(self, func[, server, port])</p></td>
+<td><p>serve root elements via pygcn</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pygcn_serve</span></code>(self[, server, port])</p></td>
+<td><p>serve root elements via pygcn</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">radecs</span></code>(self[, ra, dec, theta, phi, hms])</p></td>
+<td><p>read ra dec</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rankp_trigger</span></code>(self[, mode, nside, nest, …])</p></td>
+<td><p>rank pointings (greedy approach): rank from high trigger probability to low</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rankp_visibility</span></code>(self[, mode, nside, nest, …])</p></td>
+<td><p>rank pointings (conservative approach): rank highest airmass</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_skymap</span></code>(self, _fits, \*\*kwargs)</p></td>
+<td><p>read healpix fits or fits url, obtain map and header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readc_avro</span></code>(self, tar_file[, tar_mode, rbt, …])</p></td>
+<td><p>For each alert: load, filter, ingest.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readlc</span></code>(self, filename[, filetype, split, …])</p></td>
+<td><p>read lc from file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readlist</span></code>(self[, filename, filetype, split, keys])</p></td>
+<td><p>read data from a file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">root</span></code>(self, \*args[, skymap_key, obst_key, …])</p></td>
+<td><p>parser hpmap via a root element</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_all</span></code>(self[, rot, showgrid, …])</p></td>
+<td><p>route show for self.observatories</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_dat</span></code>(self[, rot, showgrid])</p></td>
+<td><p>route show for self.data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_obs</span></code>(self[, rot, showgrid, …])</p></td>
+<td><p>route show for self.telescopes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_tel</span></code>(self[, rot, showgrid])</p></td>
+<td><p>route show for self.pointings.data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefig</span></code>(self[, filepath])</p></td>
+<td><p>save a figure</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefits</span></code>(self, \*\*kwargs)</p></td>
+<td><p>save self.hpmap to ‘%s/%s’ % (kwargs[‘wdir’], filename)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">savelc</span></code>(self, filename[, filetype, split, keys])</p></td>
+<td><p>save lc to a file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email</span></code>(self, \*\*kwargs)</p></td>
+<td><p>send out KOBE products via email</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_slack</span></code>(\*\*kwargs)</p></td>
+<td><p>send out KOBE products via slack</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_sms</span></code>(_account, _token, _from, _to, _txt)</p></td>
+<td><p>send out KOBE products via sms (twilio package needed)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_obsname</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p>set observaroty name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_telname</span></code>(self, telname)</p></td>
+<td><p>set telescope name</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setkeys</span></code>(self, kwargs)</p></td>
+<td><p>set kobe arguments (use default if one kwarg not provided)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_angle</span></code>(self, ra1, dec1, ra2, dec2)</p></td>
+<td><p>calculate spherical angle</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trigger_report</span></code>(self[, cls, style, …])</p></td>
+<td><p>make a summary report for input source.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p>parser hpmay via skymap url</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code>(ra, dec, fovw, fovh)</p></td>
+<td><p>finding the vertices of a FoV by giving the central location and the FoV size</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">writelist</span></code>(self[, datain, filename, …])</p></td>
+<td><p>write data to a file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xml</span></code>(self, \*args[, skymap_key, obst_key, …])</p></td>
+<td><p>parser hpmap via voenevt XML file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoomin</span></code>(self[, zoomx, zoomy])</p></td>
+<td><p>zoomin for figure</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 74%" />
+<col style="width: 26%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>EarthLocation_from_kobe</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>add_observatory</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>add_telescope</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>altaz_candidates</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>altaz_pointings</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>at_night_single</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>buildurl</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>calc_airmass_candidates</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>calc_airmass_pointings</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>calc_dis_sigma_candidates</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>calc_galactic</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>calc_galactic_candidates</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>calc_galactic_pointings</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>calc_loc_cl</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>calc_loc_prob_candidates</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>calc_loc_prob_pointings</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>calc_solar_candidates</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>calc_solar_pointings</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>check_obs</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>check_tel</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>del_observatory</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>del_telescope</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>errors</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>limdist</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>parse_location</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>pps</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>prioritization</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>process_gcn</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>readc</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>readc_ampel</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>readc_file</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_pointings</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>sim_candidates</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>tab2float</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>to_observatory</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>to_telescope</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>update_observatory</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>update_telescope</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="kobe.KBschedule.schedule.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">logger=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#kobe.KBschedule.schedule.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>initialize trigger object with input logger and parameter settings</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">EarthLocation_from_kobe</span></code>(string)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#kobe.KBschedule.schedule.__init__" title="kobe.KBschedule.schedule.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self[, logger])</p></td>
+<td><p>initialize trigger object with input logger and parameter settings</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_telescope</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">at_night</span></code>(self[, twilight1, twilight2, …])</p></td>
+<td><p>Calculate fraction of the moon illuminated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">at_night_single</span></code>(self, _sunalt, twilight1, …)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_loc_area</span></code>(self[, cls])</p></td>
+<td><p>calculate sky localization region area (unit in sq.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_loc_contours</span></code>(self[, cls])</p></td>
+<td><p>calculate indices located in specific confidence level region of trigger map</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_moon_illumination</span></code>(self[, ephemeris, …])</p></td>
+<td><p>Calculate fraction of the moon illuminated.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_sun_height</span></code>(self[, time, timeu, …])</p></td>
+<td><p>calculate sun height</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckdir</span></code>(self, \*\*kwargs)</p></td>
+<td><p>check working directory, see if it’s exists, and if readable/writable</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckpython</span></code>(self)</p></td>
+<td><p>check python version</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">closefig</span></code>(self, num)</p></td>
+<td><p>close a figure</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">common_ele</span></code>(self, list1, list2[, nullv])</p></td>
+<td><p>find the common elements of 2 lists</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_contours</span></code>(proportions, samples[, nside])</p></td>
+<td><p>Compute containment contour around desired level with meander</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">coo</span></code>(self, \*args[, nside])</p></td>
+<td><p>parse hpmap with ra, dec, error box</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.cumshow</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.decide_strategy</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">del_telescope</span></code>(self, telname)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.distview</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.divide_OB</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.divide_OB_one</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">download_skymap</span></code>(self, url, wdir, fitsname, …)</p></td>
+<td><p>look up URL of sky map, download sky map, and parse FITS file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fits</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p>parser hpmap via skymap file  Parameters ———- hpfile :        <cite>string</cite>            file name or url of healpix fits</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code>(self, _list[, nullv])</p></td>
+<td><p>flatten a sequence if it’s a sequence of sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">frame</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.galaxies2hpmap</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.galaxyshow</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.galaxyshow_all</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.galaxyshow_obs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.galaxyshow_tel</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gcn_server</span></code>(_server, _port)</p></td>
+<td><p>get host and port so that pygcn could use for monitoring triggers.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.generate_pointings</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getkeys</span></code>(self, kwargs[, _class])</p></td>
+<td><p>get specific kwargs</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.healpyshow</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipix_in_box</span></code>(self, ra, dec, width, height, …)</p></td>
+<td><p>finding the healpix indices of a given box</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq</span></code>(o)</p></td>
+<td><p>Check if the object is a sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq_of_seq</span></code>(self, o)</p></td>
+<td><p>Check if the object is a sequence of sequences</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.lumsview</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.notes</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_location</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_root_coo</span></code>(self, root, nside, …)</p></td>
+<td><p>parse root object, try find ra,dec and localization of trigger used by kobe.triggers.root</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_root_skymap</span></code>(self, root, skymap_key)</p></td>
+<td><p>parse root object, try find healpix fits map url used by kobe.triggers.root</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_time</span></code>(self[, time, timeu])</p></td>
+<td><p>parse time for astronomical calculation</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_time_single</span></code>(self, _time, _timeu)</p></td>
+<td><p>support to parse_time</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_trigger</span></code>(self, \*\*kwargs)</p></td>
+<td><p>parser hpmay via root, fits, url, xml, and coo approach in order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_xml</span></code>(self, xmlfile)</p></td>
+<td><p>parse xmlfile via lxml used by kobe.triggers.xml</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_coord</span></code>(self[, rot, bkgcolor])</p></td>
+<td><p>show specific coordinates in skymap</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lines</span></code>(self, ra, dec, hh, ww[, n, rot, …])</p></td>
+<td><p>plot a series of vertices</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_points</span></code>(self, ra, dec[, n, rot, colors])</p></td>
+<td><p>plot a series of dots</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_sky</span></code>(self[, showgrid])</p></td>
+<td><p>plot horizon, galactic plane, sun and moon</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">projplot</span></code>(self, theta, phi, \*\*kwargs)</p></td>
+<td><p>call healpy projplot</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pygcn_monitor</span></code>(self, func[, server, port])</p></td>
+<td><p>serve root elements via pygcn</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pygcn_serve</span></code>(self[, server, port])</p></td>
+<td><p>serve root elements via pygcn</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.read_pointings</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_skymap</span></code>(self, _fits, \*\*kwargs)</p></td>
+<td><p>read healpix fits or fits url, obtain map and header</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.read_slackid</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readlist</span></code>(self[, filename, filetype, split, keys])</p></td>
+<td><p>read data from a file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.remove_pointings_coo</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.remove_pointings_file</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">root</span></code>(self, \*args[, skymap_key, obst_key, …])</p></td>
+<td><p>parser hpmap via a root element</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.routeview</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.save_pointings</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefig</span></code>(self[, filepath])</p></td>
+<td><p>save a figure</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefits</span></code>(self, \*\*kwargs)</p></td>
+<td><p>save self.hpmap to ‘%s/%s’ % (kwargs[‘wdir’], filename)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email</span></code>(self, \*\*kwargs)</p></td>
+<td><p>send out KOBE products via email</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_slack</span></code>(\*\*kwargs)</p></td>
+<td><p>send out KOBE products via slack</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_sms</span></code>(_account, _token, _from, _to, _txt)</p></td>
+<td><p>send out KOBE products via sms (twilio package needed)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_obsname</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p>set observaroty name</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_telname</span></code>(self, telname)</p></td>
+<td><p>set telescope name</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setkeys</span></code>(self, kwargs)</p></td>
+<td><p>set kobe arguments (use default if one kwarg not provided)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.tilingshow</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.tilingshow_all</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.tilingshow_obs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.tilingshow_tel</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">trigger_report</span></code>(self[, cls, style, …])</p></td>
+<td><p>make a summary report for input source.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.triggershow</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">url</span></code>(self, \*args, \*\*kwargs)</p></td>
+<td><p>parser hpmay via skymap url</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code>(ra, dec, fovw, fovh)</p></td>
+<td><p>finding the vertices of a FoV by giving the central location and the FoV size</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">writelist</span></code>(self[, datain, filename, …])</p></td>
+<td><p>write data to a file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">xml</span></code>(self, \*args[, skymap_key, obst_key, …])</p></td>
+<td><p>parser hpmap via voenevt XML file</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">attachments</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">schedule.data</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">defkwargs</span></code></p></td>
+<td><p>define default keys</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">exkwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hpd1</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hpd2</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hpd3</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hphdr</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hpmap</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">images</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">observatories</span></code></p></td>
+<td><p>define a list of observatories</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">obsname</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">telescopes</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">telname</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">texts</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">voinf</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a><ul>
+      <li>Previous: <a href="../schedule.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+      <li>Next: <a href="kobe.KBschedule.schedule.add_observatory.html" title="next chapter">kobe.KBschedule.schedule.add_observatory</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/kobe.KBschedule.schedule.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

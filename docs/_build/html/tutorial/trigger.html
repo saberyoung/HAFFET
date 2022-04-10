@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Trigger &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="trigger">
+<span id="kbtrigger"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">Trigger</span></code><a class="headerlink" href="#trigger" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="cand.html#kbcand"><span class="std std-ref">Previous</span></a></div>
+<div class="line"><a class="reference internal" href="prio.html#kbprio"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#kbtrigger1"><span class="std std-ref">1. Parse trigger</span></a></div>
+<div class="line"><a class="reference internal" href="#kbtrigger2"><span class="std std-ref">2. Visualization</span></a></div>
+<div class="line"><a class="reference internal" href="#kbtrigger3"><span class="std std-ref">3. Trigger evaluation</span></a></div>
+<div class="line"><a class="reference internal" href="#kbtrigger4"><span class="std std-ref">4. Candidates evaluation based on trigger</span></a></div>
+<div class="line"><a class="reference internal" href="#kbtrigger5"><span class="std std-ref">5. Pointings evaluation based on trigger</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#kbtrigger51"><span class="std std-ref">5.1 rank pointings based on probability</span></a></div>
+</div>
+<div class="line"><a class="reference internal" href="#kbtrigger6"><span class="std std-ref">6. Trigger report and Circulate</span></a></div>
+</div>
+<p>In this chapter, we describe <cite>KOBE trigger</cite> usage, which would be used for followup search.</p>
+<div class="section" id="parse-healpix-map">
+<span id="kbtrigger1"></span><h2>Parse healpix map<a class="headerlink" href="#parse-healpix-map" title="Permalink to this headline">¶</a></h2>
+<p>In <cite>KOBE</cite>, we have defined 5 possible trigger sources, and adopt <a class="reference external" href="https://healpy.readthedocs.io/en/latest/index.html">Healpy/HEALPix</a> to help parse trigger information from those alert filesm, which includes:</p>
+<ul class="simple">
+<li><p>healpix fits file</p></li>
+<li><p>healpix fits url</p></li>
+<li><p>VOevent XML file</p></li>
+<li><p>the root object (convinient for <a class="reference external" href="https://github.com/lpsinger/pygcn">pygcn</a> users)</p></li>
+<li><p>the coordinates.</p></li>
+</ul>
+<p>The examples are shown below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># import trigger module</span>
+&gt;&gt;&gt; from kobe import trigger
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> trigger<span class="o">()</span>
+
+<span class="c1"># parsed healpix map via healpix fits url</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+<span class="nv">NSIDE</span> <span class="o">=</span> <span class="m">512</span>
+<span class="nv">ORDERING</span> <span class="o">=</span> NESTED in fits file
+<span class="nv">INDXSCHM</span> <span class="o">=</span> IMPLICIT
+Ordering converted to RING
+Ordering converted to RING
+Ordering converted to RING
+Ordering converted to RING
+
+&gt;&gt;&gt; a.hpmap
+array<span class="o">([</span><span class="m">1</span>.25419392e-07, <span class="m">1</span>.62144031e-07, <span class="m">1</span>.79526856e-07, ...,
+<span class="m">2</span>.46590458e-10, <span class="m">9</span>.75865543e-10, <span class="m">6</span>.87730424e-10<span class="o">])</span>
+
+&gt;&gt;&gt; a.hpd1
+array<span class="o">([</span><span class="m">144</span>.84488626, <span class="m">154</span>.92359484, <span class="m">140</span>.96139722, ..., <span class="m">272</span>.89617891,
+<span class="m">221</span>.54107632, <span class="m">282</span>.52651738<span class="o">])</span>
+
+&gt;&gt;&gt; a.hphdr
+<span class="o">{</span><span class="s1">&#39;XTENSION&#39;</span>: <span class="s1">&#39;BINTABLE&#39;</span>, <span class="s1">&#39;BITPIX&#39;</span>: <span class="m">8</span>, <span class="s1">&#39;NAXIS&#39;</span>: <span class="m">2</span>, <span class="s1">&#39;NAXIS1&#39;</span>: <span class="m">32</span>, <span class="s1">&#39;NAXIS2&#39;</span>: <span class="m">3145728</span>, <span class="s1">&#39;PCOUNT&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;GCOUNT&#39;</span>: <span class="m">1</span>, <span class="s1">&#39;TFIELDS&#39;</span>: <span class="m">4</span>, <span class="s1">&#39;TTYPE1&#39;</span>: <span class="s1">&#39;PROB&#39;</span>, <span class="s1">&#39;TFORM1&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT1&#39;</span>: <span class="s1">&#39;pix-1&#39;</span>, <span class="s1">&#39;TTYPE2&#39;</span>: <span class="s1">&#39;DISTMU&#39;</span>, <span class="s1">&#39;TFORM2&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT2&#39;</span>: <span class="s1">&#39;Mpc&#39;</span>, <span class="s1">&#39;TTYPE3&#39;</span>: <span class="s1">&#39;DISTSIGMA&#39;</span>, <span class="s1">&#39;TFORM3&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT3&#39;</span>: <span class="s1">&#39;Mpc&#39;</span>, <span class="s1">&#39;TTYPE4&#39;</span>: <span class="s1">&#39;DISTNORM&#39;</span>, <span class="s1">&#39;TFORM4&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT4&#39;</span>: <span class="s1">&#39;Mpc-2&#39;</span>, <span class="s1">&#39;MOC&#39;</span>: True, <span class="s1">&#39;PIXTYPE&#39;</span>: <span class="s1">&#39;HEALPIX&#39;</span>, <span class="s1">&#39;ORDERING&#39;</span>: <span class="s1">&#39;NESTED&#39;</span>, <span class="s1">&#39;COORDSYS&#39;</span>: <span class="s1">&#39;C&#39;</span>, <span class="s1">&#39;NSIDE&#39;</span>: <span class="m">512</span>, <span class="s1">&#39;INDXSCHM&#39;</span>: <span class="s1">&#39;IMPLICIT&#39;</span>, <span class="s1">&#39;OBJECT&#39;</span>: <span class="s1">&#39;G331903&#39;</span>, <span class="s1">&#39;REFERENC&#39;</span>: <span class="s1">&#39;https://gracedb.ligo.org/events/G331903&#39;</span>, <span class="s1">&#39;INSTRUME&#39;</span>: <span class="s1">&#39;H1,L1,V1&#39;</span>, <span class="s1">&#39;DATE-OBS&#39;</span>: <span class="s1">&#39;2019-05-10T02:59:39.292500&#39;</span>, <span class="s1">&#39;MJD-OBS&#39;</span>: <span class="m">58613</span>.12476032978, <span class="s1">&#39;DATE&#39;</span>: <span class="s1">&#39;2019-05-10T03:00:47.000000&#39;</span>, <span class="s1">&#39;CREATOR&#39;</span>: <span class="s1">&#39;BAYESTAR&#39;</span>, <span class="s1">&#39;ORIGIN&#39;</span>: <span class="s1">&#39;LIGO/Virgo&#39;</span>, <span class="s1">&#39;RUNTIME&#39;</span>: <span class="m">18</span>.0, <span class="s1">&#39;DISTMEAN&#39;</span>: <span class="m">268</span>.8566049372629, <span class="s1">&#39;DISTSTD&#39;</span>: <span class="m">108</span>.0709050006497, <span class="s1">&#39;LOGBCI&#39;</span>: <span class="m">0</span>.6949211109947058, <span class="s1">&#39;LOGBSN&#39;</span>: <span class="m">7</span>.032293281836687, <span class="s1">&#39;VCSVERS&#39;</span>: <span class="s1">&#39;ligo.skymap 0.1.6&#39;</span>, <span class="s1">&#39;VCSREV&#39;</span>: <span class="s1">&#39;79504ec9fb1890fa91665bd69d7aa66cdaf11184&#39;</span>, <span class="s1">&#39;DATE-BLD&#39;</span>: <span class="s1">&#39;2019-03-26T18:11:21&#39;</span>, <span class="s1">&#39;HISTORY&#39;</span>: <span class="s1">&#39;gwcelery worker -l info -n gwcelery-openmp-worker -Q openmp -c 1&#39;</span><span class="o">}</span>
+
+<span class="c1"># an equivalent approach is to parse url via parse_trigger method</span>
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> trigger<span class="o">(</span><span class="nv">url</span><span class="o">=</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.parse_trigger<span class="o">()</span>
+
+<span class="c1"># If one had a voevent file, LVC#S190510g-2-Initial.xml, downloaded in current folder</span>
+&gt;&gt;&gt; from kobe import trigger
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>trigger<span class="o">()</span>
+&gt;&gt;&gt; a.xml<span class="o">(</span><span class="s1">&#39;LVC#S190510g-2-Initial.xml&#39;</span>,wdir<span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+
+<span class="c1"># or try parse_trigger</span>
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> trigger<span class="o">()</span>
+&gt;&gt;&gt; a.parse_trigger<span class="o">(</span><span class="nv">vofile</span><span class="o">=</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span>, <span class="nv">wdir</span><span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="visualization">
+<span id="kbtrigger2"></span><h2>Visualization<a class="headerlink" href="#visualization" title="Permalink to this headline">¶</a></h2>
+<p>Once trigger healpix map parsed successfully, we could afterwards visualize it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import trigger
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> trigger<span class="o">()</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+
+<span class="c1"># show healpix map, together with 50 percent contours, via mollview scheme</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.5<span class="o">]</span>, <span class="nv">showhp</span><span class="o">=</span>True, <span class="nv">showtype</span><span class="o">=</span><span class="s1">&#39;m&#39;</span>, <span class="nv">showgrid</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;trigger1&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/trigger1.png"><img alt="trigger1.png" class="align-center" src="tutorial/../static/trigger1.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># show 50 and 90 percent contours, rotating 90 deg along theta direction</span>
+<span class="c1"># set clear True to remove previous plot</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.5, .9<span class="o">]</span>, <span class="nv">rot_theta</span><span class="o">=</span><span class="m">90</span>, <span class="nv">clear</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;trigger2&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/trigger2.png"><img alt="trigger2.png" class="align-center" src="tutorial/../static/trigger2.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># use healpix.cartview scheme instead of mollview</span>
+<span class="c1"># check more in healpy page, or corresponding KOBE API page</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.5, .9<span class="o">]</span>, <span class="nv">showtype</span><span class="o">=</span><span class="s1">&#39;c&#39;</span>, <span class="nv">clear</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;trigger3&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/trigger3.png"><img alt="trigger3.png" class="align-center" src="tutorial/../static/trigger3.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># show contours only, witout healpix map</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.5, .9<span class="o">]</span>, <span class="nv">showhp</span><span class="o">=</span>False, <span class="nv">clear</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;trigger4&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/trigger4.png"><img alt="trigger4.png" class="align-center" src="tutorial/../static/trigger4.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># set visualization threshold for healpix map</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True,min<span class="o">=</span>1e-8,max<span class="o">=</span>1e-5<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;trigger5&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/trigger5.png"><img alt="trigger5.png" class="align-center" src="tutorial/../static/trigger5.png" style="width: 800px;" /></a>
+</div>
+<div class="section" id="trigger-evaluation">
+<span id="kbtrigger3"></span><h2>Trigger evaluation<a class="headerlink" href="#trigger-evaluation" title="Permalink to this headline">¶</a></h2>
+<p>Since not every trigger is that interesting, <cite>KOBE</cite> would try gather all possible informations from sources, so that user could assess them and decide if it’s worth follow or not.</p>
+<ol class="arabic">
+<li><p>trigger information from healpix fits header or VOevent file</p>
+<p>Most informations are already recorded in the fits header or VOevent:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import trigger
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> trigger<span class="o">()</span>
+
+<span class="c1"># if healpix map parsed from a VOevent xml file</span>
+<span class="c1"># both hphdr and voinf should be available</span>
+&gt;&gt;&gt; a.parse_trigger<span class="o">(</span><span class="nv">vofile</span><span class="o">=</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span>, <span class="nv">wdir</span><span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.hphdr
+<span class="o">{</span><span class="s1">&#39;XTENSION&#39;</span>: <span class="s1">&#39;BINTABLE&#39;</span>, <span class="s1">&#39;BITPIX&#39;</span>: <span class="m">8</span>, <span class="s1">&#39;NAXIS&#39;</span>: <span class="m">2</span>, <span class="s1">&#39;NAXIS1&#39;</span>: <span class="m">32</span>, <span class="s1">&#39;NAXIS2&#39;</span>: <span class="m">3145728</span>, <span class="s1">&#39;PCOUNT&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;GCOUNT&#39;</span>: <span class="m">1</span>, <span class="s1">&#39;TFIELDS&#39;</span>: <span class="m">4</span>, <span class="s1">&#39;TTYPE1&#39;</span>: <span class="s1">&#39;PROB&#39;</span>, <span class="s1">&#39;TFORM1&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT1&#39;</span>: <span class="s1">&#39;pix-1&#39;</span>, <span class="s1">&#39;TTYPE2&#39;</span>: <span class="s1">&#39;DISTMU&#39;</span>, <span class="s1">&#39;TFORM2&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT2&#39;</span>: <span class="s1">&#39;Mpc&#39;</span>, <span class="s1">&#39;TTYPE3&#39;</span>: <span class="s1">&#39;DISTSIGMA&#39;</span>, <span class="s1">&#39;TFORM3&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT3&#39;</span>: <span class="s1">&#39;Mpc&#39;</span>, <span class="s1">&#39;TTYPE4&#39;</span>: <span class="s1">&#39;DISTNORM&#39;</span>, <span class="s1">&#39;TFORM4&#39;</span>: <span class="s1">&#39;D&#39;</span>, <span class="s1">&#39;TUNIT4&#39;</span>: <span class="s1">&#39;Mpc-2&#39;</span>, <span class="s1">&#39;MOC&#39;</span>: True, <span class="s1">&#39;PIXTYPE&#39;</span>: <span class="s1">&#39;HEALPIX&#39;</span>, <span class="s1">&#39;ORDERING&#39;</span>: <span class="s1">&#39;NESTED&#39;</span>, <span class="s1">&#39;COORDSYS&#39;</span>: <span class="s1">&#39;C&#39;</span>, <span class="s1">&#39;NSIDE&#39;</span>: <span class="m">512</span>, <span class="s1">&#39;INDXSCHM&#39;</span>: <span class="s1">&#39;IMPLICIT&#39;</span>, <span class="s1">&#39;OBJECT&#39;</span>: <span class="s1">&#39;G331903&#39;</span>, <span class="s1">&#39;REFERENC&#39;</span>: <span class="s1">&#39;https://gracedb.ligo.org/events/G331903&#39;</span>, <span class="s1">&#39;INSTRUME&#39;</span>: <span class="s1">&#39;H1,L1,V1&#39;</span>, <span class="s1">&#39;DATE-OBS&#39;</span>: <span class="s1">&#39;2019-05-10T02:59:39.292500&#39;</span>, <span class="s1">&#39;MJD-OBS&#39;</span>: <span class="m">58613</span>.12476032978, <span class="s1">&#39;DATE&#39;</span>: <span class="s1">&#39;2019-05-10T03:00:47.000000&#39;</span>, <span class="s1">&#39;CREATOR&#39;</span>: <span class="s1">&#39;BAYESTAR&#39;</span>, <span class="s1">&#39;ORIGIN&#39;</span>: <span class="s1">&#39;LIGO/Virgo&#39;</span>, <span class="s1">&#39;RUNTIME&#39;</span>: <span class="m">18</span>.0, <span class="s1">&#39;DISTMEAN&#39;</span>: <span class="m">268</span>.8566049372629, <span class="s1">&#39;DISTSTD&#39;</span>: <span class="m">108</span>.0709050006497, <span class="s1">&#39;LOGBCI&#39;</span>: <span class="m">0</span>.6949211109947058, <span class="s1">&#39;LOGBSN&#39;</span>: <span class="m">7</span>.032293281836687, <span class="s1">&#39;VCSVERS&#39;</span>: <span class="s1">&#39;ligo.skymap 0.1.6&#39;</span>, <span class="s1">&#39;VCSREV&#39;</span>: <span class="s1">&#39;79504ec9fb1890fa91665bd69d7aa66cdaf11184&#39;</span>, <span class="s1">&#39;DATE-BLD&#39;</span>: <span class="s1">&#39;2019-03-26T18:11:21&#39;</span>, <span class="s1">&#39;HISTORY&#39;</span>: <span class="s1">&#39;gwcelery worker -l info -n gwcelery-openmp-worker -Q openmp -c 1&#39;</span><span class="o">}</span>
+&gt;&gt;&gt; a.voinf
+<span class="o">{</span><span class="s1">&#39;Packet_Type&#39;</span>: <span class="s1">&#39;151&#39;</span>, <span class="s1">&#39;internal&#39;</span>: <span class="s1">&#39;0&#39;</span>, <span class="s1">&#39;Pkt_Ser_Num&#39;</span>: <span class="s1">&#39;2&#39;</span>, <span class="s1">&#39;GraceID&#39;</span>: <span class="s1">&#39;S190510g&#39;</span>, <span class="s1">&#39;AlertType&#39;</span>: <span class="s1">&#39;Initial&#39;</span>, <span class="s1">&#39;HardwareInj&#39;</span>: <span class="s1">&#39;0&#39;</span>, <span class="s1">&#39;OpenAlert&#39;</span>: <span class="s1">&#39;1&#39;</span>, <span class="s1">&#39;EventPage&#39;</span>: <span class="s1">&#39;https://gracedb.ligo.org/superevents/S190510g/view/&#39;</span>, <span class="s1">&#39;Instruments&#39;</span>: <span class="s1">&#39;H1,L1,V1&#39;</span>, <span class="s1">&#39;FAR&#39;</span>: <span class="s1">&#39;8.42945108717e-10&#39;</span>, <span class="s1">&#39;Group&#39;</span>: <span class="s1">&#39;CBC&#39;</span>, <span class="s1">&#39;Pipeline&#39;</span>: <span class="s1">&#39;gstlal&#39;</span>, <span class="s1">&#39;Search&#39;</span>: <span class="s1">&#39;AllSky&#39;</span>, <span class="s1">&#39;skymap_fits&#39;</span>: <span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span>, <span class="s1">&#39;BNS&#39;</span>: <span class="s1">&#39;0.979698536622&#39;</span>, <span class="s1">&#39;NSBH&#39;</span>: <span class="s1">&#39;0.0&#39;</span>, <span class="s1">&#39;BBH&#39;</span>: <span class="s1">&#39;0.0&#39;</span>, <span class="s1">&#39;MassGap&#39;</span>: <span class="s1">&#39;0.0&#39;</span>, <span class="s1">&#39;Terrestrial&#39;</span>: <span class="s1">&#39;0.0203014633781&#39;</span>, <span class="s1">&#39;HasNS&#39;</span>: <span class="s1">&#39;1.0&#39;</span>, <span class="s1">&#39;HasRemnant&#39;</span>: <span class="s1">&#39;1.0&#39;</span><span class="o">}</span>
+
+<span class="c1"># obviously, if healpix map is parsed from a healpix fits file</span>
+<span class="c1"># the voinf attribute would be an Nonetype</span>
+&gt;&gt;&gt; from kobe import trigger
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> trigger<span class="o">()</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.voinf
+</pre></div>
+</div>
+</li>
+<li><p>trigger localizarion area and distance statistics</p>
+<p>Since currently the localization area is been not recorded in healpix fits header or VOevent xml file yet for most cases, which is however important for the trigger evaluation.
+<cite>KOBE</cite> provide methods for the area estimations (<strong>note</strong> that for CBC type GW triggers, LVC would provide also distance assessment: the average estimation is recorded in the header, while informations at each directions are stored in the healpix fits):</p>
+<p>For 2d area calculations:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># get healpix indices for specific confidence levels</span>
+&gt;&gt;&gt; a.calc_loc_contours<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.1,.5,.9,.99<span class="o">])</span>
+<span class="o">{</span><span class="m">0</span>.1: array<span class="o">([</span><span class="m">2414072</span>, <span class="m">2418168</span>, <span class="m">2416119</span>, ..., <span class="m">1570953</span>, <span class="m">1573001</span>, <span class="m">1573000</span><span class="o">])</span>, <span class="m">0</span>.5: array<span class="o">([</span><span class="m">2414072</span>, <span class="m">2418168</span>, <span class="m">2416119</span>, ..., <span class="m">2018356</span>, <span class="m">2022450</span>, <span class="m">2024499</span><span class="o">])</span>, <span class="m">0</span>.9: array<span class="o">([</span><span class="m">2414072</span>, <span class="m">2418168</span>, <span class="m">2416119</span>, ...,  <span class="m">783552</span>,  <span class="m">734398</span>,  <span class="m">771264</span><span class="o">])</span>, <span class="m">0</span>.99: array<span class="o">([</span><span class="m">2414072</span>, <span class="m">2418168</span>, <span class="m">2416119</span>, ..., <span class="m">1309038</span>, <span class="m">1309052</span>, <span class="m">1309051</span><span class="o">])}</span>
+
+<span class="c1"># estimate the erea of error boxes at specific confidence levels</span>
+<span class="c1"># unit in sq deg</span>
+&gt;&gt;&gt; a.calc_loc_area<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.1,.5,.9,.99<span class="o">])</span>
+<span class="o">{</span><span class="m">0</span>.1: <span class="m">36</span>.351906008208665, <span class="m">0</span>.5: <span class="m">575</span>.5456172035578, <span class="m">0</span>.9: <span class="m">3463</span>.7648737864856, <span class="m">0</span>.99: <span class="m">11508</span>.39446313552<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="candidates-evaluation-based-on-trigger">
+<span id="kbtrigger4"></span><h2>Candidates evaluation based on trigger<a class="headerlink" href="#candidates-evaluation-based-on-trigger" title="Permalink to this headline">¶</a></h2>
+<p>Then, one could assess and select candidates depending on trigger map:</p>
+</div>
+<div class="section" id="pointings-evaluation-based-on-trigger">
+<span id="kbtrigger5"></span><h2>Pointings evaluation based on trigger<a class="headerlink" href="#pointings-evaluation-based-on-trigger" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic" id="kbtrigger51">
+<li><p>rank pointings based on probability</p>
+<p>Then, let try greedy appracoh for which a trigger is needed</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># parse a ligo trigger and visualize it</span>
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">max</span><span class="o">=</span>1e-5, <span class="nv">cls</span><span class="o">=[</span>.5, .9, .99<span class="o">])</span>
+
+<span class="c1"># set telescope pointings</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limra<span class="o">=[</span><span class="m">20</span>, <span class="m">100</span><span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">0</span>,30<span class="o">])</span>
+
+<span class="c1"># rank with GW probability</span>
+&gt;&gt;&gt; a.rankp<span class="o">(</span><span class="nv">approach</span><span class="o">=</span><span class="m">2</span>, <span class="nv">mode</span><span class="o">=</span><span class="m">2</span>, <span class="nv">threshold</span><span class="o">=</span><span class="m">5</span>,sort<span class="o">=</span><span class="m">1</span><span class="o">)</span>
+
+<span class="c1"># show pointings and the routes</span>
+&gt;&gt;&gt; a.locshow_tel<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.routeshow_tel<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-1.2,0<span class="o">]</span>,<span class="o">[</span>-.5,.6<span class="o">])</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;routeshow1&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/routeshow1.png"><img alt="routeshow1.png" class="align-center" src="tutorial/../static/routeshow1.png" style="width: 800px;" /></a>
+<p>Sometimes, one might prefer to cover trigger probability as faster as possible,
+and for such case, we could adopte strict mode, namely <cite>mode</cite> = 1:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.rankp<span class="o">(</span><span class="nv">approach</span><span class="o">=</span><span class="m">2</span>, <span class="nv">mode</span><span class="o">=</span><span class="m">1</span>, <span class="nv">threshold</span><span class="o">=</span><span class="m">5</span>,sort<span class="o">=</span><span class="m">1</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;routeshow2&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/routeshow2.png"><img alt="routeshow2.png" class="align-center" src="tutorial/../static/routeshow2.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<p>One could assess and select pointings depending on trigger:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># ask 2d trigger probablity at specific positions</span>
+&gt;&gt;&gt; a.calc_loc_prob<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">])</span>
+array<span class="o">([</span><span class="m">7</span>.36631063e-07, <span class="m">8</span>.50340927e-06<span class="o">])</span>
+&gt;&gt;&gt; a.calc_loc_prob<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">]</span>,fovra<span class="o">=</span><span class="m">1</span>,fovdec<span class="o">=</span><span class="m">1</span><span class="o">)</span>
+<span class="o">[</span><span class="m">5</span>.8577539241927334e-05, <span class="m">0</span>.0006069629043450725<span class="o">]</span>
+&gt;&gt;&gt; a.calc_loc_prob<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">]</span>,fovra<span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>,fovdec<span class="o">=[</span><span class="m">1</span>,10<span class="o">])</span>
+<span class="o">[</span><span class="m">5</span>.8577539241927334e-05, <span class="m">0</span>.042806591674792185<span class="o">]</span>
+
+<span class="c1"># ask confidence level at specific positions, e.g. for such trigger:</span>
+<span class="c1"># position at ra=1, dec=1 is located at the top 87.18% region</span>
+<span class="c1"># while ra=10, deg=-20 is located at the top 34.51% region, which is more likely to have the contourpart in principle</span>
+&gt;&gt;&gt; a.calc_loc_cl<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">])</span>
+<span class="o">[</span><span class="m">0</span>.8718188163741416, <span class="m">0</span>.34519511496241106<span class="o">]</span>
+
+<span class="c1"># ask distance mean, variance and normalization factor at specific positions</span>
+&gt;&gt;&gt; a.calc_dis_inf<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">])</span>
+<span class="o">(</span>array<span class="o">([</span><span class="m">233</span>.86346031, <span class="m">273</span>.32868364<span class="o">])</span>, array<span class="o">([</span><span class="m">121</span>.25377326, <span class="m">112</span>.45704833<span class="o">])</span>, array<span class="o">([</span><span class="m">1</span>.44320589e-05, <span class="m">1</span>.14500239e-05<span class="o">]))</span>
+
+<span class="c1"># for the trigger probability at the distance direction, despite coordinates, distance of each dots or tiles is also needed. We provide 2 approaches for the distance probablity estimation.</span>
+
+<span class="c1"># 1. user provide distance, and we provide how many sigma at specific coordinates:</span>
+&gt;&gt;&gt; a.calc_dis_sigma<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">]</span>, <span class="nv">dist</span><span class="o">=[</span><span class="m">100</span>,200<span class="o">])</span>
+array<span class="o">([</span><span class="m">1</span>.10399418, <span class="m">0</span>.65205947<span class="o">])</span>
+&gt;&gt;&gt; a.calc_dis_sigma<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">]</span>, <span class="nv">dist</span><span class="o">=</span><span class="m">100</span><span class="o">)</span>
+array<span class="o">([</span><span class="m">1</span>.10399418, <span class="m">1</span>.54128786<span class="o">])</span>
+
+<span class="c1"># 2. or, one provide how much deeper a telescope could reach, i.e. the limiting magnitude at one filter, and parsed a targeting lightcurve via `KOBE candidates`. Thus `KOBE` will try to find the highest probablity that one telescope could reach at specific positions:</span>
+&gt;&gt;&gt; a.readlc<span class="o">(</span><span class="s1">&#39;tmplc&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.calc_dis_prob<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">1</span>,-20<span class="o">]</span>, <span class="nv">limmag</span><span class="o">=</span><span class="m">20</span><span class="o">)</span>
+<span class="o">[</span><span class="m">2</span>.8391830707199967e-06, <span class="m">1</span>.6860153679224023e-06<span class="o">]</span>
+
+
+<span class="c1"># similar to `frame`, here user could adopt above calculations to `candidates` or `pointings`, by adding &#39;_candidates&#39;, &#39;_pointings&#39; correspondingly. But note that we should import their son classes instead:</span>
+&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> schedule<span class="o">()</span>
+
+<span class="c1"># generate a list of candidates first</span>
+&gt;&gt;&gt; a.readc<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10,30<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span>-30,20,57<span class="o">])</span>
+&gt;&gt;&gt; a.calc_loc_prob_candidates<span class="o">(</span><span class="nv">add</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.candidates
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">3</span>&gt;
+n     ra   dec  ...   mag            prob
+int64 int64 int64 ... float64        float64
+----- ----- ----- ... ------- ----------------------
+<span class="m">0</span>     <span class="m">1</span>   -30 ...     <span class="m">0</span>.0 <span class="m">1</span>.9284269010978466e-08
+<span class="m">1</span>    <span class="m">10</span>    <span class="m">20</span> ...     <span class="m">0</span>.0 <span class="m">2</span>.0231011501525045e-09
+<span class="m">2</span>    <span class="m">30</span>    <span class="m">57</span> ...     <span class="m">0</span>.0 <span class="m">1</span>.8087733560399342e-10
+
+<span class="c1"># or, we simulate a list of candidates depending on trigger informations</span>
+&gt;&gt;&gt; a.sim_candidates<span class="o">(</span><span class="m">100</span><span class="o">)</span>
+&gt;&gt;&gt; a.candidates
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">100</span>&gt;
+n           ra         ...        dist
+int64      float64       ...      float64
+----- ------------------ ... ------------------
+<span class="m">0</span>       <span class="m">23</span>.115234375 ...  <span class="m">375</span>.9515624386379
+<span class="m">1</span>       <span class="m">24</span>.169921875 ... <span class="m">329</span>.81103124515795
+<span class="m">2</span> <span class="m">202</span>.93945312499997 ...  <span class="m">298</span>.0457228059061
+<span class="m">3</span> <span class="m">20</span>.390624999999996 ...  <span class="m">340</span>.7921527021853
+<span class="m">4</span> <span class="m">29</span>.179687500000004 ... <span class="m">348</span>.23222429754685
+<span class="m">5</span> <span class="m">219</span>.46289062499997 ...  <span class="m">209</span>.4316853009612
+...                ... ...                ...
+<span class="m">94</span>  <span class="m">34</span>.89257812499999 ...  <span class="m">312</span>.6570100894105
+<span class="m">95</span>         <span class="m">234</span>.140625 ... <span class="m">194</span>.50830434378472
+<span class="m">96</span>       <span class="m">189</span>.66796875 ...  <span class="m">314</span>.2610304124869
+<span class="m">97</span>        <span class="m">4</span>.306640625 ...   <span class="m">336</span>.507412048297
+<span class="m">98</span>  <span class="m">90</span>.08789062499999 ...  <span class="m">136</span>.7218608009585
+<span class="m">99</span> <span class="m">223</span>.76953124999997 ... <span class="m">182</span>.44403569924526
+
+<span class="c1"># then, we calculate the probability for those candidates</span>
+<span class="c1"># with add True, will append probablities to `candidates` attribitue</span>
+&gt;&gt;&gt; a.calc_loc_prob_candidates<span class="o">(</span><span class="nv">add</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.candidates
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">100</span>&gt;
+n           ra         ...          prob
+int64      float64       ...        float64
+----- ------------------ ... ----------------------
+<span class="m">0</span>      <span class="m">198</span>.720703125 ... <span class="m">1</span>.0871144359444234e-06
+<span class="m">1</span>        <span class="m">34</span>.27734375 ... <span class="m">3</span>.6993686880535465e-06
+<span class="m">2</span>       <span class="m">354</span>.90234375 ... <span class="m">1</span>.5092874203885056e-06
+<span class="m">3</span>  <span class="m">87</span>.36328124999999 ... <span class="m">3</span>.1338349257123985e-05
+<span class="m">4</span>       <span class="m">30</span>.673828125 ...  <span class="m">1</span>.952836299467096e-05
+<span class="m">5</span> <span class="m">204</span>.78515624999997 ... <span class="m">2</span>.6864287804351886e-05
+...                ... ...                    ...
+<span class="m">94</span>        <span class="m">222</span>.5390625 ...  <span class="m">7</span>.778463626082537e-06
+<span class="m">95</span>       <span class="m">37</span>.177734375 ... <span class="m">1</span>.3224485371845156e-06
+<span class="m">96</span>        <span class="m">88</span>.06640625 ...  <span class="m">5</span>.666885303976507e-05
+<span class="m">97</span>        <span class="m">220</span>.4296875 ...  <span class="m">5</span>.495307908097957e-06
+<span class="m">98</span>       <span class="m">87</span>.978515625 ... <span class="m">4</span>.8930073608119987e-05
+<span class="m">99</span> <span class="m">345</span>.49804687499994 ...  <span class="m">3</span>.423411778829105e-07
+
+<span class="c1"># otherwise, will return a probability sequence</span>
+&gt;&gt;&gt; a.calc_loc_prob_candidates<span class="o">(</span><span class="nv">add</span><span class="o">=</span>False<span class="o">)</span>
+array<span class="o">([</span><span class="m">1</span>.08711444e-06, <span class="m">3</span>.69936869e-06, <span class="m">1</span>.50928742e-06, <span class="m">3</span>.13383493e-05,
+<span class="m">1</span>.95283630e-05, <span class="m">2</span>.68642878e-05, <span class="m">1</span>.10427040e-05, <span class="m">6</span>.71512096e-06, ...<span class="o">])</span>
+
+<span class="c1"># working the same for `calc_dis_sigma`:</span>
+&gt;&gt;&gt; a.calc_dis_sigma_candidates<span class="o">()</span>
+&lt;Column <span class="nv">name</span><span class="o">=</span><span class="s1">&#39;dist&#39;</span> <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span> <span class="nv">length</span><span class="o">=</span><span class="m">100</span>&gt;
+<span class="m">0</span>.14880546273025794
+<span class="m">0</span>.5665491638766624
+<span class="m">0</span>.8015084423389162
+<span class="m">0</span>.7534019306893466
+<span class="m">0</span>.5606431781802166
+<span class="m">0</span>.4155206143818324
+<span class="m">1</span>.9909015138436261
+<span class="m">0</span>.1306552537277863
+...
+<span class="m">2</span>.358471744440794
+<span class="m">0</span>.5990096215373739
+<span class="m">0</span>.9449567534390637
+<span class="m">1</span>.154412315546838
+<span class="m">0</span>.002524681517209831
+<span class="m">0</span>.8895511354394909
+<span class="m">0</span>.47304138903496756
+<span class="m">0</span>.5663346170205388
+
+<span class="c1"># working the same for `pointings`:</span>
+&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> schedule<span class="o">()</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span>-20,90<span class="o">])</span>
+&gt;&gt;&gt; a.calc_loc_prob_pointings<span class="o">()</span>
+
+<span class="c1"># One could also cut pointings depending on trigger, say, remaining only those pointings at high probability region</span>
+&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> schedule<span class="o">()</span>
+
+<span class="c1"># parse trigger</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+
+<span class="c1"># parse tilings with dec above -20 deg, fov as 5 by 5 deg</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span>-20,90<span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">5</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">5</span><span class="o">)</span>
+
+<span class="c1"># select those tilings at 50% and 90% confidence level region</span>
+&gt;&gt;&gt; <span class="nv">b</span><span class="o">=</span>a.cut_pointings_hpmap<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.5,.9<span class="o">])</span>
+&gt;&gt;&gt; b<span class="o">[</span>.5<span class="o">]</span>
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">331</span>&gt;
+n      ra      dec    fovra   fovdec
+int64 float64  float64 float64 float64
+----- -------- ------- ------- -------
+<span class="m">5</span>  <span class="m">6</span>.38507   -20.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">6</span>  <span class="m">7</span>.44924   -20.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">7</span>  <span class="m">8</span>.51342   -20.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">8</span>   <span class="m">9</span>.5776   -20.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">9</span> <span class="m">10</span>.64178   -20.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">10</span> <span class="m">11</span>.70596   -20.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+...      ...     ...     ...     ...
+<span class="m">14462</span> <span class="m">36</span>.41893    <span class="m">21</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">14463</span> <span class="m">37</span>.49007    <span class="m">21</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">14464</span> <span class="m">38</span>.56122    <span class="m">21</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">14465</span> <span class="m">39</span>.63236    <span class="m">21</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">14798</span> <span class="m">36</span>.67018    <span class="m">22</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">14799</span> <span class="m">37</span>.74872    <span class="m">22</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+
+<span class="c1"># show the trigger and tilings at 90% C.L.</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.9<span class="o">])</span>
+&gt;&gt;&gt; a.plot_box_data<span class="o">(</span>b<span class="o">[</span>.9<span class="o">]</span>,color<span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;cutp&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/cutp.png"><img alt="cutp.png" class="align-center" src="tutorial/../static/cutp.png" style="width: 800px;" /></a>
+</div></blockquote>
+</div>
+<div class="section" id="trigger-report-and-circulate">
+<span id="kbtrigger6"></span><h2>Trigger report and Circulate<a class="headerlink" href="#trigger-report-and-circulate" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.trigger_report<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.5, .9<span class="o">]</span>, <span class="nv">style</span><span class="o">=</span><span class="s1">&#39;sms&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.texts
+<span class="s1">&#39;DISTMEAN:268.86 DISTSTD:108.07 DATE-OBS:2019-05-10T02:59:39.292500 MJD-OBS:58613.12 OBJECT:G331903 INSTRUME:H1,L1,V1 CREATOR:BAYESTAR 0.5:575.55 0.9:3463.76 &#39;</span>
+</pre></div>
+</div>
+<p><a class="reference internal" href="cand.html#kbcand"><span class="std std-ref">Previous</span></a>
+<a class="reference internal" href="prio.html#kbprio"><span class="std std-ref">Next</span></a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/trigger.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

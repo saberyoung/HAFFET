@@ -1,7 +1,7 @@
 from __future__ import print_function
 from shutil import rmtree
 import os,sys
-from src.__version__ import version
+from sdapy.__version__ import version
 
 if __name__ == '__main__':
     here = os.path.abspath(os.path.dirname(__file__))

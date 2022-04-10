@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Priorization and Optimization &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="priorization-and-optimization">
+<span id="kbprio"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">Priorization</span> <span class="pre">and</span> <span class="pre">Optimization</span></code><a class="headerlink" href="#priorization-and-optimization" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">Previous</span></a></p>
+<div class="section" id="priorization">
+<h2>Priorization<a class="headerlink" href="#priorization" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ab0e06/meta">Yang et al, 2019</a></p>
+<ol class="arabic">
+<li><p>generate OBs</p>
+<p>In <cite>KOBE</cite>, we adopt the concept, <cite>OB</cite>, to describe a (set of) observation(s) in detials.
+Apart from pointing, <cite>KOBE OB</cite> include also the filter, observing time, and/or the corresponding visibilities, trigger probabilities, etc.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.genobs<span class="o">(</span><span class="nv">filters</span><span class="o">=</span><span class="s1">&#39;r,i,g,u&#39;</span>, <span class="nv">ovhtime</span><span class="o">=</span><span class="m">100</span>, <span class="nv">exptime</span><span class="o">=</span><span class="m">45</span>, <span class="nv">mode</span><span class="o">=</span><span class="m">2</span><span class="o">)</span>
+&gt;&gt;&gt; a.obs
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">2772</span>&gt;
+n      ra      dec    fovra   fovdec filter   <span class="nb">time</span>
+int64 float64  float64 float64 float64  str1  float64
+----- -------- ------- ------- ------- ------ --------
+<span class="m">0</span>  <span class="m">2</span>.13491    <span class="m">19</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      g    <span class="m">100</span>.0
+<span class="m">0</span>  <span class="m">3</span>.19253    <span class="m">19</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      g    <span class="m">145</span>.0
+<span class="m">0</span>  <span class="m">4</span>.25015    <span class="m">19</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      g    <span class="m">190</span>.0
+<span class="m">0</span>  <span class="m">4</span>.25671    <span class="m">20</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      g    <span class="m">235</span>.0
+<span class="m">0</span>  <span class="m">3</span>.19253    <span class="m">20</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      g    <span class="m">280</span>.0
+<span class="m">0</span>  <span class="m">3</span>.19253    <span class="m">21</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      g    <span class="m">325</span>.0
+...      ...     ...     ...     ...    ...      ...
+<span class="m">76</span> <span class="m">39</span>.33957    <span class="m">38</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      u <span class="m">141455</span>.0
+<span class="m">76</span> <span class="m">38</span>.07055    <span class="m">38</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      u <span class="m">141500</span>.0
+<span class="m">76</span> <span class="m">36</span>.80153    <span class="m">38</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      u <span class="m">141545</span>.0
+<span class="m">76</span> <span class="m">36</span>.78379    <span class="m">39</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      u <span class="m">141590</span>.0
+<span class="m">76</span> <span class="m">38</span>.07055    <span class="m">39</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      u <span class="m">141635</span>.0
+<span class="m">76</span> <span class="m">39</span>.35731    <span class="m">39</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0      u <span class="m">141680</span>.0
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="assessment-and-optimization">
+<h2>Assessment and optimization<a class="headerlink" href="#assessment-and-optimization" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">Previous</span></a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/prio.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>kobe.KBpointings.galaxies &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kobe.KBpointings.galaxies.generatep" href="kobe.KBpointings.galaxies.generatep.html" />
+    <link rel="prev" title="kobe.KBpointings.tilings.savep" href="kobe.KBpointings.tilings.savep.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="kobe-kbpointings-galaxies">
+<h1>kobe.KBpointings.galaxies<a class="headerlink" href="#kobe-kbpointings-galaxies" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="kobe.KBpointings.galaxies">
+<em class="property">class </em><code class="sig-prename descclassname">kobe.KBpointings.</code><code class="sig-name descname">galaxies</code><span class="sig-paren">(</span><em class="sig-param">logger=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#kobe.KBpointings.galaxies" title="Permalink to this definition">¶</a></dt>
+<dd><p>galaxies: generate (by querying astropy.Vizier), 
+read and process galaxies</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">kobe.tilings</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">kobe.telescope</span></code></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p><em>galaxies</em> inherients from <strong>vgalaxies</strong> and <strong>circulate</strong>,
+and inheriented by <em>pointings</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">adjacent_move</span></code>(self, ra, dec, ral, decl[, …])</p></td>
+<td><p>set the next step of a pointing list</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrange_filter</span></code>(self[, data, add, filters])</p></td>
+<td><p>set telescope filter</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">arrange_time</span></code>(self[, data, add, ovhtime, exptime])</p></td>
+<td><p>set telescope observe time</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckdir</span></code>(self, \*\*kwargs)</p></td>
+<td><p>check working directory, see if it’s exists, and if readable/writable</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckpython</span></code>(self)</p></td>
+<td><p>check python version</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">closefig</span></code>(self, num)</p></td>
+<td><p>close a figure</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">common_ele</span></code>(self, list1, list2[, nullv])</p></td>
+<td><p>find the common elements of 2 lists</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_contours</span></code>(proportions, samples[, nside])</p></td>
+<td><p>Compute containment contour around desired level with meander</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cumprobshow</span></code>(self, \*\*kwargs)</p></td>
+<td><p>show cumulative probability</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">deg2hms</span></code>(self, ra, dec)</p></td>
+<td><p>coordinate from deg to hms</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dic2txt</span></code>(self, _data[, split])</p></td>
+<td><p>read dictionary like object, generate standard texts</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">distshow</span></code>(self[, histtype, drange, nbin])</p></td>
+<td><p>show distance distribution for galaxies</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code>(self, _list[, nullv])</p></td>
+<td><p>flatten a sequence if it’s a sequence of sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gcn_server</span></code>(_server, _port)</p></td>
+<td><p>get host and port so that pygcn could use for monitoring triggers.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.generatep.html#kobe.KBpointings.galaxies.generatep" title="kobe.KBpointings.galaxies.generatep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generatep</span></code></a>(self[, catalog, filter, size, …])</p></td>
+<td><p>generate galaxies by querying Vizier</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.generatep_trigger.html#kobe.KBpointings.galaxies.generatep_trigger" title="kobe.KBpointings.galaxies.generatep_trigger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generatep_trigger</span></code></a>(self, hpmap[, hpd1, hpd2, …])</p></td>
+<td><p>generate pointings depends on trigger localizations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getkeys</span></code>(self, kwargs[, _class])</p></td>
+<td><p>get specific kwargs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.gmap.html#kobe.KBpointings.galaxies.gmap" title="kobe.KBpointings.galaxies.gmap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gmap</span></code></a>(self[, tracer, nside, nest])</p></td>
+<td><p>build a healpix map with KBGetGalaxies.data</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.groupp.html#kobe.KBpointings.galaxies.groupp" title="kobe.KBpointings.galaxies.groupp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">groupp</span></code></a>(self, obra, obdec)</p></td>
+<td><p>group sub-galaxies, assign them with same index</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hms2deg</span></code>(self, ra, dec)</p></td>
+<td><p>coordinate from hms to deg</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hplocshow</span></code>(self[, cls, showhp, showtype, …])</p></td>
+<td><p>show galaxy healpix map</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hpmapproj</span></code>(self, hpmap[, showtype])</p></td>
+<td><p>figure for healpix Map</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipix_in_box</span></code>(self, ra, dec, width, height, …)</p></td>
+<td><p>finding the healpix indices of a given box</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq</span></code>(o)</p></td>
+<td><p>Check if the object is a sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq_of_seq</span></code>(self, o)</p></td>
+<td><p>Check if the object is a sequence of sequences</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow</span></code>(self[, data, showgrid, shown, colors])</p></td>
+<td><p>show one galaxy network</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow_all</span></code>(self[, showgrid, show_label, colors])</p></td>
+<td><p>show all pointings that were parsed so far, i.e.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow_obs</span></code>(self[, showgrid, show_label, colors])</p></td>
+<td><p>show pointings for a series of telescopes at one observatory, i.e.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow_tel</span></code>(self, \*\*kwargs)</p></td>
+<td><p>show pointings for a telescope, i.e.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lumshow</span></code>(self[, nbin, color1, color2])</p></td>
+<td><p>show mass distribution for galaxies</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_box_data</span></code>(self, _data[, showgrid, n, colors])</p></td>
+<td><p>plot a series of boxes with input data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_coord</span></code>(self[, rot, bkgcolor])</p></td>
+<td><p>show specific coordinates in skymap</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lines</span></code>(self, ra, dec, hh, ww[, n, rot, …])</p></td>
+<td><p>plot a series of vertices</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_point_data</span></code>(self, _data[, showgrid, n, …])</p></td>
+<td><p>plot a series of dots with input data</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_points</span></code>(self, ra, dec[, n, rot, colors])</p></td>
+<td><p>plot a series of dots</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_route</span></code>(self, _data[, rot, showgrid])</p></td>
+<td><p>plot the route of a series o pointings</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_sky</span></code>(self[, showgrid])</p></td>
+<td><p>plot horizon, galactic plane, sun and moon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">projplot</span></code>(self, theta, phi, \*\*kwargs)</p></td>
+<td><p>call healpy projplot</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">radecs</span></code>(self[, ra, dec, theta, phi, hms])</p></td>
+<td><p>read ra dec</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.rankp.html#kobe.KBpointings.galaxies.rankp" title="kobe.KBpointings.galaxies.rankp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rankp</span></code></a>(self[, mode, nside, nest, threshold, sort])</p></td>
+<td><p>rank pointings: rank from west to east</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readlist</span></code>(self[, filename, filetype, split, keys])</p></td>
+<td><p>read data from a file</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.readp_file.html#kobe.KBpointings.galaxies.readp_file" title="kobe.KBpointings.galaxies.readp_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">readp_file</span></code></a>(self, filename[, filetype, …])</p></td>
+<td><p>read pointings from a file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.removep_coo.html#kobe.KBpointings.galaxies.removep_coo" title="kobe.KBpointings.galaxies.removep_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removep_coo</span></code></a>(self, ra, dec, fovra, fovdec[, …])</p></td>
+<td><p>remove fields by input coordinate</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.removep_file.html#kobe.KBpointings.galaxies.removep_file" title="kobe.KBpointings.galaxies.removep_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removep_file</span></code></a>(self[, split, nest, data, …])</p></td>
+<td><p>remove fields by input file</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.reportp.html#kobe.KBpointings.galaxies.reportp" title="kobe.KBpointings.galaxies.reportp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reportp</span></code></a>(self[, split])</p></td>
+<td><p>make a report for self.data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_all</span></code>(self[, rot, showgrid, …])</p></td>
+<td><p>route show for self.observatories</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_dat</span></code>(self[, rot, showgrid])</p></td>
+<td><p>route show for self.data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_obs</span></code>(self[, rot, showgrid, …])</p></td>
+<td><p>route show for self.telescopes</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">routeshow_tel</span></code>(self[, rot, showgrid])</p></td>
+<td><p>route show for self.pointings.data</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefig</span></code>(self[, filepath])</p></td>
+<td><p>save a figure</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.savep.html#kobe.KBpointings.galaxies.savep" title="kobe.KBpointings.galaxies.savep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">savep</span></code></a>(self, filename[, filetype, split, …])</p></td>
+<td><p>save tilings to a file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email</span></code>(self, \*\*kwargs)</p></td>
+<td><p>send out KOBE products via email</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_slack</span></code>(\*\*kwargs)</p></td>
+<td><p>send out KOBE products via slack</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_sms</span></code>(_account, _token, _from, _to, _txt)</p></td>
+<td><p>send out KOBE products via sms (twilio package needed)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setkeys</span></code>(self, kwargs)</p></td>
+<td><p>set kobe arguments (use default if one kwarg not provided)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spherical_angle</span></code>(self, ra1, dec1, ra2, dec2)</p></td>
+<td><p>calculate spherical angle</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code>(ra, dec, fovw, fovh)</p></td>
+<td><p>finding the vertices of a FoV by giving the central location and the FoV size</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">writelist</span></code>(self[, datain, filename, …])</p></td>
+<td><p>write data to a file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoomin</span></code>(self[, zoomx, zoomy])</p></td>
+<td><p>zoomin for figure</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="kobe.KBpointings.galaxies.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">logger=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#kobe.KBpointings.galaxies.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>initialize galaxy object with input logger and parameter settings</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#kobe.KBpointings.galaxies.__init__" title="kobe.KBpointings.galaxies.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self[, logger])</p></td>
+<td><p>initialize galaxy object with input logger and parameter settings</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckdir</span></code>(self, \*\*kwargs)</p></td>
+<td><p>check working directory, see if it’s exists, and if readable/writable</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ckpython</span></code>(self)</p></td>
+<td><p>check python version</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">closefig</span></code>(self, num)</p></td>
+<td><p>close a figure</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">common_ele</span></code>(self, list1, list2[, nullv])</p></td>
+<td><p>find the common elements of 2 lists</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_contours</span></code>(proportions, samples[, nside])</p></td>
+<td><p>Compute containment contour around desired level with meander</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">flatten</span></code>(self, _list[, nullv])</p></td>
+<td><p>flatten a sequence if it’s a sequence of sequence</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">galaxies.galaxies2hpmap</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gcn_server</span></code>(_server, _port)</p></td>
+<td><p>get host and port so that pygcn could use for monitoring triggers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.generatep.html#kobe.KBpointings.galaxies.generatep" title="kobe.KBpointings.galaxies.generatep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generatep</span></code></a>(self[, catalog, filter, size, …])</p></td>
+<td><p>generate galaxies by querying Vizier</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getkeys</span></code>(self, kwargs[, _class])</p></td>
+<td><p>get specific kwargs</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">galaxies.healpyshow</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ipix_in_box</span></code>(self, ra, dec, width, height, …)</p></td>
+<td><p>finding the healpix indices of a given box</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq</span></code>(o)</p></td>
+<td><p>Check if the object is a sequence</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_seq_of_seq</span></code>(self, o)</p></td>
+<td><p>Check if the object is a sequence of sequences</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">locshow</span></code>(self[, data, showgrid, shown, colors])</p></td>
+<td><p>show one galaxy network</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">galaxies.notes</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_coord</span></code>(self[, rot, bkgcolor])</p></td>
+<td><p>show specific coordinates in skymap</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_lines</span></code>(self, ra, dec, hh, ww[, n, rot, …])</p></td>
+<td><p>plot a series of vertices</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_points</span></code>(self, ra, dec[, n, rot, colors])</p></td>
+<td><p>plot a series of dots</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_sky</span></code>(self[, showgrid])</p></td>
+<td><p>plot horizon, galactic plane, sun and moon</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">projplot</span></code>(self, theta, phi, \*\*kwargs)</p></td>
+<td><p>call healpy projplot</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">galaxies.read_slackid</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">readlist</span></code>(self[, filename, filetype, split, keys])</p></td>
+<td><p>read data from a file</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">galaxies.readp</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.removep_coo.html#kobe.KBpointings.galaxies.removep_coo" title="kobe.KBpointings.galaxies.removep_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removep_coo</span></code></a>(self, ra, dec, fovra, fovdec[, …])</p></td>
+<td><p>remove fields by input coordinate</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.removep_file.html#kobe.KBpointings.galaxies.removep_file" title="kobe.KBpointings.galaxies.removep_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">removep_file</span></code></a>(self[, split, nest, data, …])</p></td>
+<td><p>remove fields by input file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefig</span></code>(self[, filepath])</p></td>
+<td><p>save a figure</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="kobe.KBpointings.galaxies.savep.html#kobe.KBpointings.galaxies.savep" title="kobe.KBpointings.galaxies.savep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">savep</span></code></a>(self, filename[, filetype, split, …])</p></td>
+<td><p>save tilings to a file</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_email</span></code>(self, \*\*kwargs)</p></td>
+<td><p>send out KOBE products via email</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_slack</span></code>(\*\*kwargs)</p></td>
+<td><p>send out KOBE products via slack</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_sms</span></code>(_account, _token, _from, _to, _txt)</p></td>
+<td><p>send out KOBE products via sms (twilio package needed)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setkeys</span></code>(self, kwargs)</p></td>
+<td><p>set kobe arguments (use default if one kwarg not provided)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">vertices</span></code>(ra, dec, fovw, fovh)</p></td>
+<td><p>finding the vertices of a FoV by giving the central location and the FoV size</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">writelist</span></code>(self[, datain, filename, …])</p></td>
+<td><p>write data to a file</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">attachments</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>galaxy data</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">defkwargs</span></code></p></td>
+<td><p>default parameter settings</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">exkwargs</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">images</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">texts</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a><ul>
+      <li>Previous: <a href="kobe.KBpointings.tilings.savep.html" title="previous chapter">kobe.KBpointings.tilings.savep</a></li>
+      <li>Next: <a href="kobe.KBpointings.galaxies.generatep.html" title="next chapter">kobe.KBpointings.galaxies.generatep</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/kobe.KBpointings.galaxies.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

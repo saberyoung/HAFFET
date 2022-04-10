@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Candidates &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="candidates">
+<span id="kbcand"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">Candidates</span></code><a class="headerlink" href="#candidates" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="tel.html#kbtel"><span class="std std-ref">Previous</span></a></div>
+<div class="line"><a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#kbcand1"><span class="std std-ref">1. Candidates</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#kbcand11"><span class="std std-ref">1.1 from list</span></a></div>
+<div class="line"><a class="reference internal" href="#kbcand12"><span class="std std-ref">1.2 from text/npz/fits file</span></a></div>
+<div class="line"><a class="reference internal" href="#kbcand13"><span class="std std-ref">1.3 from avro file</span></a></div>
+<div class="line"><a class="reference internal" href="#kbcand13"><span class="std std-ref">1.4 simulate candidates based on trigger</span></a></div>
+<div class="line"><a class="reference internal" href="#kbcand14"><span class="std std-ref">1.5 rank pointings based on candidates</span></a></div>
+</div>
+<div class="line"><a class="reference internal" href="#kbcand2"><span class="std std-ref">2. Targeting ligutCurve</span></a></div>
+</div>
+<p>Besides observatories, the other important elements of observations include: candidates and triggers.
+In this chapter, we show how <cite>KOBE</cite> would deal with <cite>candidates</cite> objects.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Candidates and triggers are all external alerts.
+Currently, main GW/GRB/neutrino/etc detectors, e.g. LIGO, Fermi and so on, distribute triggers via <a class="reference external" href="https://en.wikipedia.org/wiki/VOEvent">VoEvent</a>, while major optical facilities, e.g. ZTF/LSST, would brodcast their data stream via <a class="reference external" href="https://en.wikipedia.org/wiki/Apache_Avro">Avro</a> format.
+Thus, <cite>KOBE</cite> provide methods to parse triggers from VOevent file, and candidares from Avro file, which might be slightly supplemented later.</p>
+</div>
+<div class="section" id="candidate-list">
+<span id="kbcand1"></span><h2>Candidate list<a class="headerlink" href="#candidate-list" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic" id="kbcand11">
+<li><p>from list</p>
+<p><cite>KOBE</cite> could generate a list of candidates with lists via <cite>readc</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize candidates object</span>
+&gt;&gt;&gt; from kobe import candidates
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>candidates<span class="o">()</span>
+
+<span class="c1"># input ra, dec</span>
+&gt;&gt;&gt; a.readc<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10,30<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span>-30,20,57<span class="o">])</span>
+
+<span class="c1"># visualize them</span>
+&gt;&gt;&gt; a.candshow<span class="o">(</span><span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span>,color<span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;cand&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/cand.png"><img alt="cand.png" class="align-center" src="tutorial/../static/cand.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="kbcand12" start="2">
+<li><p>from text file</p>
+<p>As same as <cite>pointings</cite>, one could generate candidates via a file.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.readc_file<span class="o">(</span>filename<span class="o">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbcand13" start="3">
+<li><p>from avro file</p>
+<p><cite>KOBE</cite> could parse candidates from avro files, and here we show an example of ZTF alerts.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize candidates object</span>
+&gt;&gt;&gt; from kobe import candidates
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>candidates<span class="o">()</span>
+
+<span class="c1"># download a zipped ZTF alert file and parse it</span>
+&gt;&gt;&gt; a.readc_avro<span class="o">(</span><span class="s1">&#39;ztf_public_20190519.tar.gz&#39;</span>,rbt<span class="o">=</span>.8<span class="o">)</span>
+&gt;&gt;&gt; a.candidates
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">1130</span>&gt;
+n        ra        dec            mag               <span class="nb">time</span>
+int64   float64    float64        float64           float64
+----- ----------- ---------- ------------------ ---------------
+<span class="m">0</span>  <span class="m">162</span>.876382 <span class="m">15</span>.3103797 <span class="m">17</span>.297101974487305 <span class="m">2458622</span>.6578356
+<span class="m">1</span> <span class="m">167</span>.8154547 <span class="m">34</span>.7418207 <span class="m">17</span>.316316604614258 <span class="m">2458622</span>.6592014
+<span class="m">2</span> <span class="m">170</span>.8729163 <span class="m">35</span>.9226149 <span class="m">17</span>.473085403442383 <span class="m">2458622</span>.6587384
+<span class="m">3</span> <span class="m">154</span>.7517604 <span class="m">37</span>.8779819 <span class="m">18</span>.452634811401367 <span class="m">2458622</span>.6601273
+<span class="m">4</span> <span class="m">159</span>.1361093 <span class="m">45</span>.2796218 <span class="m">17</span>.956443786621094 <span class="m">2458622</span>.6610648
+<span class="m">5</span>  <span class="m">158</span>.419986 <span class="m">40</span>.9514874 <span class="m">16</span>.885969161987305 <span class="m">2458622</span>.6601273
+...         ...        ...                ...             ...
+<span class="m">1123</span> <span class="m">199</span>.0804272  <span class="m">73</span>.472593  <span class="m">16</span>.56187629699707 <span class="m">2458622</span>.6830787
+<span class="m">1124</span> <span class="m">206</span>.5294535 <span class="m">73</span>.5271186  <span class="m">18</span>.14190101623535 <span class="m">2458622</span>.6830787
+<span class="m">1125</span> <span class="m">210</span>.1924989 <span class="m">73</span>.5482038  <span class="m">16</span>.03114891052246 <span class="m">2458622</span>.6830787
+<span class="m">1126</span> <span class="m">215</span>.3502885 <span class="m">72</span>.8003903 <span class="m">16</span>.690505981445312 <span class="m">2458622</span>.6830787
+<span class="m">1127</span>  <span class="m">213</span>.335147 <span class="m">73</span>.8961953 <span class="m">16</span>.415159225463867 <span class="m">2458622</span>.6830787
+<span class="m">1128</span> <span class="m">191</span>.5811877 <span class="m">77</span>.1084053 <span class="m">15</span>.541926383972168 <span class="m">2458622</span>.6830787
+<span class="m">1129</span> <span class="m">192</span>.2536266 <span class="m">77</span>.7498254 <span class="m">16</span>.618961334228516 <span class="m">2458622</span>.6830787
+&gt;&gt;&gt; a.candshow<span class="o">(</span><span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span>,ms<span class="o">=</span><span class="m">1</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;candavro&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/candavro.png"><img alt="candavro.png" class="align-center" src="tutorial/../static/candavro.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="kbcand14" start="4">
+<li><p>simulate candidates based on trigger</p>
+<p><cite>KOBE</cite> could simulate a series of candidates depending on trigger informations (which would be described in detail in the <a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">next chapter</span></a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> schedule<span class="o">()</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.sim_candidates<span class="o">(</span><span class="m">100</span><span class="o">)</span>
+&gt;&gt;&gt; a.candidates
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">100</span>&gt;
+n           ra         ...        dist
+int64      float64       ...      float64
+----- ------------------ ... ------------------
+<span class="m">0</span>       <span class="m">23</span>.115234375 ...  <span class="m">375</span>.9515624386379
+<span class="m">1</span>       <span class="m">24</span>.169921875 ... <span class="m">329</span>.81103124515795
+<span class="m">2</span> <span class="m">202</span>.93945312499997 ...  <span class="m">298</span>.0457228059061
+<span class="m">3</span> <span class="m">20</span>.390624999999996 ...  <span class="m">340</span>.7921527021853
+<span class="m">4</span> <span class="m">29</span>.179687500000004 ... <span class="m">348</span>.23222429754685
+<span class="m">5</span> <span class="m">219</span>.46289062499997 ...  <span class="m">209</span>.4316853009612
+...                ... ...                ...
+<span class="m">94</span>  <span class="m">34</span>.89257812499999 ...  <span class="m">312</span>.6570100894105
+<span class="m">95</span>         <span class="m">234</span>.140625 ... <span class="m">194</span>.50830434378472
+<span class="m">96</span>       <span class="m">189</span>.66796875 ...  <span class="m">314</span>.2610304124869
+<span class="m">97</span>        <span class="m">4</span>.306640625 ...   <span class="m">336</span>.507412048297
+<span class="m">98</span>  <span class="m">90</span>.08789062499999 ...  <span class="m">136</span>.7218608009585
+<span class="m">99</span> <span class="m">223</span>.76953124999997 ... <span class="m">182</span>.44403569924526
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.9<span class="o">])</span>
+&gt;&gt;&gt; a.candshow<span class="o">(</span><span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span>,color<span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;candl&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/candl.png"><img alt="candl.png" class="align-center" src="tutorial/../static/candl.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic simple" id="kbcand15" start="5">
+<li><p>rank pointings based on candidates</p></li>
+</ol>
+</div>
+<div class="section" id="targeting-lightcurve">
+<span id="kbcand2"></span><h2>Targeting lightcurve<a class="headerlink" href="#targeting-lightcurve" title="Permalink to this headline">¶</a></h2>
+<p><cite>KOBE</cite> generate targeting lightcurves via OAC API:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import candidates
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>candidates<span class="o">()</span>
+
+<span class="c1"># suppose we&#39;re aiming to detect Kilonova</span>
+<span class="c1"># query via open supernova catalog</span>
+&gt;&gt;&gt; a.generatelc<span class="o">(</span><span class="nv">tname</span><span class="o">=</span><span class="s1">&#39;AT2017gfo&#39;</span>, <span class="nv">timeout</span><span class="o">=</span><span class="m">60</span><span class="o">)</span>
+&gt;&gt;&gt; a.lc
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">825</span>&gt;
+<span class="nb">time</span>        magnitude ... e_upper_magnitude
+float64        float64  ...        str4
+------------------- --------- ... -----------------
+-239.64600000000064     <span class="m">20</span>.44 ...
+-192.62200000000303     <span class="m">21</span>.39 ...
+-191.65700000000652     <span class="m">21</span>.34 ...
+-190.65400000000227     <span class="m">21</span>.26 ...
+-189.64500000000407      <span class="m">21</span>.1 ...
+-188.65600000000268     <span class="m">20</span>.58 ...
+...       ... ...               ...
+<span class="m">20</span>.98899999999412     <span class="m">21</span>.46 ...
+<span class="m">21</span>.008999999998196     <span class="m">21</span>.48 ...
+<span class="m">24</span>.98899999999412     <span class="m">22</span>.06 ...
+<span class="m">25</span>.008999999998196     <span class="m">20</span>.21 ...
+<span class="m">27</span>.98899999999412     <span class="m">19</span>.96 ...
+<span class="m">28</span>.98899999999412      <span class="m">20</span>.6 ...
+
+<span class="c1"># one can save the lightcurves, for the use of next time</span>
+&gt;&gt;&gt; a.savelc<span class="o">(</span><span class="s1">&#39;tmplc&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import candidates
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>candidates<span class="o">()</span>
+
+<span class="c1"># read lightcurve locally</span>
+&gt;&gt;&gt; a.readlc<span class="o">(</span><span class="s1">&#39;tmplc&#39;</span><span class="o">)</span>
+
+<span class="c1"># show lightcurves in r,g,i and u band without upperlimit</span>
+&gt;&gt;&gt; a.lcshow<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True,showlim<span class="o">=</span>False,filts<span class="o">=</span><span class="s1">&#39;rgiu&#39;</span><span class="o">)</span>
+&lt;Figure size 1280x960 with <span class="m">1</span> Axes&gt;
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;lc&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/lc.png"><img alt="lc.png" class="align-center" src="tutorial/../static/lc.png" style="width: 800px;" /></a>
+</div></blockquote>
+<p><a class="reference internal" href="tel.html#kbtel"><span class="std std-ref">Previous</span></a>
+<a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">Next</span></a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/cand.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

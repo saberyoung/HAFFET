@@ -1,0 +1,12 @@
+Metadata-Version: 1.2
+Name: sn-data-analysis
+Version: 0.0.0.1
+Summary: sn_data_analysis: some tools to play with LCs and spectra of transienting sources
+Home-page: UNKNOWN
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Requires-Python: >=2.7

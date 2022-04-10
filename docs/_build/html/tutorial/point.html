@@ -1,0 +1,790 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Pointings - Tilings, Galaxies &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="pointings-tilings-galaxies">
+<span id="kbpoint"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">Pointings</span> <span class="pre">-</span> <span class="pre">Tilings,</span> <span class="pre">Galaxies</span></code><a class="headerlink" href="#pointings-tilings-galaxies" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="scheme.html#kbscheme"><span class="std std-ref">Previous</span></a></div>
+<div class="line"><a class="reference internal" href="tel.html#kbtel"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#tiles"><span class="std std-ref">1. tiling search</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#tiles1"><span class="std std-ref">1.1 generate pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#tiles2"><span class="std std-ref">1.2 show pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#tiles3"><span class="std std-ref">1.3 skip portion of sky</span></a></div>
+<div class="line"><a class="reference internal" href="#tiles4"><span class="std std-ref">1.4 group and divide pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#tiles5"><span class="std std-ref">1.5 rank pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#tiles6"><span class="std std-ref">1.6 report and circulate</span></a></div>
+</div>
+<div class="line"><a class="reference internal" href="#galaxies"><span class="std std-ref">2. galaxy search</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#galaxies1"><span class="std std-ref">2.1 generate pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#galaxies2"><span class="std std-ref">2.2 show pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#galaxies3"><span class="std std-ref">2.3 skip portion of sky</span></a></div>
+<div class="line"><a class="reference internal" href="#galaxies4"><span class="std std-ref">2.4 group and divide pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#galaxies5"><span class="std std-ref">2.5 rank pointings</span></a></div>
+<div class="line"><a class="reference internal" href="#galaxies6"><span class="std std-ref">2.6 report and circulate</span></a></div>
+<div class="line"><a class="reference internal" href="#galaxies7"><span class="std std-ref">2.7 make galaxy healpix map</span></a></div>
+</div>
+<div class="line"><a class="reference internal" href="#point"><span class="std std-ref">3. pointing</span></a></div>
+</div>
+<p>In this chapter, we describe how we construct pointings for telescopes.</p>
+<p>Currently there’re 2 strategies adopted by astronomers to survey the sky, namely, tiling and galaxy search.
+Tiling search is suitable for the telescopes with relatively large field of view.
+Astronomers tile the trigger localization (or portion of the sky) into a series of telescope shots, observe them in order.
+While as for the galaxy strategy which is more suitable for small field of view telescopes, the galaxies inside the trigger region (or portion of the sky) are monitored with a certain frequency.
+The crucial point of such search is a good knowledge of the local galaxies,
+while currently the most used public galaxy catalog, i.e. GLADE, would have a good completeness up to several tens (or hundreds, depends on how much completeness one would like to cover) of Mpc.
+The detection of the kilonova has proved the success of galaxy search, however, we should know that tiling search would be the only choice if one trigger locate in further volume, where we had few knowledges about the mass distributions.</p>
+<div class="section" id="tiling-search">
+<span id="tiles"></span><h2>Tiling search<a class="headerlink" href="#tiling-search" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic" id="tiles1">
+<li><p>generate pointings</p>
+<p>There’re several approaches to generate tile pointings after a <cite>tilings</cite> object was initialized.
+Once generation running successfully, there will be one <cite>data</cite> attribute available, that contains a list of tilings, namely ra, dec at the center, field of view of tiling box, and an index.</p>
+<p>1.1 One approach for tiling generation is to input pointings directly as shown below.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># import module and initialize a tiling object, a</span>
+&gt;&gt;&gt; from kobe import tilings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+
+<span class="c1"># fovra/fovdec should be a number when ra/dec is a number</span>
+&gt;&gt;&gt; a.readp_coo<span class="o">(</span><span class="nv">ra</span><span class="o">=</span><span class="m">20</span>,dec<span class="o">=</span><span class="m">30</span>,fovra<span class="o">=</span><span class="m">5</span>,fovdec<span class="o">=</span><span class="m">5</span><span class="o">)</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">1</span>&gt;
+n     ra   dec  fovra fovdec
+int64 int64 int64 int64 int64
+----- ----- ----- ----- ------
+<span class="m">0</span>    <span class="m">20</span>    <span class="m">30</span>     <span class="m">5</span>      <span class="m">5</span>
+
+<span class="c1"># when ra/dec is sequence</span>
+<span class="c1"># fovra/fovdec could be either a number, or a same length sequence</span>
+&gt;&gt;&gt; a.readp_coo<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">0</span>,10,20,30<span class="o">]</span>,dec<span class="o">=[</span><span class="m">0</span>,10,20,30<span class="o">]</span>,fovra<span class="o">=</span><span class="m">5</span>,fovdec<span class="o">=</span><span class="m">5</span><span class="o">)</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">4</span>&gt;
+n     ra   dec  fovra fovdec
+int64 int64 int64 int64 int64
+----- ----- ----- ----- ------
+<span class="m">0</span>     <span class="m">0</span>     <span class="m">0</span>     <span class="m">5</span>      <span class="m">5</span>
+<span class="m">1</span>    <span class="m">10</span>    <span class="m">10</span>     <span class="m">5</span>      <span class="m">5</span>
+<span class="m">2</span>    <span class="m">20</span>    <span class="m">20</span>     <span class="m">5</span>      <span class="m">5</span>
+<span class="m">3</span>    <span class="m">30</span>    <span class="m">30</span>     <span class="m">5</span>      <span class="m">5</span>
+
+&gt;&gt;&gt; a.readp_coo<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">0</span>,10,20,30<span class="o">]</span>,dec<span class="o">=[</span><span class="m">0</span>,10,20,30<span class="o">]</span>,fovra<span class="o">=[</span><span class="m">1</span>,2,3,4<span class="o">]</span>,fovdec<span class="o">=[</span><span class="m">1</span>,2,3,4<span class="o">])</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">4</span>&gt;
+n     ra   dec  fovra fovdec
+int64 int64 int64 int64 int64
+----- ----- ----- ----- ------
+<span class="m">0</span>     <span class="m">0</span>     <span class="m">0</span>     <span class="m">1</span>      <span class="m">1</span>
+<span class="m">1</span>    <span class="m">10</span>    <span class="m">10</span>     <span class="m">2</span>      <span class="m">2</span>
+<span class="m">2</span>    <span class="m">20</span>    <span class="m">20</span>     <span class="m">3</span>      <span class="m">3</span>
+<span class="m">3</span>    <span class="m">30</span>    <span class="m">30</span>     <span class="m">4</span>      <span class="m">4</span>
+
+<span class="c1"># if ra/dec is hh:mm:ss format</span>
+&gt;&gt;&gt; a.readp_coo<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="s1">&#39;12:20:30&#39;</span>,<span class="s1">&#39;0:20:30&#39;</span><span class="o">]</span>,dec<span class="o">=[</span><span class="s1">&#39;10:30:00&#39;</span>,<span class="s1">&#39;-5:00:20&#39;</span><span class="o">]</span>,fovra<span class="o">=</span><span class="m">1</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">1</span>,hms<span class="o">=</span>True,clobber<span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">2</span>&gt;
+n           ra                 dec         fovra fovdec
+int64      float64             float64       int64 int64
+----- ------------------ ------------------- ----- ------
+<span class="m">0</span> <span class="m">185</span>.12499999999997                <span class="m">10</span>.5     <span class="m">1</span>      <span class="m">1</span>
+<span class="m">1</span>  <span class="m">5</span>.124999999999999 -5.0055555555555555     <span class="m">1</span>      <span class="m">1</span>
+</pre></div>
+</div>
+<p id="rg">1.2 Then, tilings could be also generated via a region query, e.g. an example is shown below to create a tiling list varied dec from -20 deg to north pole, with 3 by 3 sq deg field of view.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import tilings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span>-20, <span class="m">90</span><span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">3</span><span class="o">)</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">3110</span>&gt;
+n       ra      dec    fovra   fovdec
+int64  float64  float64 float64 float64
+----- --------- ------- ------- -------
+<span class="m">0</span>   <span class="m">3</span>.19253   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">1</span>   <span class="m">6</span>.38507   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2</span>    <span class="m">9</span>.5776   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3</span>  <span class="m">12</span>.77013   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">4</span>  <span class="m">15</span>.96267   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">5</span>   <span class="m">19</span>.1552   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">6</span>  <span class="m">22</span>.34773   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+...       ...     ...     ...     ...
+<span class="m">3103</span> <span class="m">275</span>.36912    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3104</span> <span class="m">309</span>.79026    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3105</span>  <span class="m">344</span>.2114    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3106</span>  <span class="m">85</span>.96113    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3107</span> <span class="m">171</span>.92225    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3108</span> <span class="m">257</span>.88338    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3109</span>  <span class="m">343</span>.8445    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+</pre></div>
+</div>
+<p>1.3 Since the reference images are important for transient search, telescope pointings are always fixed. Thus, to save and read tilings could be useful for a long term consideration.</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save tilings into a npz file</span>
+&gt;&gt;&gt; a.savep<span class="o">(</span><span class="s1">&#39;tmp_tiles&#39;</span>, <span class="nv">filetype</span><span class="o">=</span><span class="s1">&#39;npz&#39;</span><span class="o">)</span>
+
+<span class="c1"># Read tilings from a npz file</span>
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; a.readp<span class="o">(</span><span class="s1">&#39;tmp_tiles&#39;</span>, <span class="nv">filetype</span><span class="o">=</span><span class="s1">&#39;npz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">3110</span>&gt;
+n        ra      dec    fovra   fovdec
+float64  float64  float64 float64 float64
+------- --------- ------- ------- -------
+<span class="m">0</span>.0   <span class="m">3</span>.19253   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">1</span>.0   <span class="m">6</span>.38507   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2</span>.0    <span class="m">9</span>.5776   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3</span>.0  <span class="m">12</span>.77013   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">4</span>.0  <span class="m">15</span>.96267   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">5</span>.0   <span class="m">19</span>.1552   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">6</span>.0  <span class="m">22</span>.34773   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+...       ...     ...     ...     ...
+<span class="m">3103</span>.0 <span class="m">275</span>.36912    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3104</span>.0 <span class="m">309</span>.79026    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3105</span>.0  <span class="m">344</span>.2114    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3106</span>.0  <span class="m">85</span>.96113    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3107</span>.0 <span class="m">171</span>.92225    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3108</span>.0 <span class="m">257</span>.88338    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3109</span>.0  <span class="m">343</span>.8445    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+</pre></div>
+</div>
+<p>If one had already pre-defined pointing list, check KOBE products and adopt the same scheme.</p>
+</div></blockquote>
+<p>1.4. As supplementary of <a class="reference internal" href="#rg"><span class="std std-ref">1.2 region generation</span></a>, <cite>KOBE</cite> could generate tilings depends on trigger informations if available.</p>
+<blockquote>
+<div><p>Let’s start with an example of tiling generation based on trigger localization.
+Since for such case, we need both <cite>trigger</cite> and <cite>pointings</cite> utilities,
+thus we should import their son class, i.e. <cite>schedule</cite> instead.
+For more detials of <cite>trigger</cite> utilities, please check the <a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">trigger chapter</span></a>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+
+<span class="c1"># parse a trigger first</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+
+<span class="c1"># initialize a tiling network</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+
+<span class="c1"># `KOBE` will run a monte carlo on `shiftra` and `shiftdec`,</span>
+<span class="c1"># in order to maximize the probability coverage of top 100 ranked tilings</span>
+&gt;&gt;&gt; a.generatep_trigger<span class="o">(</span><span class="m">100</span>,limra<span class="o">=[</span><span class="m">10</span>,40<span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">20</span>, <span class="m">40</span><span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">3</span><span class="o">)</span>
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">60</span>&gt;
+n      ra      dec     fovra   fovdec
+int64 float64  float64  float64 float64
+----- -------- -------- ------- -------
+<span class="m">0</span> <span class="m">16</span>.02716 <span class="m">22</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">1</span> <span class="m">19</span>.28541 <span class="m">22</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2</span> <span class="m">22</span>.54366 <span class="m">22</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3</span> <span class="m">25</span>.80191 <span class="m">22</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">4</span> <span class="m">29</span>.06016 <span class="m">22</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">5</span> <span class="m">32</span>.31841 <span class="m">22</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+...      ...      ...     ...     ...
+<span class="m">54</span> <span class="m">22</span>.85897 <span class="m">40</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">55</span> <span class="m">26</span>.83193 <span class="m">40</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">56</span>  <span class="m">30</span>.8049 <span class="m">40</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">57</span> <span class="m">34</span>.77786 <span class="m">40</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">58</span> <span class="m">38</span>.75082 <span class="m">40</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">59</span> <span class="m">42</span>.72378 <span class="m">40</span>.96553     <span class="m">3</span>.0     <span class="m">3</span>.0
+</pre></div>
+</div>
+<p>More methods concerning both <cite>trigger</cite> and <cite>pointings</cite>, e.g. check how much trigger probabilities inside a tiling, would be described in the <a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">trigger chapter</span></a>.</p>
+</div></blockquote>
+</li>
+</ol>
+<ol class="arabic" id="tiles2" start="2">
+<li><p>show pointings</p>
+<p>After tilings parsed successfully, the <cite>data</cite> attribute is not <cite>nonetype</cite> anymore.
+Therefore, the tiles could be visualized via <cite>KOBE visualization</cite> utils:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># do plot</span>
+&gt;&gt;&gt; a.locshow<span class="o">()</span>
+
+<span class="c1"># save figure to the current directory (make sure one had the read-write permission), with filename as tiling1.png</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="nv">filepath</span><span class="o">=</span><span class="s1">&#39;tiling1&#39;</span>,wdir<span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/tiling1.png"><img alt="tiling1.png" class="align-center" src="tutorial/../static/tiling1.png" style="width: 800px;" /></a>
+<p>In case one would like to zoom in the sight to somewhere specific, e.g. the north pole,
+you could firstly set a rotation scheme in <cite>locshow</cite> so that the north pole is in the center of plot, and then zoomin to the region:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># set clear to clean previous plot</span>
+<span class="c1"># set rot_phi to rotate map along dec direction</span>
+<span class="c1"># set network color to red</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True,rot_phi<span class="o">=</span><span class="m">90</span>,color<span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+
+<span class="c1"># zoom in the region</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-.4,.4<span class="o">]</span>, <span class="o">[</span>-.4,.4<span class="o">])</span>
+
+<span class="c1"># save plot</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="nv">filepath</span><span class="o">=</span><span class="s1">&#39;tiling2&#39;</span>,wdir<span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/tiling2.png"><img alt="tiling2.png" class="align-center" src="tutorial/../static/tiling2.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="tiles3" start="3">
+<li><p>skip portion of sky</p>
+<p>Due to various of reasons, e.g. apart from bright sources, or avoid duplicated observation for same field, a portion of sky is sometimes needed to be skipped.
+Here, we show an example of the tiling removement process:</p>
+<p>First, let’s generate a series of tiling with 1 by 1 sq deg, ranging ra from 10 to 40, dec from 20 to 40 deg, and zoom in:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import tilings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">limra</span><span class="o">=[</span><span class="m">10</span>,40<span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">20</span>, <span class="m">40</span><span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">1</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+&gt;&gt;&gt; a.locshow<span class="o">()</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-.6, <span class="m">0</span><span class="o">]</span>, <span class="o">[</span>.1,.8<span class="o">])</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;skip1&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/skip1.png"><img alt="skip1.png" class="align-center" src="tutorial/../static/skip1.png" style="width: 400px;" /></a>
+<p>Then, assuming a bright source is located at ra=20 deg, dec=30 deg.
+We could generate a 5 by 5 deg rectangle at the position, as the forbiden region.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nv">b</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; b.readp_coo<span class="o">(</span><span class="nv">ra</span><span class="o">=</span><span class="m">20</span>,dec<span class="o">=</span><span class="m">30</span>,fovra<span class="o">=</span><span class="m">5</span>,fovdec<span class="o">=</span><span class="m">5</span><span class="o">)</span>
+&gt;&gt;&gt; b.locshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; b.savefig<span class="o">(</span><span class="s1">&#39;skip11&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/skip11.png"><img alt="skip11.png" class="align-center" src="tutorial/../static/skip11.png" style="width: 400px;" /></a>
+<p>We would like to delete all fields that have overlaps with the forbiden box.
+Here, <cite>skipfrac</cite> is defined as the threshold on the fraction of one field overlapped by the forbiden region.
+All the fields whose overlapped fraction larger than <cite>skipfrac</cite> would be removed.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># set `skipfrac` = 0, to remove tilings that have any overlaps with the forbiden region</span>
+&gt;&gt;&gt; a.removep_coo<span class="o">([</span><span class="m">20</span><span class="o">]</span>,<span class="o">[</span><span class="m">30</span><span class="o">]</span>,<span class="o">[</span><span class="m">5</span><span class="o">]</span>,<span class="o">[</span><span class="m">5</span><span class="o">]</span>,skipfrac<span class="o">=</span><span class="m">0</span>,nest<span class="o">=</span>False<span class="o">)</span>
+
+<span class="c1"># show tilings</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True<span class="o">)</span>
+
+<span class="c1"># show forbiden box</span>
+&gt;&gt;&gt; b.locshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+
+<span class="c1"># zoomin and save plot</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-.6, <span class="m">0</span><span class="o">]</span>, <span class="o">[</span>.1,.8<span class="o">])</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;skip2&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/skip2.png"><img alt="skip2.png" class="align-center" src="tutorial/../static/skip2.png" style="width: 400px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># set `skipfrac` = 0.5, to remove tilings which was 50% overlapped</span>
+&gt;&gt;&gt; a.removep_coo<span class="o">([</span><span class="m">20</span><span class="o">]</span>,<span class="o">[</span><span class="m">30</span><span class="o">]</span>,<span class="o">[</span><span class="m">5</span><span class="o">]</span>,<span class="o">[</span><span class="m">5</span><span class="o">]</span>,skipfrac<span class="o">=</span>.5,nest<span class="o">=</span>False<span class="o">)</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; b.locshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-.6, <span class="m">0</span><span class="o">]</span>, <span class="o">[</span>.1,.8<span class="o">])</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;skip22&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/skip22.png"><img alt="skip22.png" class="align-center" src="tutorial/../static/skip22.png" style="width: 400px;" /></a>
+<p>If there’re lots of fields are needed to be skipped:</p>
+<ul class="simple">
+<li><p>either, input sequences with <cite>removep_coo</cite> as above</p></li>
+<li><p>or one could put all forbiden regions in a file (with demanding scheme) and adopt <cite>removep_file</cite> method.</p></li>
+</ul>
+</li>
+</ol>
+<ol class="arabic" id="tiles4" start="4">
+<li><p>group and divide pointings</p>
+<p>In <cite>data</cite>, there’s one column named <cite>n</cite>, which is the index.
+<cite>KOBE</cite> would treat tilings (e.g. assign observing time to each pointing) with the same index as the same observing block, that means they’re assumed to be excuted together, thus, the overhat time is consumed only once.
+The crucial point is to make sure the pointings are spatially close to each other, so that the autofocus and autoguide is reliable.
+Therefore, we provide functions to group and divide <cite>KOBE</cite> pointings.</p>
+<p>For instance, one would like to use a 1 by 1 sq deg FoV telescope to tile the sky.
+He could build up a series of 3 by 3 deg pointings first, and then divide each of them into 9 sub-cells.
+The sub-pointings are then considered as in the same OBs by <cite>KOBE</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate 3 by 3 deg boxes in specific portion of sky</span>
+&gt;&gt;&gt; from kobe import tilings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">limra</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">20</span>, <span class="m">40</span><span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">3</span><span class="o">)</span>
+&gt;&gt;&gt; a.data
+n     ra    dec  fovra fovdec
+--- -------- ---- ----- ------
+<span class="m">0</span>  <span class="m">3</span>.19253 <span class="m">20</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+<span class="m">1</span>  <span class="m">6</span>.38507 <span class="m">20</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+<span class="m">2</span>   <span class="m">9</span>.5776 <span class="m">20</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+<span class="m">3</span> <span class="m">12</span>.77013 <span class="m">20</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+...      ...  ...   ...    ...
+<span class="m">73</span> <span class="m">26</span>.64938 <span class="m">38</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+<span class="m">74</span> <span class="m">30</span>.45644 <span class="m">38</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+<span class="m">75</span> <span class="m">34</span>.26349 <span class="m">38</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+<span class="m">76</span> <span class="m">38</span>.07055 <span class="m">38</span>.0   <span class="m">3</span>.0    <span class="m">3</span>.0
+<span class="nv">Length</span> <span class="o">=</span> <span class="m">77</span> rows
+
+<span class="c1"># show the tiling network</span>
+&gt;&gt;&gt; a.locshow<span class="o">()</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-.6, <span class="m">0</span><span class="o">]</span>, <span class="o">[</span>.1,.8<span class="o">])</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;divide&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/divide.png"><img alt="divide.png" class="align-center" src="tutorial/../static/divide.png" style="width: 400px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># then, divide each of them into a 3 by 3 deg sub-tilings</span>
+&gt;&gt;&gt; a.dividep<span class="o">(</span><span class="m">3</span>,3<span class="o">)</span>
+
+<span class="c1"># as shown, pointings within same OB would have the same index</span>
+&gt;&gt;&gt; a.data
+n     ra    dec  fovra fovdec
+--- -------- ---- ----- ------
+<span class="m">0</span>  <span class="m">2</span>.13491 <span class="m">19</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">0</span>  <span class="m">3</span>.19253 <span class="m">19</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">0</span>  <span class="m">4</span>.25015 <span class="m">19</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">0</span>  <span class="m">2</span>.12835 <span class="m">20</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+...      ...  ...   ...    ...
+<span class="m">76</span> <span class="m">39</span>.33957 <span class="m">38</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">76</span> <span class="m">36</span>.78379 <span class="m">39</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">76</span> <span class="m">38</span>.07055 <span class="m">39</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">76</span> <span class="m">39</span>.35731 <span class="m">39</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+
+<span class="c1"># show tiling network again</span>
+<span class="nv">Length</span> <span class="o">=</span> <span class="m">693</span> rows
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;divide1&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/divide1.png"><img alt="divide1.png" class="align-center" src="tutorial/../static/divide1.png" style="width: 400px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># here, there&#39;s a `shown` option provided, to visualize pointings in different OBs with different colors.</span>
+<span class="c1"># check more options, e.g. how to set colors and so on, in the corresponding API page.</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">shown</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;divide2&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/divide2.png"><img alt="divide2.png" class="align-center" src="tutorial/../static/divide2.png" style="width: 400px;" /></a>
+<p>Meanwhile as an equivalent approach, one could build up sub-cells firstly and then ask <cite>KOBE</cite> to group them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate 1 by 1 deg boxes in specific portion of sky</span>
+&gt;&gt;&gt; from kobe import tilings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">limra</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">20</span>, <span class="m">40</span><span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">1</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+
+<span class="c1"># group them</span>
+<span class="c1"># in such case, `KOBE` would split tiling network into a series of 3 by 3 deg boxes, and consider all pointings inside the same box as in the same OB</span>
+&gt;&gt;&gt; a.groupp<span class="o">(</span><span class="m">3</span>,3<span class="o">)</span>
+&gt;&gt;&gt; a.data
+n     ra    dec  fovra fovdec
+--- -------- ---- ----- ------
+<span class="m">0</span>  <span class="m">2</span>.13491 <span class="m">19</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">0</span>  <span class="m">3</span>.19253 <span class="m">19</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">0</span>  <span class="m">4</span>.25015 <span class="m">19</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">0</span>  <span class="m">2</span>.12835 <span class="m">20</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+...      ...  ...   ...    ...
+<span class="m">88</span> <span class="m">39</span>.33957 <span class="m">38</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">87</span> <span class="m">36</span>.78379 <span class="m">39</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">87</span> <span class="m">38</span>.07055 <span class="m">39</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="m">88</span> <span class="m">39</span>.35731 <span class="m">39</span>.0   <span class="m">1</span>.0    <span class="m">1</span>.0
+<span class="nv">Length</span> <span class="o">=</span> <span class="m">693</span> rows
+
+<span class="c1"># show them in different colors</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">shown</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;divide3&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/divide3.png"><img alt="divide3.png" class="align-center" src="tutorial/../static/divide3.png" style="width: 400px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="tiles5" start="5">
+<li><p>rank pointings</p>
+<p>After we have a list of pointings, another important issue that need to be considered
+is to arange them so that telescope could observe them in order.
+Since now, we have just generated pointings (without <a class="reference internal" href="trigger.html#kbtrigger"><span class="std std-ref">trigger</span></a> and
+<a class="reference internal" href="tel.html#kbtel2"><span class="std std-ref">observaroty</span></a> objects),
+we would discuss only ranking pointings spatially here
+(i.e. rank from west to east since the west pointings would descend earlier),
+and provide more ranking approaches, e.g. ranking based on trigger probability,
+later when they were parsed.</p>
+<p>In <cite>KOBE</cite>, we use index <cite>n</cite> to represent their priority, so the nature of
+pointing priorization is to change the index according to specific tracers.
+There’re 2 modes to rank pointings from west to east:</p>
+<ul class="simple">
+<li><p>strict mode: from west to east strictly</p></li>
+<li><p>adjacent mode: start from the pointing which is the westest, and the next pointing is set either adjacent or closest to the previous one, and so on. The aim is to take full advantage of every movements of telescope, in case telescope is not that easy to rotate.</p></li>
+</ul>
+<p>Let’s start with an example of adjacent mode.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize a tilings, a</span>
+&gt;&gt;&gt; from kobe import tilings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+
+<span class="c1"># generate pointings</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limra<span class="o">=[</span><span class="m">20</span>, <span class="m">100</span><span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">0</span>,30<span class="o">])</span>
+
+<span class="c1"># rank pointings</span>
+<span class="c1"># approach 1 will start from the westest pointings</span>
+<span class="c1"># mode 2 will make pointings adjacent to each other</span>
+&gt;&gt;&gt; a.rankp<span class="o">(</span><span class="nv">mode</span><span class="o">=</span><span class="m">2</span><span class="o">)</span>
+
+<span class="c1"># show the routes</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.routeshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-1.2,0<span class="o">]</span>,<span class="o">[</span>-.5,.6<span class="o">])</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;routeshow&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/routeshow.png"><img alt="routeshow.png" class="align-center" src="tutorial/../static/routeshow.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="tiles6" start="6">
+<li><p>report and circulate</p>
+<p>In <cite>KOBE</cite>, there’re 3 types of informations defined, i.e. <cite>texts</cite>, <cite>images</cite> and <cite>attachments</cite>.
+One could use various of functions (e.g. <cite>reportp</cite> shown below) to append them, and call <cite>circulate</cite> functions to circulate to user/API/etc at any stage.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import tilings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">limra</span><span class="o">=[</span><span class="m">10</span>,40<span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">20</span>, <span class="m">40</span><span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">3</span><span class="o">)</span>
+
+<span class="c1"># append `KOBE texts`</span>
+&gt;&gt;&gt; a.reportp<span class="o">(</span><span class="nv">split</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.texts
+<span class="s1">&#39;n ra dec fovra fovdec \n0 10.64178 20.0 1.0 1.0 \n1 11.70596 20.0 1.0 1.0 \n2 12.77013 20.0 1.0 1.0 \n3 13.83431 20.0 1.0 1.0 \n4 14.89849 20.0 1.0 1.0 \n5 15.96267 20.0 1.0 1.0 \n6 17.02684 20.0 1.0 1.0 \n7 18.09102 20.0 1.0 1.0 \n8 19.1552 20.0 1.0 1.0 \n</span>
+<span class="s1">...&#39;</span>
+
+<span class="c1"># call `send_email` to circulate texts to list of customers</span>
+&gt;&gt;&gt; a.send_email<span class="o">(</span><span class="nv">emailpass</span><span class="o">=</span><span class="s1">&#39;123&#39;</span>, <span class="nv">emailsmtp</span><span class="o">=</span><span class="s1">&#39;smtp.qq.com&#39;</span>,
+    <span class="nv">fromaddr</span><span class="o">=</span><span class="s1">&#39;1@xx.com&#39;</span>, <span class="nv">toaddrs</span><span class="o">=[</span><span class="s1">&#39;2@xx.com&#39;</span>, <span class="s1">&#39;3@xx.com&#39;</span><span class="o">])</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="galaxy-search">
+<span id="galaxies"></span><h2>Galaxy search<a class="headerlink" href="#galaxy-search" title="Permalink to this headline">¶</a></h2>
+<p>For galaxy search, the main difference compared to <cite>tilings</cite> is that the pointings are requested via Vizier instead.</p>
+<ol class="arabic" id="galaxies1">
+<li><p>generate pointings</p>
+<p>For pointing generation, <cite>galaxies</cite> is quite similar to <cite>tilings</cite> object:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># ask from GLADE for galaxies from 0 to 40 Mpc, with dec above -20 deg</span>
+&gt;&gt;&gt; from kobe import galaxies
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>galaxies<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">catalog</span><span class="o">=</span><span class="s1">&#39;GLADE&#39;</span>, <span class="nv">limdec</span><span class="o">=[</span>-20, <span class="m">90</span><span class="o">]</span>, <span class="nv">limdist</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">])</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">2492</span>&gt;
+n                    name                  ...      dist
+int64                 str62                  ...    float64
+----- -------------------------------------- ... -------------
+<span class="m">0</span> <span class="m">28655</span>:NGC3034:NGC3034:09555243+6940469 ... <span class="m">4</span>.70228466231
+<span class="m">1</span> <span class="m">42407</span>:NGC4594:NGC4594:12395949-1137230 ... <span class="m">3</span>.65995814653
+<span class="m">2</span>            --:---:---:12564369+2140575 ... <span class="m">3</span>.87868462045
+<span class="m">3</span> <span class="m">41220</span>:NGC4472:NGC4472:12294679+0800014 ... <span class="m">14</span>.6955181559
+...                                    ... ...           ...
+<span class="m">2488</span>     --:---:SDSSJ123626.88+255738.2:--- ... <span class="m">20</span>.7004974885
+<span class="m">2489</span>     --:---:SDSSJ122250.38+155056.9:--- ... <span class="m">24</span>.8768244613
+<span class="m">2490</span>     --:---:SDSSJ124211.24+074016.0:--- ... <span class="m">29</span>.7521819633
+<span class="m">2491</span>                     --:---:NGC5496:--- ... <span class="m">23</span>.4249708242
+
+<span class="c1"># compared to `tiling data`, here each row includes a galaxy name, magnitude and distance, insetead of field of view</span>
+&gt;&gt;&gt; a.data<span class="o">[</span><span class="m">0</span><span class="o">]</span>
+&lt;Row <span class="nv">index</span><span class="o">=</span><span class="m">0</span>&gt;
+n                    name                      ra       dec      mag         dist
+int64                 str62                   float64   float64  float64     float64
+----- -------------------------------------- --------- --------- -------- -------------
+<span class="m">0</span> <span class="m">28655</span>:NGC3034:NGC3034:09555243+6940469 <span class="m">148</span>.96846 <span class="m">69</span>.679703 -19.2115 <span class="m">4</span>.70228466231
+</pre></div>
+</div>
+<p>Considering it’s weird that one could manually provide galaxy informations, thus we don’t provide <cite>readp_coo</cite> methods for <cite>galaxies</cite>.
+Meanwhile in case one would like to go for further galaxies, the query of larger catalog will take time. Also, working offline is sometimes unavoidable, thus <cite>savep</cite> and <cite>readp</cite> functions are essential and recommended.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.savep<span class="o">(</span><span class="s1">&#39;tmp_galaxies&#39;</span>, <span class="nv">filetype</span><span class="o">=</span><span class="s1">&#39;txt&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.readp<span class="o">(</span><span class="s1">&#39;tmp_tiles&#39;</span>, <span class="nv">filetype</span><span class="o">=</span><span class="s1">&#39;txt&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p><cite>KOBE</cite> could generate galaxies depends on trigger informations also:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+
+<span class="c1"># parse a trigger first</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+
+<span class="c1"># initialize a tiling network</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;G&#39;</span><span class="o">)</span>
+
+<span class="c1"># `KOBE` will run a monte carlo on `shiftra` and `shiftdec`,</span>
+<span class="c1"># in order to maximize the probability coverage of top 100 ranked tilings</span>
+&gt;&gt;&gt; a.generatep_trigger<span class="o">(</span><span class="m">100</span>,limra<span class="o">=[</span><span class="m">10</span>,40<span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">20</span>, <span class="m">40</span><span class="o">]</span>, <span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">3</span><span class="o">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="galaxies2" start="2">
+<li><p>show pointings</p>
+<p>The visualization call is similar to <cite>tilings</cite>.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span>,ms<span class="o">=</span><span class="m">1</span>,clear<span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="nv">filepath</span><span class="o">=</span><span class="s1">&#39;galaxy1&#39;</span>,wdir<span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/galaxy1.png"><img alt="galaxy1.png" class="align-center" src="tutorial/../static/galaxy1.png" style="width: 800px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>for <cite>galaxy.locshow</cite>, marker should be setted anyhow, otherwise, the method will show nothing</p>
+</div>
+<p>In case one would like to konw how galaxy properties distributed, <cite>KOBE</cite> provide methods to show some statistic plots:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># galaxy distance distribution</span>
+&gt;&gt;&gt; a.distshow<span class="o">(</span><span class="nv">nbin</span><span class="o">=</span><span class="m">100</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;dist.png&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/dist.png"><img alt="dist.png" class="align-center" src="tutorial/../static/dist.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># galaxy luminosity distribution</span>
+&gt;&gt;&gt; a.lumshow<span class="o">(</span><span class="nv">nbin</span><span class="o">=</span><span class="m">1</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;lum.png&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/lum.png"><img alt="lum.png" class="align-center" src="tutorial/../static/lum.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="galaxies3" start="3">
+<li><p>skip portion of sky</p>
+<p>It’s quite similar to <cite>tilings</cite> case.</p>
+<p>First, we query galaxies from GLADE as pointings and show them.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import galaxies
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>galaxies<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">catalog</span><span class="o">=</span><span class="s1">&#39;GLADE&#39;</span>, <span class="nv">limdec</span><span class="o">=[</span>-20, <span class="m">90</span><span class="o">]</span>, <span class="nv">limdist</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">])</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;skipg1&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/skipg1.png"><img alt="skipg1.png" class="align-center" src="tutorial/../static/skipg1.png" style="width: 800px;" /></a>
+<p>Then, we generate a 10 by 10 deg polygon at ra=0 deg, dec=60 deg, as the forbiden region.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nv">b</span><span class="o">=</span>tilings<span class="o">()</span>
+&gt;&gt;&gt; b.readp_coo<span class="o">(</span><span class="nv">ra</span><span class="o">=</span><span class="m">0</span>,dec<span class="o">=</span><span class="m">60</span>,fovra<span class="o">=</span><span class="m">10</span>,fovdec<span class="o">=</span><span class="m">10</span><span class="o">)</span>
+&gt;&gt;&gt; b.locshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; b.savefig<span class="o">(</span><span class="s1">&#39;skipg11&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/skipg11.png"><img alt="skipg11.png" class="align-center" src="tutorial/../static/skipg11.png" style="width: 800px;" /></a>
+<p>We would like to delete all fields that inside the forbiden box.
+Considering galaxies have no area, <cite>skipfrac</cite> is not an option for galaxy case.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.removep_coo<span class="o">([</span><span class="m">0</span><span class="o">]</span>,<span class="o">[</span><span class="m">60</span><span class="o">]</span>,<span class="o">[</span><span class="m">10</span><span class="o">]</span>,<span class="o">[</span><span class="m">10</span><span class="o">]</span>,nest<span class="o">=</span>False<span class="o">)</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True, <span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; b.locshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;skipg2&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/skipg2.png"><img alt="skipg2.png" class="align-center" src="tutorial/../static/skipg2.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="galaxies4" start="4">
+<li><p>group and divide pointings</p>
+<p>Since <cite>galaxy</cite> is considered as a dot by <cite>KOBE</cite>, there will be no <cite>divide</cite> function.
+Here we show how to group the galaxies, which is again more or less the same as <cite>tiling</cite> case.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># query galaxies</span>
+&gt;&gt;&gt; from kobe import galaxies
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>galaxies<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">catalog</span><span class="o">=</span><span class="s1">&#39;GLADE&#39;</span>, <span class="nv">limdec</span><span class="o">=[</span>-20, <span class="m">90</span><span class="o">]</span>, <span class="nv">limdist</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">])</span>
+
+<span class="c1"># group with every 10 by 10 sq deg region</span>
+&gt;&gt;&gt; a.groupp<span class="o">(</span><span class="m">10</span>,10<span class="o">)</span>
+&gt;&gt;&gt; a.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">2492</span>&gt;
+n   ...      dist
+int64 ...    float64
+----- ... -------------
+<span class="m">265</span> ... <span class="m">4</span>.70228466231
+<span class="m">18</span> ... <span class="m">3</span>.65995814653
+<span class="m">147</span> ... <span class="m">3</span>.87868462045
+<span class="m">82</span> ... <span class="m">14</span>.6955181559
+<span class="m">206</span> ... <span class="m">2</span>.49371678269
+<span class="m">35</span> ... <span class="m">18</span>.4142043388
+... ...           ...
+<span class="m">35</span> ... <span class="m">21</span>.2227303453
+<span class="m">146</span> ... <span class="m">25</span>.2571985761
+<span class="m">146</span> ... <span class="m">20</span>.7004974885
+<span class="m">114</span> ... <span class="m">24</span>.8768244613
+<span class="m">82</span> ... <span class="m">29</span>.7521819633
+<span class="m">53</span> ... <span class="m">23</span>.4249708242
+
+<span class="c1"># show them in different colors</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span>, <span class="nv">shown</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;divideg&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/divideg.png"><img alt="divideg.png" class="align-center" src="tutorial/../static/divideg.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="galaxies5" start="5">
+<li><p>rank pointings</p>
+<p>For galaxy search:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize a schedule pointings</span>
+&gt;&gt;&gt; from kobe import pointings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>pointings<span class="o">(</span><span class="s1">&#39;G&#39;</span><span class="o">)</span>
+
+<span class="c1"># generate pointings</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">limdist</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">]</span>, <span class="nv">limra</span><span class="o">=[</span><span class="m">20</span>, <span class="m">100</span><span class="o">]</span>, <span class="nv">limdec</span><span class="o">=[</span><span class="m">0</span>,30<span class="o">])</span>
+
+<span class="c1"># rank pointings</span>
+&gt;&gt;&gt; a.rankp<span class="o">(</span><span class="nv">mode</span><span class="o">=</span><span class="m">2</span>,threshold<span class="o">=</span><span class="m">10</span><span class="o">)</span>
+
+<span class="c1"># show</span>
+&gt;&gt;&gt; a.locshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.routeshow<span class="o">(</span><span class="nv">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.zoomin<span class="o">([</span>-1.2,0<span class="o">]</span>,<span class="o">[</span>-.5,.6<span class="o">])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/routegshow.png"><img alt="routegshow.png" class="align-center" src="tutorial/../static/routegshow.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="galaxies6" start="6">
+<li><p>report and circulate</p>
+<p>The circulate usage of <cite>galaxies</cite> is the same as <cite>tilings</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import galaxies
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>galaxies<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">catalog</span><span class="o">=</span><span class="s1">&#39;GLADE&#39;</span>, <span class="nv">limdec</span><span class="o">=[</span>-20, <span class="m">90</span><span class="o">]</span>, <span class="nv">limdist</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">])</span>
+&gt;&gt;&gt; a.reportp<span class="o">(</span><span class="nv">split</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.texts
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="galaxies7" start="7">
+<li><p>make healpix map with galaxies</p>
+<p>For the followup search, besides trigger probability, mass distribution is also an important tracer, since it’s believed that the violent explosion should be accompanied with galaxies.
+Here, we provide one function that could generate a healpix map for mass distribution, illustrating how local galaxies distributes, which can be then used to weight the trigger map/serve as trigger to telescopes.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct a list of galaxies</span>
+&gt;&gt;&gt; from kobe import galaxies
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>galaxies<span class="o">()</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">catalog</span><span class="o">=</span><span class="s1">&#39;GLADE&#39;</span>, <span class="nv">limdec</span><span class="o">=[</span>-20, <span class="m">90</span><span class="o">]</span>, <span class="nv">limdist</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">])</span>
+
+<span class="c1"># construct a healpix map</span>
+<span class="c1"># here, tracer l, converts galaxy mass to relative galaxy luminosities</span>
+&gt;&gt;&gt; a.galaxies2hpmap<span class="o">(</span><span class="nv">tracer</span><span class="o">=</span><span class="s1">&#39;l&#39;</span>, <span class="nv">nside</span><span class="o">=</span><span class="m">512</span>, <span class="nv">nest</span><span class="o">=</span>False<span class="o">)</span>
+&gt;&gt;&gt; a.hpmapm
+
+<span class="c1"># show 50% contours of mass healpix map</span>
+array<span class="o">([</span><span class="m">0</span>., <span class="m">0</span>., <span class="m">0</span>., ..., <span class="m">0</span>., <span class="m">0</span>., <span class="m">0</span>.<span class="o">])</span>
+&gt;&gt;&gt; a.hplocshow<span class="o">(</span><span class="nv">cls</span><span class="o">=[</span>.5<span class="o">])</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;galhp&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/galhp.png"><img alt="galhp.png" class="align-center" src="tutorial/../static/galhp.png" style="width: 800px;" /></a>
+</li>
+</ol>
+</div>
+<div class="section" id="pointings">
+<span id="point"></span><h2>Pointings<a class="headerlink" href="#pointings" title="Permalink to this headline">¶</a></h2>
+<p><cite>pointings</cite> is a combination of <cite>tilings</cite> and <cite>galaxies</cite>.
+One should initialize a <cite>pointings</cite> object with either option [T]iling, or [G]alaxy.
+If option T adopted, then <cite>pointings</cite> object became <cite>tilings</cite> object.</p>
+<p>We show a tile pointing case below for example:</p>
+<blockquote>
+<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize a tiling pointings</span>
+&gt;&gt;&gt; from kobe import pointings
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>pointings<span class="o">(</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+
+<span class="c1"># generate pointings</span>
+&gt;&gt;&gt; a.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limdec<span class="o">=[</span>-20,90<span class="o">])</span>
+
+<span class="c1"># show</span>
+&gt;&gt;&gt; a.locshow<span class="o">()</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="nv">filepath</span><span class="o">=</span><span class="s1">&#39;tiling1&#39;</span>,wdir<span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/tiling1.png"><img alt="tiling1.png" class="align-center" src="tutorial/../static/tiling1.png" style="width: 800px;" /></a>
+</div></blockquote>
+<p>More examples, parameters and usages are described in the dedicated API page.</p>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="scheme.html#kbscheme"><span class="std std-ref">Previous</span></a></div>
+<div class="line"><a class="reference internal" href="tel.html#kbtel"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#kbpoint"><span class="std std-ref">Top</span></a></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">KOBE tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../general.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">general</span></code> – provide various generic useful functions for kobe objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pointings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pointings</span></code> – define pointing networks for telescope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../telescope.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">telescope</span></code> – tools dealing with trigger map, tilings and galaxies</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../observatory.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">observatory</span></code> – define an observaroty</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../candidates.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">candidates</span></code> – define a list of candidates and targeting lightcurves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../triggers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">triggers</span></code> – dealing with trigger map</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../schedule.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">schedule</span></code> – makeing telescope schedule</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/point.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
