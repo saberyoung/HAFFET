@@ -8,8 +8,8 @@
 
 from __future__ import print_function
 description="run analysis on SNe based on ZTF data"
-import os, sys, math, glob, warnings, logging,\
-       emcee, corner, random, subprocess, argparse, time
+import os, sys, re, math, glob, warnings, logging, requests,\
+       emcee, corner, random, subprocess, argparse, time, json
 warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
@@ -34,6 +34,10 @@ from models import *
 from corner_hack import corner_hack
 from functions import Mbol_to_Lbol, get_numpy, bbody
 from specline_fits import handle_spectrum
+from pbar import get_progress_bar
+from io import StringIO
+from pathlib import Path
+from collections import OrderedDict
 
 __all__ = ('ztfsingle', 'ztfmultiple', 'plotter')
 
@@ -74,7 +78,7 @@ class ztfmultiple(object):
             'iauid'   : None,
             'sntype'  : None,
             'nsn'     : None,                                  
-            'verbose' : False,
+            'verbose' : True,
             'clobber' : False,                   
             'sep'     : ',',
             'skiprows': [0,1],
@@ -173,28 +177,31 @@ class ztfmultiple(object):
         self.parse_meta()
         self.format_meta()  
         self.parse_params()       
-        
-        for i, ztfid in enumerate(self.meta.index):                            
-            iauid,ra,dec,z,dist,dm,mkwebv,sntype,jdpeak = self.parse_meta_info(ztfid,test=True)
-            if kwargs['nsn'] is not None and i != kwargs['nsn']:continue
-            if kwargs['ztfid'] is not None and ztfid != kwargs['ztfid']:continue
-            if kwargs['iauid'] is not None and iauid != kwargs['iauid']:continue
-            if kwargs['sntype'] is not None and sntype != kwargs['sntype']:continue
-            if kwargs['verbose']: print ('\n'*2, i, ztfid, iauid, sntype)
-            
-            self.load_data(ztfid)
-            if not ztfid in self.data or kwargs['clobber']:
-                par = dict()
-                if ztfid in self.params: par = self.params[ztfid]
-            
-                # for each object                         
-                self.data[ztfid] = ztfsingle(ztfid, iauid=iauid, z=z,
+
+        with get_progress_bar(kwargs['verbose'], len(self.meta.index)) as pbar:            
+            for i, ztfid in enumerate(self.meta.index):                            
+                iauid,ra,dec,z,dist,dm,mkwebv,sntype,jdpeak = self.parse_meta_info(ztfid,test=True)
+                if kwargs['nsn'] is not None and i != kwargs['nsn']:continue
+                if kwargs['ztfid'] is not None and ztfid != kwargs['ztfid']:continue
+                if kwargs['iauid'] is not None and iauid != kwargs['iauid']:continue
+                if kwargs['sntype'] is not None and sntype != kwargs['sntype']:continue
+                
+                self.load_data(ztfid)
+                if not ztfid in self.data or kwargs['clobber']:
+                    par = dict()
+                    if ztfid in self.params: par = self.params[ztfid]
+                    
+                    # for each object                         
+                    self.data[ztfid] = ztfsingle(ztfid, iauid=iauid, z=z,
                             mkwebv=mkwebv, sntype=sntype, dm=dm, jdpeak=jdpeak,
                             axes=axes, **par)                                
-                try:    self.data[ztfid].run()
-                except: self.data[ztfid].run0()
-                self.save_data(ztfid,force=True)
-        
+                    try:
+                        self.data[ztfid].run()
+                    except:
+                        self.data[ztfid].run0()
+                    self.save_data(ztfid,force=True)
+                pbar.update(1)
+                
 class ztfsingle(object):
 
     # Static version info
@@ -238,10 +245,7 @@ class ztfsingle(object):
                                   #  1: epochs with all filters (g/r/i) within *color_thre* hours
                                   #  2: epochs with one filter, and the others from fits
                                   #  3. ...                                    from GP
-            'plot_bands'  : ['r', 'g', 'i'],  # which bands to show
-            ###  ztfquery parameters ###
-            'email'       : 'sheng.yang@astro.su.se',  # used by ztf force phot query
-            'userpass'    : 'augj975',  # used by ztf force phot query
+            'plot_bands'  : ['r', 'g', 'i'],  # which bands to show            
             ###   early power law parameters ###
             'pl_type'   : 0,  # 0: donot do power law fits
                               # 1: when opt with mc and cache file exists, read samples
@@ -290,6 +294,9 @@ class ztfsingle(object):
             'Arnett_style'   : 3,  # style=1 fit Mni and taum, v is needed to break degenracy
                                    # style=2 fit v as well, together with Mni, Ek and Mej
                                    # style=3 fit Mni, taum, and texp as well
+                                   # style=4 fit Arnett (Mni, taum, texp) + radioactive tail (Mni, t0)
+                                   # style=5 fit Arnett (Mni, taum, texp) + Piro SBO (Me, Re, Ee, texp)
+                                   # style=6 fit Arnett + SBO + radioactive tail
             'Arnett_cache'  : 'Arnett_%s_%s_%i',
             'Arnett_cache1'  : 'Arnett1_%s_%s_%i',
             'Arnett_routine' : 'trf',            
@@ -334,7 +341,8 @@ class ztfsingle(object):
             'spec_cache1'   : 'spec_%s_%s_%s',
             'spec_routine' : 'trf',
             'spec_fitr'    : [6000, 20000], # unit in km/s
-            'spec_plotr'   : [6000, 20000],            
+            'spec_plotr'   : [6000, 20000],
+            'spec_guess_red'  : True,
             ### for plotter ###            
             'figsize' : (8, 10), # figure size
             'figpath' : '%s.png', # figure path
@@ -388,8 +396,81 @@ class ztfsingle(object):
         self.axes   = axes    # if axes is None, will init axes
                               # if axes is False, will not make plots
                               # otherwise, make axes = [ax,ax1,ax2, ...], where ax is defined by user              
+
+    def config_ztfquery(self, fritz_token='733be155-a0c2-41c6-b994-d877fb4a0088',
+                        marshal_username='saberyoung', marshal_password='Ys_19900615', ):
+        ztfquery.io.set_account('fritz', token=fritz_token, force=True)
+        ztfquery.io.set_account('marshal', username=marshal_username, password=marshal_password)
+        ztfquery.io.test_irsa_account()
+
+    def parse_coo(self, verbose=True, deg=True):
+        assert self.ra is not None and self.dec is not None
+        degunits = False
+        try:
+            float(self.ra)
+            degunits = True
+            if verbose: print ('%s use unit deg'%self.ra)
+        except:
+            if verbose: print ('%s use unit hourangle'%self.ra)
+        if degunits:
+            c = coordinates.SkyCoord('%s %s'%(self.ra, self.dec), unit=(u.deg, u.deg))
+        else:
+            c = coordinates.SkyCoord('%s %s'%(self.ra, self.dec), unit=(u.hourangle, u.deg))            
+        if deg: return c.ra.deg, c.dec.deg
+        else:   return c.to_string('hmsdms').split()
         
-    def get_local_forced_lightcurves(self, **kwargs):
+    def mjd_now(self, jd=False):
+        if jd: return Time.now().jd
+        else:  return Time.now().mjd
+        
+    def get_fp_atlas(self, **kwargs):
+        ''' get local ATLAS forced phot LCs
+        '''
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        targetdir = '%s/ForcePhot_atlas/'%kwargs['targetdir']
+        sigma = kwargs['sigma']
+        f = '%s/%s/forcedphotometry_%s_lc.csv'%(targetdir, self.ztfid, self.ztfid)
+        if not os.path.exists(f):
+            print ('Error: %s not found'%f)
+            return None                
+        df = pd.read_csv(StringIO('\n'.join(open(f).readlines()).replace("###", "")), delim_whitespace=True)
+        df.rename(columns={'uJy':'flux','duJy':'eflux','F':'filter','MJD':'mjd',}, inplace=True)
+        # calc mag
+        mags, sigmamags, limmags = [], [], []
+        f, fe = [], []
+        for flux, fluxerr in zip(df['flux'], df['eflux']):
+            snr = flux/fluxerr                         
+            if flux > 0.0 and snr>sigma:
+                magpsf = -2.5*np.log10(flux) + 23.9
+                sigmamagpsf = abs(-2.5/np.log(10) * fluxerr / flux)
+            else:
+                magpsf = 99
+                sigmamagpsf = 99            
+            limmag = -2.5*np.log10(sigma*fluxerr) + 23.9
+            mags.append(magpsf)
+            sigmamags.append(sigmamagpsf)
+            limmags.append(limmag)
+            F0 = 10**(23.9/2.5)           
+            f.append( flux / F0 )
+            fe.append( fluxerr / F0 )            
+        df['mag'] = mags
+        df['emag'] = sigmamags
+        df['limmag'] = limmags        
+        df['jdobs'] = df['mjd'] + 2400000.5
+        df['Fratio'] = f
+        df['Fratio_unc'] = fe
+        if not 'lc' in self.__dict__:   self.lc = df
+        else:  self.lc = self.lc.append(df, ignore_index=True)        
+
+    def get_alert_ztf(self, **kwargs):
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        df = marshal.get_local_lightcurves(self.ztfid)
+        if not 'lc' in self.__dict__:   self.lc = df
+        else:  self.lc = self.lc.append(df, ignore_index=True) 
+    
+    def get_fp_ztf(self, **kwargs):
+        ''' get local ZTF forced phot LCs
+        '''
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         targetdir = '%s/ForcePhot/'%kwargs['targetdir']
         sigma = kwargs['sigma']
@@ -451,18 +532,131 @@ class ztfsingle(object):
         df['emag'] = sigmamags
         df['limmag'] = limmags
         df['filter'] = filters
-        self.lc = df
-
-    def query_forced_lightcurves(self, query=False,
-                clobber=False, verbose=True, jdstart=None, jdend=None, **kwargs):
+        if not 'lc' in self.__dict__:   self.lc = df
+        else:  self.lc = self.lc.append(df, ignore_index=True) 
+        
+    def query_fp_atlas(self, clobber=False, verbose=True,
+            mjdstart=None, mjdend=None, atlas_username='saberyoung', 
+            atlas_passord='Ys19900615', **kwargs):
+        ''' ATLAS forced phot query
+        https://fallingstar-data.com/forcedphot/static/apiexample.py
+        '''
+        BASEURL = "https://fallingstar-data.com/forcedphot"
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        assert self.ra is not None and self.dec is not None
-        try:
-            jdstart = float(jdstart)
-            jdend = float(jdend)
+        radeg, decdeg = self.parse_coo(verbose=verbose, deg=True)        
+        try: mjdstart = float(mjdstart)
         except:
-            if verbose: print ('specify jdstart and jdend')
+            if verbose: print ('specify mjdstart')
             return
+        try: mjdend = float(mjdend)
+        except:
+            mjdend = self.mjd_now(jd=False)
+            if verbose: print ('use current mjd')            
+        targetdir = '%s/ForcePhot_atlas/'%kwargs['targetdir']        
+        f = '%s/%s/forcedphotometry_%s_lc.csv'%(targetdir, self.ztfid, self.ztfid)
+        if os.path.exists(f) and not clobber:
+            if verbose: print ('file exists: %s'%f)
+            return
+        if os.environ.get('ATLASFORCED_SECRET_KEY'):
+            token = os.environ.get('ATLASFORCED_SECRET_KEY')
+            if verbose: print('Using stored token')
+        else:
+            data = {'username': atlas_username,
+                    'password': atlas_passord}
+            resp = requests.post(url=f"{BASEURL}/api-token-auth/", data=data)
+
+            if resp.status_code == 200:
+                token = resp.json()['token']
+                if verbose: 
+                    print(f'Your token is {token}')
+                    print('Store this by running/adding to your .zshrc file:')
+                    print(f'export ATLASFORCED_SECRET_KEY="{token}"')
+            else:
+                if verbose: 
+                    print(f'ERROR {resp.status_code}')
+                    print(resp.text)
+                return
+            
+        headers = {'Authorization': f'Token {token}', 'Accept': 'application/json'}
+        task_url = None
+        while not task_url:
+            with requests.Session() as s:
+                # alternative to token auth
+                # s.auth = ('USERNAME', 'PASSWORD')
+                resp = s.post(f"{BASEURL}/queue/", headers=headers, data={
+                    'ra': radeg, 'dec': decdeg, 'mjd_min': mjdstart, 'mjd_max': mjdend, 'send_email': False})
+                
+                if resp.status_code == 201:  # successfully queued
+                    task_url = resp.json()['url']
+                    if verbose: print(f'The task URL is {task_url}')
+                elif resp.status_code == 429:  # throttled
+                    message = resp.json()["detail"]
+                    if verbose: print(f'{resp.status_code} {message}')
+                    t_sec = re.findall(r'available in (\d+) seconds', message)
+                    t_min = re.findall(r'available in (\d+) minutes', message)
+                    if t_sec:
+                        waittime = int(t_sec[0])
+                    elif t_min:
+                        waittime = int(t_min[0]) * 60
+                    else:
+                        waittime = 10
+                    if verbose: print(f'Waiting {waittime} seconds')
+                    time.sleep(waittime)
+                else:
+                    if verbose: 
+                        print(f'ERROR {resp.status_code}')
+                        print(resp.text)
+                    return
+        
+        result_url = None
+        taskstarted_printed = False
+        while not result_url:
+            with requests.Session() as s:
+                resp = s.get(task_url, headers=headers)
+
+                if resp.status_code == 200:  # HTTP OK
+                    if resp.json()['finishtimestamp']:
+                        result_url = resp.json()['result_url']
+                        if verbose: print(f"Task is complete with results available at {result_url}")
+                    elif resp.json()['starttimestamp']:
+                        if not taskstarted_printed:
+                            if verbose: print(f"Task is running (started at {resp.json()['starttimestamp']})")
+                            taskstarted_printed = True
+                        time.sleep(2)
+                    else:
+                        if verbose: print(f"Waiting for job to start (queued at {resp.json()['timestamp']})")
+                        time.sleep(4)
+                else:
+                    if verbose: 
+                        print(f'ERROR {resp.status_code}')
+                        print(resp.text)
+                    return
+
+        with requests.Session() as s:
+            textdata = s.get(result_url, headers=headers).text
+
+        # if we'll be making a lot of requests, keep the web queue from being
+        # cluttered (and reduce server storage usage) by sending a delete operation
+        # s.delete(task_url, headers=headers).json()
+
+        dfresult = pd.read_csv(StringIO(textdata.replace("###", "")), delim_whitespace=True)
+        filepath = Path(f)  
+        filepath.parent.mkdir(parents=True, exist_ok=True)
+        dfresult.to_csv(f)
+
+    def query_fp_ztf(self, query=False, ztf_email='sheng.yang@astro.su.se',
+            ztf_userpass='augj975', clobber=False, verbose=True, jdstart=None,
+            jdend=None, **kwargs):
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        radeg, decdeg = self.parse_coo(verbose=verbose, deg=True)        
+        try: jdstart = float(jdstart)
+        except:
+            if verbose: print ('specify jdstart')
+            return
+        try: jdend = float(jdend)
+        except:
+            jdend = self.mjd_now(jd=True)
+            if verbose: print ('use current jd')
         targetdir = '%s/ForcePhot/'%kwargs['targetdir']        
         f = '%s/%s/forcedphotometry_%s_lc.csv'%(targetdir, self.ztfid, self.ztfid)        
         if os.path.exists(f) and not clobber:
@@ -472,31 +666,57 @@ class ztfsingle(object):
         line = 'wget --http-user=ztffps --http-passwd=dontgocrazy!'+\
             ' -q -O log.txt '+ \
             '"https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi?'+\
-            'ra=%.7f&dec=%.7f&jdstart=%.5f&jdend=%.5f&'%(c.ra.deg, c.dec.deg, jdstart, jdend)+\
-            'email=%s&userpass=%s"'%(kwargs['email'], kwargs['userpass'])
+            'ra=%.7f&dec=%.7f&jdstart=%.5f&jdend=%.5f&'%(radeg, decdeg, jdstart, jdend)+\
+            'email=%s&userpass=%s"'%(ztf_email, ztf_userpass)
         if query: subprocess.Popen(line, shell=True)
         else:  print (self.ztfid, c.ra.deg, c.dec.deg, jdstart, jdend, line)
-        
+
+    def query_alert_ztf(self, source=None, **kwargs):
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        assert source in ['marshal', 'fritz',None]
+        if source in ['marshal',None]:
+            marshal.download_lightcurve(self.ztfid)         
+        if source in ['fritz',None]:
+            fritz.download_lightcurve(self.ztfid)
+            
     def add_flux(self, **kwargs):
         assert 'lc' in self.__dict__        
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])           
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        lc = self.lc
         if 'Fratio' in self.lc:
-            lc = self.lc            
-            
             # to flux Jy        
             lc['flux'], lc['flux_unc'] = self.mag_to_flux(lc['mag'], magerr=lc['emag'])
             lcdet = lc.query('mag<99')
             maxflux = max(lcdet['flux'])            
             lc['Fmcmc'] = maxflux*lc['Fratio']/max(lcdet['Fratio'])           
             lc['Fmcmc_unc'] = lc['Fmcmc']*lc['Fratio_unc']/lc['Fratio']
-        else:
-            lc = self.lc
+        else:            
             # to flux Jy
             ''' !!! make sure no upper limit mag numbers here !!!'''
             lc['flux'], lc['flux_unc'] = self.mag_to_flux(lc['mag'], magerr=lc['emag'])
             lc['Fmcmc'] = lc['flux']
             lc['Fmcmc_unc'] = lc['flux_unc']
-        self.lc = lc
+        self.lc = lc.query('Fmcmc_unc>0')
+
+    def query_spectra(self, source=None, **kwargs):        
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        assert source in ['marshal', 'fritz',None]
+        if source in ['marshal',None]:
+            marshal.download_spectra(self.ztfid)            
+        if source in ['fritz',None]:
+            fritz.download_spectra(self.ztfid, get_object=True, store=True, verbose=False)
+
+    def query_tns(self, tns_botid=131335, tns_botname = "kinder_bot",
+                  tns_api='603cc592cbb2b9ac8d63fcf5dfbe18e0bd981982',
+                  **kwargs):
+        TNS         = "sandbox.wis-tns.org"
+        url_tns_api = "https://" + TNS + "/api/get"
+        search_url  = url_tns_api + "/search"
+        tns_marker = 'tns_marker{"tns_id": "' + str(tns_botid) + '", "type": "bot", "name": "' + tns_botname + '"}'        
+        headers = {'User-Agent': tns_marker}
+        json_file = OrderedDict(search_obj)
+        search_data = {'api_key': TNS_API_KEY, 'data': json.dumps(json_file)}
+        response = requests.post(search_url, headers = headers, data = search_data)
         
     def get_local_spectra(self,**kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
@@ -540,10 +760,9 @@ class ztfsingle(object):
         self.init_fig()
         t_start = time.time()
         
-        ''' parse local data via ztfid '''
-        #self.lc_m = marshal.get_local_lightcurves(self.ztfid)  # obtain GM alter lc
-        self.get_local_forced_lightcurves()  # obtain forced phot lc              
-        self.add_flux() # add Fmcmc item        
+        ''' parse local data via ztfid '''    
+        self.get_fp_ztf()  # obtain forced phot lc              
+        self.add_flux() # add Fmcmc item
         self.clip_lc()  # remove lc outliers        
         
         ''' other infos '''        
@@ -877,6 +1096,8 @@ class ztfsingle(object):
             xx -= self.texp[1]            
         elif kwargs['Arnett_style'] == 3:
             fit_mean='arnett_fitt'
+        elif kwargs['Arnett_style'] == 4:
+            fit_mean='arnett_tail'
         else: return
         p1, p2 = min(kwargs['Arnett_fitr']), max(kwargs['Arnett_fitr'])
         __ = np.logical_and(xx>=p1, xx<=p2)
@@ -1171,10 +1392,8 @@ class ztfsingle(object):
                     
         # or with GP/fit intepolation
         _jds = self.lc.query('mag<99')['jdobs']
-        self.cbb[2] = dict()
-        self.cbb[2]['t'] = _jds
-        self.cbb[3] = dict()
-        self.cbb[3]['t'] = _jds
+        self.cbb[2] = dict()        
+        self.cbb[3] = dict()        
         for _filt in filters:
             if 'fitcls' in self.__dict__ and 2 in kwargs['bb_copt']: # analytic sn lc fit
                 p_fit = (_jds-self.t0) / (1+self.z)                
@@ -1199,7 +1418,9 @@ class ztfsingle(object):
                 mme = abs(self.flux_to_mag(yy, dflux=None)-
                           self.flux_to_mag(yy+yye, dflux=None))                          
                 self.cbb[3][_filt] = (mm,mme)
-
+        if len(self.cbb[2])>0: self.cbb[2]['t'] = _jds
+        if len(self.cbb[3])>0: self.cbb[3]['t'] = _jds
+                
     def match_colors(self, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])            
         self.combine_multi_obs(**kwargs)
@@ -1318,7 +1539,8 @@ class ztfsingle(object):
 
     def corner(self, figpath=None, show=True, which='fit', limit=0, **kwargs):        
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
-        assert which in ['fit', 'arnett', 'arnett_fitv', 'arnett_fitt', 'gp', 'pl', 'tail', 'tail_fitt']
+        assert which in ['fit', 'arnett', 'arnett_fitv', 'arnett_fitt', 'arnett_tail',
+                         'gp', 'pl', 'tail', 'tail_fitt']
         quantiles = [kwargs['quantile'][0], kwargs['quantile'][-1]]
         
         if which == 'fit' and 'fitcls' in self.__dict__:            
@@ -1403,6 +1625,22 @@ class ztfsingle(object):
             for n, alpha  in enumerate([0,1,2]):
                 theta[:,n] = samples[:,alpha]                    
             paramsNames = [r'$M_\mathrm{Ni}$', r'$\tau_{m}$', r'$t_\mathrm{fl}$',]
+            
+            cfig = corner_hack(theta, labels=paramsNames,
+                           label_kwargs={'fontsize':16}, ticklabelsize=13,
+                           show_titles=True, quantiles=quantiles,
+                           title_fmt=".2f", title_kwargs={'fontsize':16},
+                           plot_datapoints=True, plot_contours=True)
+            
+            if show: plt.show()
+
+        if which == 'arnett_tail':
+            samples = self.filter_samples(self.arnettcls.samples, self.arnettcls.lnprob, limit=limit)
+            
+            theta = np.zeros((np.shape(samples)[0],5))
+            for n, alpha  in enumerate([0,1,2,3,4]):
+                theta[:,n] = samples[:,alpha]                    
+            paramsNames = [r'$M_\mathrm{Ni}$', r'$\tau_{m}$', r'$t_{0}$', r'$t_\mathrm{fl}$', r'$t_{turn}$']
             
             cfig = corner_hack(theta, labels=paramsNames,
                            label_kwargs={'fontsize':16}, ticklabelsize=13,
@@ -1777,8 +2015,7 @@ class ztfsingle(object):
                         nf += 1
                 if filt in _forder:
                     nf = _forder[filt]                                    
-                    theta, random_theta = self.pl_theta, self.pl_rtheta
-                    
+                    theta, random_theta = self.pl_theta, self.pl_rtheta                
                     adjust_samp = [theta[0],theta[1+4*nf],theta[2+4*nf],theta[3+4*nf]]
                     t_post = np.linspace(theta[0], kwargs['pl_plotmax'], 1000)                
                     t_pre = np.linspace((min(self.lc['jdobs']) - t0) / (1+self.z), theta[0], 1000)
@@ -2175,113 +2412,247 @@ class plotter:
     # Static version info
     version = 1.0
     
-    def __init__(self, ztfmultiple):                
+    def __init__(self, ztfmultiple, verbose=False):                
         self.data = ztfmultiple.data
-                
+        self.meta = ztfmultiple.meta
+        self.verbose = verbose
+        if not 'dset' in self.__dict__: self.dset = {}
+        
     def init_fig(self, dpi=100, figsize=[6,6], 
-                 tight_layout=False, constrained_layout=False,):                            
+                 tight_layout=False, constrained_layout=False):
         self.fig, self.ax = plt.subplots(1, 1, num=1, clear=True, 
                 dpi=dpi, tight_layout=tight_layout, 
                 constrained_layout=constrained_layout,
                 figsize=figsize)
         
-    def show2d(self, k1=None, k2=None, fontsize=12, labelpad=12, **kwargs):
-        assert self.ax is not None
-        self.x, self.y = [], []
-        for ztfid in self.data:
-            self.x.append(self.data[ztfid].__dict__[k1])
-            self.y.append(self.data[ztfid].__dict__[k2])
-        #_kwargs = {key:value for key, value in kwargs.items() 
-        #           if key in ['label','ls','color','marker','fillstyle','alpha']}
-        self.ax.plot( self.x, self.y, **kwargs)
-        self.ax.set_xlabel(k1, fontsize=fontsize, labelpad=labelpad )
-        self.ax.set_ylabel(k2, fontsize=fontsize, labelpad=labelpad )
-        self.ax.set_xlim([min(self.x)/1.1, max(self.x)*1.1])
-        self.ax.set_ylim([min(self.y)/1.1, max(self.y)*1.1])
-        
-    def add_hist(self, nbinx = 10, nbiny = 10, xticks=None, yticks=None):
-        assert 'x' in self.__dict__ and 'y' in self.__dict__
+    def init_hist_axes(self, pad=0.1, labelbottom=False, labelleft=False):     
         from mpl_toolkits.axes_grid1 import make_axes_locatable
-        
+        assert self.ax is not None
         # create new axes on the right and on the top of the current axes
         divider = make_axes_locatable(self.ax)
         # below height and pad are in inches
-        ax_histx = divider.append_axes("top", 1.2, pad=0.1, sharex=self.ax)
-        ax_histy = divider.append_axes("right", 1.2, pad=0.1, sharey=self.ax)
+        self.ax_histx = divider.append_axes("top", 1.2, pad=pad, sharex=self.ax)
+        self.ax_histy = divider.append_axes("right", 1.2, pad=pad, sharey=self.ax)
         # make some labels invisible
-        ax_histx.xaxis.set_tick_params(labelbottom=False)
-        ax_histy.yaxis.set_tick_params(labelleft=False)
-        # now determine nice limits by hand:
-        binwidthx = (np.max(np.abs(self.x))-np.min(np.abs(self.x)))/nbinx
-        binwidthy = (np.max(np.abs(self.y))-np.min(np.abs(self.y)))/nbiny
-        binx = np.arange(np.min(np.abs(self.x)), np.max(np.abs(self.x))+binwidthx, binwidthx)
-        biny = np.arange(np.min(np.abs(self.y)), np.max(np.abs(self.y))+binwidthy, binwidthy)
-        ax_histx.hist(self.x, bins=binx, color='k', histtype='step')
-        ax_histy.hist(self.y, bins=biny, orientation='horizontal', color='k', histtype='step')
-        if yticks is not None: ax_histx.set_yticks(yticks)
-        if xticks is not None: ax_histy.set_xticks(xticks)
-        ax_histx.set_ylabel('Counts')
-        ax_histy.set_xlabel('Counts')
+        self.ax_histx.xaxis.set_tick_params(labelbottom=labelbottom)
+        self.ax_histy.yaxis.set_tick_params(labelleft=labelleft)
+
+    def add_subset(self, syntax=None):
+        _meta = self.meta
+        if syntax is not None: _meta = _meta.query(syntax)
+        self.dset[syntax] = {ztfid:self.data[ztfid] if ztfid in list(_meta.index) else None for ztfid in self.data}
         
-    def showlc(self, cond='mag<99 and filter=="r"', fontsize=12, labelpad=12, **kwargs):
-        assert self.ax is not None
-        for ztfid in self.data:
-            lc = self.data[ztfid].lc
-            if cond is not None: lc = lc.query(cond)
-            self.ax.plot( lc['jdobs']-self.data[ztfid].t0, lc['mag']-self.data[ztfid].dm, **kwargs )
+    def show2d(self, k1, k2, syntax=None, fontsize=12, labelpad=12, **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        x, y = [], []
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                x.append(self.dset[syntax][ztfid].__dict__[k1])
+                y.append(self.dset[syntax][ztfid].__dict__[k2])
+        self.ax.plot( x, y, **kwargs)
+        self.ax.set_xlabel(k1, fontsize=fontsize, labelpad=labelpad )
+        self.ax.set_ylabel(k2, fontsize=fontsize, labelpad=labelpad )
+        self.ax.set_xlim([min(x)/1.1, max(x)*1.1])
+        self.ax.set_ylim([min(y)/1.1, max(y)*1.1])
+        
+    def add_hist(self, k1, k2, syntax=None, nbinx = 10, nbiny = 10, 
+                 xticks=None, yticks=None, **kwargs):        
+        assert 'ax_histx' in self.__dict__ and 'ax_histy' in self.__dict__, 'init_hist_axes() first'
+        self.add_subset(syntax=syntax)
+        x, y = [], []
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                x.append(self.dset[syntax][ztfid].__dict__[k1])
+                y.append(self.dset[syntax][ztfid].__dict__[k2])        
+        # now determine nice limits by hand:
+        binwidthx = (np.max(np.abs(x))-np.min(np.abs(x)))/nbinx
+        binwidthy = (np.max(np.abs(y))-np.min(np.abs(y)))/nbiny
+        binx = np.arange(np.min(np.abs(x)), np.max(np.abs(x))+binwidthx, binwidthx)
+        biny = np.arange(np.min(np.abs(y)), np.max(np.abs(y))+binwidthy, binwidthy)
+        self.ax_histx.hist(x, bins=binx, histtype='step', **kwargs)
+        self.ax_histy.hist(y, bins=biny, orientation='horizontal', histtype='step', **kwargs)
+        if yticks is not None: self.ax_histx.set_yticks(yticks)
+        if xticks is not None: self.ax_histy.set_xticks(xticks)
+        self.ax_histx.set_ylabel('Counts')
+        self.ax_histy.set_xlabel('Counts')
+    
+    def showlc(self, syntax=None, cond='mag<99 and filter=="r"', 
+               fontsize=12, labelpad=12, **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                lc = self.dset[syntax][ztfid].lc
+                t0 = self.dset[syntax][ztfid].t0
+                z = self.dset[syntax][ztfid].z
+                dm = self.dset[syntax][ztfid].dm
+                if cond is not None: lc = lc.query(cond)
+                self.ax.plot( (lc['jdobs']-t0)/(1+z), lc['mag']-dm, **kwargs )
         self.ax.set_xlabel('$t - T_{r,\mathrm{max}} \; (\mathrm{restframe \; d})$', 
                            fontsize=fontsize, labelpad=labelpad )
         self.ax.set_ylabel('M$_{abs}$ (mag)', fontsize=fontsize, labelpad=labelpad )
         
-    def showcolor(self, copt=[1], fontsize=12, labelpad=12, **kwargs):
-        assert self.ax is not None
-        for ztfid in self.data:
-            colors = self.data[ztfid].colors
-            for _copt in copt:
-                if _copt in colors:
-                    jd,g,r,ge,re = colors[_copt]
-                    self.ax.plot( jd-self.data[ztfid].t0, g-r, **kwargs )
+    def showcolor(self, syntax=None, copt=[1], fontsize=12, labelpad=12, **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'colors' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no colors for %s'%ztfid)
+                    continue
+                colors = self.dset[syntax][ztfid].colors
+                t0 = self.dset[syntax][ztfid].t0
+                z = self.dset[syntax][ztfid].z
+                for _copt in copt:
+                    if _copt in colors:
+                        jd,g,r,ge,re = colors[_copt]
+                        self.ax.plot( (jd-t0)/(1+z), g-r, **kwargs )
         self.ax.set_xlabel('$t - T_{r,\mathrm{max}} \; (\mathrm{restframe \; d})$', 
                            fontsize=fontsize, labelpad=labelpad )
         self.ax.set_ylabel('g-r (mag)', fontsize=fontsize, labelpad=labelpad )
         
-    def showlcbol(self, copt=[1], fontsize=12, labelpad=12, **kwargs):
-        assert self.ax is not None
-        for ztfid in self.data:
-            if 'mbol' not in self.data[ztfid].__dict__:
-                print ('Warning: no mbol for %s'%ztfid)
-                continue
-            mbol = self.data[ztfid].mbol
-            for _copt in copt:
-                if _copt in mbol:
-                    self.ax.plot( mbol[_copt][0]-self.data[ztfid].t0, mbol[_copt][1], **kwargs )
+    def showlcbol(self, syntax=None, copt=[1], fontsize=12, labelpad=12, **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'mbol' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no mbol for %s'%ztfid)
+                    continue
+                mbol = self.dset[syntax][ztfid].mbol
+                t0 = self.dset[syntax][ztfid].t0
+                z = self.dset[syntax][ztfid].z
+                for _copt in copt:
+                    if _copt in mbol:
+                        self.ax.plot( (mbol[_copt][0]-t0)/(1+z), mbol[_copt][1], **kwargs )
         self.ax.set_xlabel('$t - T_{r,\mathrm{max}} \; (\mathrm{restframe \; d})$',
                            fontsize=fontsize, labelpad=labelpad )
         self.ax.set_ylabel('L$_{bol}$ (erg $s^{-1}$)', fontsize=fontsize, labelpad=labelpad )     
         
-    def showfit(self, filt='r', x_pred=None, step = 1, quant=[0.16, 0.50, 0.84], **kwargs):
-        assert self.ax is not None
-        for ztfid in self.data:
-            if 'fitcls' not in self.data[ztfid].__dict__:
-                print ('Warning: no fitcls for %s'%ztfid)
-                continue
-            if filt not in self.data[ztfid].fitcls:
-                print ('Warning: no filter %s for %s fitcls'%(filt,ztfid))
-                continue
-            x, y, y1, y2, w = self.data[ztfid].fitcls[filt].predict(x_pred=x_pred, 
+    def showfit(self, syntax=None, filt='r', funit='mag',
+                x_pred=None, step = 1, quant=[0.16, 0.50, 0.84], **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'fitcls' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no fitcls for %s'%ztfid)
+                    continue
+                if filt not in self.dset[syntax][ztfid].fitcls:
+                    if self.verbose: print ('Warning: no filter %s for %s fitcls'%(filt,ztfid))
+                    continue
+                z = self.dset[syntax][ztfid].z
+                x, y, y1, y2, w = self.dset[syntax][ztfid].fitcls[filt].predict(x_pred=x_pred, 
                                         step=step, clobber=False, returnv=True, quant=quant)
-            mm = self.data[ztfid].flux_to_mag(y, dflux=None)
-            self.ax.plot( x,mm-self.data[ztfid].dm,**kwargs )
-            
-    def showarnett(self, x_pred=None, step = 1, quant=[0.16, 0.50, 0.84], **kwargs):
-        assert self.ax is not None
-        for ztfid in self.data:
-            if 'arnettcls' not in self.data[ztfid].__dict__:
-                print ('Warning: no arnettcls for %s'%ztfid)
-                continue
-            x, y, y1, y2, w = self.data[ztfid].arnettcls.predict(x_pred=x_pred, 
+                if funit == 'mag':
+                    mm = self.dset[syntax][ztfid].flux_to_mag(y, dflux=None)
+                    self.ax.plot( x/(1+z), mm-self.data[ztfid].dm,**kwargs )
+                elif funit == 'flux':
+                    if 'fpeak' not in self.dset[syntax][ztfid].__dict__:
+                        if self.verbose: print ('Warning: no fmax for %s'%(ztfid))
+                        continue
+                    fmax = self.dset[syntax][ztfid].fpeak['fit'][filt][0]
+                    self.ax.plot( x/(1+z), y/fmax,**kwargs )
+    
+    def showgp(self, syntax=None, filt='r', funit='mag',
+                x_pred=None, step = 1, quant=[0.16, 0.50, 0.84], **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'gpcls' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no fitcls for %s'%ztfid)
+                    continue
+                if filt not in self.dset[syntax][ztfid].gpcls.f_pred:
+                    if self.verbose: print ('Warning: no filter %s for %s gpcls'%(filt,ztfid))
+                    continue
+                z = self.dset[syntax][ztfid].z
+                t0 = self.dset[syntax][ztfid].t0
+                __ = np.where(self.dset[syntax][ztfid].gpcls.f_pred==filt)
+                x = self.dset[syntax][ztfid].gpcls.x_pred[__]
+                y = self.dset[syntax][ztfid].gpcls.y_pred[__]
+                ye = self.dset[syntax][ztfid].gpcls.y_prede[__]
+                if funit == 'mag':
+                    mm = self.dset[syntax][ztfid].flux_to_mag(y, dflux=None)
+                    self.ax.plot( (x-t0)/(1+z), mm-self.data[ztfid].dm,**kwargs )
+                elif funit == 'flux':
+                    if 'fpeak' not in self.dset[syntax][ztfid].__dict__:
+                        if self.verbose: print ('Warning: no fmax for %s'%(ztfid))
+                        continue
+                    fmax = self.dset[syntax][ztfid].fpeak['GP'][filt][0]
+                    self.ax.plot( (x-t0)/(1+z), y/fmax,**kwargs )
+                
+    def showpl(self, syntax=None, filt='r', x1=-50, x2=0, limit=.9, **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'plcls' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no plcls for %s'%ztfid)
+                    continue
+                _forder, nf = dict(), 0                
+                for __filt in central_wavelengths:
+                    if __filt in self.dset[syntax][ztfid].kwargs['pl_bands']:
+                        _forder[__filt] = nf
+                        nf += 1
+                if filt in _forder:
+                    nf = _forder[filt]                                    
+                    theta = self.dset[syntax][ztfid].filter_samples(self.dset[syntax][ztfid].plcls.samples, 
+                                                self.dset[syntax][ztfid].plcls.lnprob, limit=limit)[0]              
+                    adjust_samp = [theta[0],theta[1+4*nf],theta[2+4*nf],theta[3+4*nf]]
+                    t_post = np.linspace(theta[0], x2, 1000)                
+                    t_pre = np.linspace(x1, theta[0], 1000)
+                    model_flux = powerlaw_post_baseline(t_post,
+                         adjust_samp[2]*10**(-adjust_samp[3]), adjust_samp[0], adjust_samp[3])
+                    self.ax.plot(t_pre, np.zeros_like(t_pre), **kwargs)
+                    self.ax.plot(t_post, model_flux, **kwargs)
+                    
+    def showarnett(self, syntax=None, x_pred=None, step = 1, 
+                   quant=[0.16, 0.50, 0.84], **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'arnettcls' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no arnettcls for %s'%ztfid)
+                    continue
+                texp = self.dset[syntax][ztfid].texp
+                x, y, y1, y2, w = self.dset[syntax][ztfid].arnettcls.predict(x_pred=x_pred, 
                                         step=step, clobber=False, returnv=True, quant=quant)
-            self.ax.plot( x,y,**kwargs )
+                if len(self.dset[syntax][ztfid].arnettcls.get_par()[0]) == 3:
+                    x -= texp[1]
+                self.ax.plot( x,y,**kwargs )
+        
+    def showtail(self, syntax=None, x_pred=None, step = 1, 
+                   quant=[0.16, 0.50, 0.84], **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'tailcls' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no tailcls for %s'%ztfid)
+                    continue
+                texp = self.dset[syntax][ztfid].texp
+                x, y, y1, y2, w = self.dset[syntax][ztfid].tailcls.predict(x_pred=x_pred, 
+                                        step=step, clobber=False, returnv=True, quant=quant)
+                self.ax.plot( x,y,**kwargs )
+                
+    def showvelocity(self, syntax=None, quant=[0.16, 0.50, 0.84], **kwargs):
+        assert 'ax' in self.__dict__, 'init_fig() first'
+        self.add_subset(syntax=syntax)
+        for ztfid in self.dset[syntax]:
+            if self.dset[syntax][ztfid] is not None:
+                if 'specls' not in self.dset[syntax][ztfid].__dict__:
+                    if self.verbose: print ('Warning: no specls for %s'%ztfid)
+                    continue
+                x,y=[],[]
+                for phase in self.dset[syntax][ztfid].specls:
+                    _spec = self.dset[syntax][ztfid].specls[phase]
+                    if _spec.velocity is None: continue
+                    x.append( float(_spec.phase) )
+                    y.append( float(_spec.velocity[1]) )
+                self.ax.plot( x,y, **kwargs )
         
 if __name__ == "__main__":
     

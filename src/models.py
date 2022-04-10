@@ -6,6 +6,7 @@ from filters import central_wavelengths
 class constants:
     # covert things to cgs units
     M_sun=1.989e33
+    R_sun=696340e5
     c=3.e10
     tau_Ni=8.8
     tau_Co=111.3
@@ -185,7 +186,46 @@ def tail_nickel(t, mni, t0):
 
 def tail_nickel_fitt(t, mni, t0, ts):    
     return tail_nickel(t[np.where(t>ts)], mni, t0)
+
+def arnett_tail(times, mni, taum, t0, texp, td):
+    t = times - texp    
+    L1 = Arnett_fit(t, mni, taum)
+    L2 = tail_nickel(t, mni, t0)
+    Ls = np.zeros(len(t))
+    ix1 = times < td
+    Ls[ix1] = L1[ix1]
+    Ls[~ix1] = L2[~ix1]
+    return Ls
+
+def Piro_sbofit(times, Me, Re, Ee):
+    '''
+    times: day
+    Me   : solar mass
+    Re   : solar radius
+    Ee   : foe
+    '''
+    t = times * 86400.
+    E = Ee * 1e51    
+    M = Me * constants.M_sun
+    R = Re * constants.R_sun
     
+    n = 10
+    delta = 1.1
+    K = (n-3) * (3-delta) / (4 * np.pi * (n-delta)) # K = 0.119
+    kappa = 0.2 # Motivated by the helium-rich composition of this event
+                # normally for Ibc we use 0.07
+    vt = ((n-5) * (5-delta) / ((n-3) * (3-delta)))**0.5 * (2 * E / M)**0.5
+    td = (3 * kappa * K * M / ((n-1) * vt * constants.c))**0.5 # in second    
+    
+    prefactor = np.pi*(n-1)/(3*(n-5)) * constants.c * R * vt**2 / kappa 
+    L1 = prefactor * (td/t)**(4/(n-2))
+    L2 = prefactor * np.exp(-0.5 * ((t/td)**2 - 1))
+    Ls = np.zeros(len(t))
+    ix1 = t < td
+    Ls[ix1] = L1[ix1]
+    Ls[~ix1] = L2[~ix1]
+    return Ls
+
 def gauss(x, H, A, x0, sigma):
     return H + A * np.exp(-(x - x0) ** 2 / (2 * sigma ** 2))
 
@@ -271,9 +311,9 @@ def powerlaw_full(times, amplitude=25, t_0=0, alpha_r=2, c=0):
         if t<t_0:
             f.append( c )
         else:
-            f.append( powerlaw_post_baseline(times, amplitude, t_0, alpha_r) + c )
+            f.append( powerlaw_post_baseline(t, amplitude, t_0, alpha_r) + c )
     return f
-
+    
 '''
 Define likelihood for power law fits
 '''
@@ -292,7 +332,7 @@ def lnlikelihood_pls(theta, f, t, f_err):
     assert np.all(model > -np.inf),"fewer model values than flux values\n{}\n{}\na{}A'{}alpha{}f_sigma{}".format(model, t,a,a_prime,alpha_r,f_sigma)    
     ln_l = -0.5*np.sum((f - model)**2 / ((f_sigma*f_err)**2)) - np.sum(np.log(f_sigma*f_err)) - 0.5*len(model)*np.log(2*np.pi)
     return ln_l
-
+    
 def lnprior_pls(theta):
     t_0, a, a_prime, alpha_r, f_sigma = theta
     if (a_prime < 0 or 
@@ -612,6 +652,74 @@ def lnprior_tail_fitt(theta):
 def lnposterior_tail_fitt(theta, f, t, f_err):
     lnp = lnprior_tail_fitt(theta)    
     lnl = lnlikelihood_tail_fitt(theta, f, t, f_err)
+    if not np.isfinite(lnl):
+        return -np.inf
+    if not np.isfinite(lnp):
+        return -np.inf
+    return lnl + lnp
+
+'''
+Define likelihood for Arnett + Tail fit
+'''
+def nll_arnett_tail(theta, f, t, f_err):
+    return -1*lnlikelihood_arnett_tail(theta, f, t, f_err)
+
+def lnlikelihood_arnett_tail(theta, f, t, f_err):
+    mni, taum, t0, texp, td = theta    
+    model = arnett_tail(t, mni, taum, t0, texp, td)
+    chi2_term = -1/2*np.sum((f - model)**2/f_err**2)
+    error_term = np.sum(np.log(1/np.sqrt(2*np.pi*f_err**2)))    
+    ln_l = chi2_term + error_term
+    return ln_l
+
+def lnprior_arnett_tail(theta):
+    mni, taum, t0, texp, td = theta
+    if ((0 < mni < 10) and (0 < taum < 1e3) and (0 < t0 < 1e3) and (-100 < texp < 0) and (20 < td < 100)):
+        return 0.0
+    return -np.inf
+
+def lnposterior_arnett_tail(theta, f, t, f_err):
+    lnp = lnprior_arnett_tail(theta)    
+    lnl = lnlikelihood_arnett_tail(theta, f, t, f_err)
+    if not np.isfinite(lnl):
+        return -np.inf
+    if not np.isfinite(lnp):
+        return -np.inf
+    return lnl + lnp
+
+'''
+Define likelihood for SBO fit using the Piro model
+https://arxiv.org/pdf/2007.08543.pdf
+'''
+def nll_arnett_sbo(theta, f, t, f_err):
+    return -1*lnlikelihood_arnett_sbo(theta, f, t, f_err)
+
+def lnlikelihood_arnett_sbo(theta, f, t, f_err):
+    Me, Re, Ee, texp = theta
+    t_ = t - texp
+    model = Piro_sbofit(t_, Me, Re, Ee)    
+    chi2_term = -1/2*np.sum((f - model)**2/f_err**2)
+    error_term = np.sum(np.log(1/np.sqrt(2*np.pi*f_err**2)))    
+    ln_l = chi2_term + error_term
+    return ln_l
+
+def lnprior_arnett_sbo(theta):
+    Me, Re, Ee, texp = theta
+    if (Me < 0 or
+        Me > 1 or
+        Re < 100 or
+        Re > 10000 or 
+        Ee < 1e-3 or
+        Ee > 1 or 
+        texp < -100 or
+        texp > 0):
+        return -np.inf
+    else:
+        return 0
+
+def lnposterior_arnett_sbo(theta, f, t, f_err):
+    lnp = lnprior_arnett_sbo(theta)    
+    lnl = lnlikelihood_arnett_sbo(theta, f, t, f_err)
     if not np.isfinite(lnl):
         return -np.inf
     if not np.isfinite(lnp):

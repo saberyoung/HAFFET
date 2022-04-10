@@ -147,7 +147,7 @@ class handle_spectrum:
             y, prominence=(max(y) - min(y)) / kwargs['pfactor'],
         )
         if len(peaks) == 0: return
-
+        
         _xl, _yl = [], []
         for pp in peaks: 
             _xl.append( x[pp] )
@@ -155,8 +155,12 @@ class handle_spectrum:
         _xl, _yl = np.array(_xl), np.array(_yl)
         
         # the peak closest to intrinstic line location
-        __=np.argmin(abs(_xl - self.cw))
-        self.peaks = ( _xl[__],_yl[__] )
+        if kwargs['spec_guess_red']:
+            __=np.argmin(abs(_xl - self.cw))
+            self.peaks = ( _xl[__],_yl[__] )
+        else:
+            __=np.argmin(abs(x - self.cw))
+            self.peaks = ( self.cw,y[__] )
     
     def _feature_properties(self, **kwargs):
         """Calculate the properties of a single feature in a spectrum

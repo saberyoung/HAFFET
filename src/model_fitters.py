@@ -71,7 +71,7 @@ class fit_model:
               verbose=True, datadir='./', sigma=3, scipysamples=100, sguess=True):        
         assert opt_routine in ['mcmc', 'lm', 'trf', 'dogbox']
         assert fit_mean in ['powerlaw', 'bazin', 'villar', 'arnett', 'tail_fitt',
-                            'tail', 'arnett_fitv', 'arnett_fitt']
+                            'tail', 'arnett_fitv', 'arnett_fitt', 'arnett_tail']
         mcmc_h5_file = '%s/%s'%(datadir, mcmc_h5_file)
         if not '.h5' in mcmc_h5_file:  mcmc_h5_file = '%s.h5'%mcmc_h5_file        
         self.opt_routine = opt_routine
@@ -189,7 +189,7 @@ class fit_model:
         if opt_routine in ['lm', 'trf', 'dogbox']:   # fit successively
             assert self.filters is None, 'for multi-band data, fit different filters successively'           
             if fit_mean == 'powerlaw':
-                func = models.powerlaw
+                func = models.powerlaw_full
                 if p0 is None: p0 = np.array([self.y_norm, -t_fl, 2, 6e1])
                 assert len(p0) == 4                
                 samples = np.ndarray(shape=(scipysamples,4), dtype=float)
@@ -245,6 +245,13 @@ class fit_model:
                 samples = np.ndarray(shape=(scipysamples,3), dtype=float)
                 lnprob = np.ndarray(shape=(scipysamples,1), dtype=float)  
                 if bounds is None: bounds = ([0,0,20], [10,1000,150])
+            elif fit_mean == 'arnett_tail':
+                func = models.arnett_tail
+                if p0 is None: p0 = np.array([.2, 10, 100, -t_fl, 60])
+                assert len(p0) == 5
+                samples = np.ndarray(shape=(scipysamples,5), dtype=float)
+                lnprob = np.ndarray(shape=(scipysamples,1), dtype=float)  
+                if bounds is None: bounds = ([0,0,0,-100, 20], [10,1000,1000,0, 150])
             
             BBparams, covar = curve_fit(func,self.x,self.y, method=opt_routine,
                         sigma=self.yerr, p0=p0, absolute_sigma=True, maxfev=maxfev, bounds=bounds)
@@ -294,9 +301,13 @@ class fit_model:
                     nf, pf = models.nll_tail_fitt, models.lnposterior_tail_fitt
                     if p0 is None: p0 = np.array([.2, 100, 60, 1])
                     else: assert len(p0) == 4
+                elif fit_mean == 'arnett_tail':
+                    nf, pf = models.nll_arnett_tail, models.lnposterior_arnett_tail
+                    if p0 is None: p0 = np.array([.2, 10, 100, -t_fl, 60])
+                    else: assert len(p0) == 5
             else:
                 assert fit_mean not in ['arnett', 'arnett_fitv',
-                        'arnett_fitt', 'tail', 'tail_fitt'], 'fit only for bolometric LCs with out filters'
+                    'arnett_fitt', 'tail', 'tail_fitt', 'arnett_tail'], 'fit only for bolometric LCs with out filters'
                 if fit_mean == 'powerlaw':
                     nf, pf = models.nll_pl, models.lnposterior_pl
                     if p0 is None:
@@ -348,8 +359,15 @@ class fit_model:
                 mean.append(q)
                 p1.append(ql)
                 p2.append(qu)
-        elif self.fit_mean in ['arnett_fitv', 'arnett_fitt', 'tail_fitt',]:
+        elif self.fit_mean in ['arnett_fitv', 'arnett_fitt', 'tail_fitt']:
             for _ in [0, 1, 2]:
+                xs = self.samples[:,_]
+                ql,q,qu = quantile(np.atleast_1d(xs), quant, weights=None)
+                mean.append(q)
+                p1.append(ql)
+                p2.append(qu)
+        elif self.fit_mean in ['arnett_tail',]:
+            for _ in [0, 1, 2, 3, 4]:
                 xs = self.samples[:,_]
                 ql,q,qu = quantile(np.atleast_1d(xs), quant, weights=None)
                 mean.append(q)
@@ -363,18 +381,19 @@ class fit_model:
         if 'x_pred' in self.__dict__ and not clobber and not returnv: return
         if x_pred is None:
             x_pred = np.arange(self.x.min(), self.x.max(), step)        
-        if self.fit_mean == 'powerlaw':  func = models.powerlaw                
+        if self.fit_mean == 'powerlaw':  func = models.powerlaw_full        
         elif self.fit_mean == 'bazin':   func = models.bazin
         elif self.fit_mean == 'arnett':   func = models.Arnett_fit
         elif self.fit_mean == 'arnett_fitv': func = models.Arnett_fit_withoutv
         elif self.fit_mean == 'arnett_fitt': func = models.Arnett_fit_withoutt
         elif self.fit_mean == 'tail':   func = models.tail_nickel
         elif self.fit_mean == 'tail_fitt':   func = models.tail_nickel_fitt
+        elif self.fit_mean == 'arnett_tail':   func = models.arnett_tail
         
         x_predl, y_predl, y_pred_1, y_pred_2, _ws = [], [], [], [], []        
         if not self.filters is None:            
             for _f in np.unique(self.filters):               
-                q1,q,q2 = self.get_par(filt=_f, quant=quant)                                
+                q1,q,q2 = self.get_par(filt=_f, quant=quant)
                 y = func( x_pred, *q )
                 y1 = func( x_pred, *q1 )
                 y2 = func( x_pred, *q2 )                  
