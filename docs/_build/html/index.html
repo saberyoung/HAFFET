@@ -34,21 +34,31 @@
             
   <div class="section" id="welcome-to-the-sdapy-documentation">
 <h1>Welcome to the sdapy documentation<a class="headerlink" href="#welcome-to-the-sdapy-documentation" title="Permalink to this headline">¶</a></h1>
+<p>Documentation of <cite>sdapy</cite> is hosted by <a class="reference external" href="http://sdapy.readthedocs.org/en/stable/">Read the Docs</a>.</p>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>The progenitor scenarios for supernovae (SNe) are still open questions, and one approach to diagnose their physical origins is to investigate the shape and luminosity of bolometric light curves of a large set of SNe, fit to semianalytic or hydrodynamic models to estimate possible physical parameters, and populate these together with what model allowed. There’re various of survey groups doing these, however different analysis will bring systematic errors that would make their conclusion suspicious. A generic code is needed to handle fittings for SNe with different type, from different survey, in different casence, etc, and provide reliable results for comparison. As part of the <a class="reference external" href="https://www.ztf.caltech.edu/">ZTF collaboration</a>, I develop <cite>sdapy</cite> to analysis a subset of Ib/Ic SNe classified by <a class="reference external" href="https://sites.astro.caltech.edu/ztf/bts/bts.php">BTS survey</a>, and hope it could be afterwards used by more groups so that we could compare their common properties to understand their real physics behind.</p>
+</div>
 <div class="section" id="what-is-sdapy">
 <h2>What is sdapy?<a class="headerlink" href="#what-is-sdapy" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://sngyang.com/sdapy">SN Data Analysis python package (sdapy)</a> is an open source Python package to help analyze SN photometric and spectroscopic data.</p>
 <p><cite>sdapy</cite> provides utilities to:</p>
 <ul class="simple">
-<li><p>parse meta data from <a class="reference external" href="https://sites.astro.caltech.edu/ztf/bts/bts.php">BTS page</a>.</p></li>
-<li><p>download/restore ZTF alert/forced photometry and spectra (via <a class="reference external" href="https://github.com/MickaelRigault/ztfquery/tree/master/ztfquery">ztfquery</a>), <a class="reference external" href="https://fallingstar-data.com/forcedphot/">ATLAS forced phtometry</a>, and the <a class="reference external" href="https://www.wis-tns.org/">TNS</a> spectra.</p></li>
+<li><p>parse SN meta data from <a class="reference external" href="https://sites.astro.caltech.edu/ztf/bts/bts.php">BTS page</a>.</p></li>
+<li><p>download/restore ZTF alert photometry/spectra from Growth marshal/fritz (via <a class="reference external" href="https://github.com/MickaelRigault/ztfquery/tree/master/ztfquery">ztfquery</a>), <a class="reference external" href="https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi/">ZTF forced photometry</a> , <a class="reference external" href="https://fallingstar-data.com/forcedphot/">ATLAS forced phtometry</a>, and the <a class="reference external" href="https://www.wis-tns.org/">TNS spectra</a> (and also other LCs/spectra by manual input them).</p></li>
 <li><p>intepolated multi band photometry via Gaussian Process (with <a class="reference external" href="https://george.readthedocs.io/en/latest//">george</a>).</p></li>
-<li><p>intepolated each band with SN alike analytic models, e.g. Bazin et al, Villar et al.</p></li>
+<li><p>intepolated each band with SN alike analytic models, e.g. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2009A%26A...499..653B/abstract">Bazin et al 2009</a>, <a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ab418c">Villar et al 2019</a>.</p></li>
 <li><p>power law fits on early LCs in multi bands simultaneously, to determine first light (developed based on <a class="reference external" href="https://github.com/adamamiller/ztf_early_Ia_2018">https://github.com/adamamiller/ztf_early_Ia_2018</a>).</p></li>
-<li><p>build colour curves, and bolometric LCs, via bolometric corrections defined in Lyman et al 2014, or diluted black body fits.</p></li>
-<li><p>estimate host galaxy extinction by comparing to intrinsic colours (e.g. Drout et al), or from the pEW of Na ID line doublets.</p></li>
-<li><p>Bolometric LC fitting with the Arnett models, and gamma ray leakage tail.</p></li>
-<li><p>Gaussian/viglot fitting for spectral lines for photospheric velocity.</p></li>
-<li><p>shock cooling fitting with Piro 2020.</p></li>
+<li><p>build colour curves, and bolometric LCs, via bolometric corrections defined in <a class="reference external" href="https://academic.oup.com/mnras/article/437/4/3848/1011706">Lyman et al 2014</a>, or the <a class="reference external" href="https://en.wikipedia.org/wiki/Black_body">diluted black body fits</a>.</p></li>
+<li><p>estimate host galaxy extinction by comparing colours to intrinsic colours (e.g. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2018A&amp;A...609A.135S">Stritzinger et al 2018</a>), or from the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2012MNRAS.426.1465P">pEW of Na ID line doublets</a>.</p></li>
+<li><p>Bolometric LC fitting with the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1982ApJ...253..785A">Arnett models</a>, and/or the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2019MNRAS.484.3941W">gamma ray leakage tail</a>.</p></li>
+<li><p>Gaussian/viglot fitting for absorption minima of He 5876 and O 7772 (for SN Ib and Ic correspondingly), which were used to estimate photospheric velocities, using an analytic function defined by <a class="reference external" href="https://academic.oup.com/mnras/article/458/2/1618/2589109">Dessart et al 2016</a>.</p></li>
+<li><p>shock cooling phase fitting with <a class="reference external" href="https://arxiv.org/pdf/2007.08543.pdf">Piro et al 2020</a>.</p></li>
+</ul>
+<p>For fittings, there’re two approaches implemented as hyperparameter optimization routine:</p>
+<ul class="simple">
+<li><p>scipy.optimize (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">https://docs.scipy.org/doc/scipy/reference/optimize.html</a>)</p></li>
+<li><p>emcee (<a class="reference external" href="https://emcee.readthedocs.io/en/stable/">https://emcee.readthedocs.io/en/stable/</a>)</p></li>
 </ul>
 </div>
 <div class="section" id="documentation">
@@ -56,7 +66,8 @@
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="issues.html">Issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="todo.html">Todo List</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq/index.html">Frequently Asked Questions</a></li>
@@ -116,7 +127,8 @@
 <h3>Navigation</h3>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gallery.html">Gallery</a></li>
 <li class="toctree-l1"><a class="reference internal" href="issues.html">Issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="todo.html">Todo List</a></li>
 <li class="toctree-l1"><a class="reference internal" href="faq/index.html">Frequently Asked Questions</a></li>

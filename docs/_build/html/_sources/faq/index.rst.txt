@@ -22,3 +22,12 @@ Frequently Asked Questions
    >>> setuptools.__path__
 
    see where setuptools is called, and then upgrade it: conda install setuptools/pip install setuptools --upgrade/etc
+
+install multiprocessing
+-------------------------------------------------------------------
+
+- reason: for pip, default version of multiprocessing is 2.x, while we use python 3.
+
+- how to solve::
+
+   >>> pip3 install multiprocessing
