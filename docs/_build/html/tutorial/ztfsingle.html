@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>For specific object &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="for-specific-object">
+<span id="single"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">For</span> <span class="pre">specific</span> <span class="pre">object</span></code><a class="headerlink" href="#for-specific-object" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="ztfmultiple.html#multiple"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#single1"><span class="std std-ref">1. input photometric and spectral data</span></a></div>
+<div class="line"><a class="reference internal" href="#single2"><span class="std std-ref">2. interpolation, define t0 as peak epoch</span></a></div>
+<div class="line"><span class="xref std std-ref">3. pre peak fit, define t0 as explosion epoch</span></div>
+<div class="line"><span class="xref std std-ref">4. build bolometric LCs</span></div>
+<div class="line"><span class="xref std std-ref">5. fit bolometric LCs with analytic models</span></div>
+<div class="line"><span class="xref std std-ref">6. photospheric velocities</span></div>
+<div class="line"><span class="xref std std-ref">7. driven physical mechanisms</span></div>
+</div>
+<div class="section" id="input-data">
+<span id="single1"></span><h2>input data<a class="headerlink" href="#input-data" title="Permalink to this headline">¶</a></h2>
+<p>The aim of <cite>KOBE</cite> is to define and optimize observing strategies for telescopes.
+We mimic different scenarios, while in the process, we realized there’re lots of tasks are used multiple times.
+In order to make the code clear and simple, we define python classes for major concepts, adopting Python inheritance to make them reusability.</p>
+<p>The inheritance scheme of <cite>KOBE</cite> is shown as directed flowchart as followed:</p>
+<a class="reference internal image-reference" href="tutorial/../static/kobesheme.png"><img alt="tutorial/../static/kobesheme.png" src="tutorial/../static/kobesheme.png" style="width: 800px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It should be awared that functions from the parent classes (e.g. utils), could be used by their son classes (e.g. schedule). In the tutorial, we show examples for the current classes, but they’re also applicable to its successors. For example:</p>
+<p>We parsed one <cite>trigger</cite> object from a source:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import trigger
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>trigger<span class="o">()</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Since <cite>trigger</cite> is thus inheriented by <cite>schedule</cite>, <cite>url</cite> function is also available in <cite>schedule</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span> <span class="o">=</span> schedule<span class="o">()</span>
+&gt;&gt;&gt; a.url<span class="o">(</span><span class="s1">&#39;https://gracedb.ligo.org/api/superevents/S190510g/files/bayestar.fits.gz&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<p>As shown, we define generic functions in <cite>utils</cite>, which would be then inherited by <cite>visualization</cite> and <cite>circulate</cite>.
+These 3 classes would provide basic functions for <cite>KOBE</cite> project, assisting with visualization, circulate and other tasks.</p>
+<p>Afterwards, we define 3 major classes, i.e. <cite>trigger</cite>, <cite>candidates</cite>, and <cite>pointings</cite>, to mimic the followup search process.</p>
+<p><strong>Search without trigger</strong>:</p>
+<p>Before receiving an alert, <cite>KOBE</cite> provide <cite>pointings</cite> class that could help generate pointing lists for specific telescopes, depending on different strategy, i.e. tiling search or galaxy search.
+On this basis, a <cite>telescope</cite> object is defined after setting its name.
+Finally, user could define several <cite>observatory</cite> objects, while each of them is composed by a location, observatory name, and a list of <cite>telescope</cite> objects.</p>
+<p>At this phase, <cite>schedule</cite> could generate observing strategies for telescopes, depending only on the visibility of each pointings (i.e. airmass, galactic plane and bright object constrains).</p>
+<p>Meanwhile, user could define a series of candidates via <cite>candidates</cite> and submit them to <cite>schedule</cite>, asking <cite>KOBE</cite> to assess them.</p>
+<p><strong>Search with trigger</strong>:</p>
+<p>The contourpart search starts with receiving a trigger from one interesting source.
+In <cite>trigger</cite> class, we adopt <a class="reference external" href="https://healpy.readthedocs.io/en/latest/index.html">Healpy/HEALPix</a> to help parse trigger information from alert files.
+These extracted time and space informations were then transferred to <cite>schedule</cite>.
+Together with pre-submitted pointing lists and user options, <cite>schedule</cite> would generate OBs for a series of telescopes, try coordinate their observations in order to increase the overall efficiency of EM counterpart searches.</p>
+<p><strong>Evaluation for trigger search</strong>:</p>
+<p>In order to assess the schedule, <cite>KOBE</cite> provide routes to calculate the overall detection efficiency, by simulating a series of targets randomly according to trigger, see how many of injections could be finally detected, and the detection efficiency is defines as the ratio.</p>
+</div>
+<div class="section" id="interpolation">
+<span id="single2"></span><h2>Interpolation<a class="headerlink" href="#interpolation" title="Permalink to this headline">¶</a></h2>
+<p>Parameter is one basic element of programming that allow interaction of the program with external entities.
+Before use of <cite>KOBE</cite>, we would like to describe how <cite>KOBE</cite> would read and handle with parameters:</p>
+<ol class="arabic simple">
+<li><p>In most cases, <cite>KOBE</cite> put all parameters into optional parameters and provide them default values.
+If the result is not as what you expected, read carefully its documentation, set as request, and redo the tasks.</p></li>
+<li><p>Some parameters would be used by multiple classes and functions.
+In order to reduce duplicated inputs, <cite>KOBE</cite> defines an attribute named <cite>defkwargs</cite>, which defines a series of default parameter settings.
+One need to modify only once at the beginning of importing a class, and would be hence works for the rest calls.</p></li>
+</ol>
+<p>As an example, we try building a tiling network with <cite>KOBE</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; import kobe as kb
+&gt;&gt;&gt; <span class="nv">b</span><span class="o">=</span>kb.tilings<span class="o">()</span>
+&gt;&gt;&gt; b.defkwargs
+<span class="o">{</span><span class="s1">&#39;wdir&#39;</span>: <span class="s1">&#39;./&#39;</span>, <span class="s1">&#39;clobber&#39;</span>: False, <span class="s1">&#39;rot_theta&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;rot_phi&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;rot_psi&#39;</span>: <span class="m">0</span>, <span class="s1">&#39;num&#39;</span>: <span class="m">1</span>, <span class="s1">&#39;emailpass&#39;</span>: <span class="s1">&#39;&#39;</span>, <span class="s1">&#39;emailsmtp&#39;</span>: <span class="s1">&#39;&#39;</span>, <span class="s1">&#39;subject&#39;</span>: <span class="s1">&#39;GW Alerts&#39;</span>, <span class="s1">&#39;fromaddr&#39;</span>: <span class="s1">&#39;&#39;</span>, <span class="s1">&#39;toaddrs&#39;</span>: <span class="s1">&#39;&#39;</span>, <span class="s1">&#39;slacktoken&#39;</span>: None, <span class="s1">&#39;slackto&#39;</span>: None<span class="o">}</span>
+&gt;&gt;&gt; b.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span>-90,90<span class="o">])</span>
+&gt;&gt;&gt; b.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span><span class="m">0</span>,90<span class="o">])</span>
+INFO:kobe.KBpointings:Warning: tiling data already parsed
+</pre></div>
+</div>
+<p>As shown, the tile generation would be ignored if tiling is already exists.
+Then one can set <cite>clobber</cite> parameter either at the call or at the beginning when initialize the class:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># call clobber</span>
+&gt;&gt;&gt; b.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span><span class="m">0</span>,90<span class="o">]</span>,clobber<span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; b.data
+
+<span class="c1"># An alternative approach is to set it when initialize the `tilings` class</span>
+&gt;&gt;&gt; <span class="nv">b</span><span class="o">=</span>kb.tilings<span class="o">(</span><span class="nv">class</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; b.defkwargs<span class="o">[</span><span class="s1">&#39;clobber&#39;</span><span class="o">]</span>
+True
+&gt;&gt;&gt; b.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span>-90,90<span class="o">])</span>
+&gt;&gt;&gt; b.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span><span class="m">0</span>,90<span class="o">])</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="ztfmultiple.html#multiple"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#single"><span class="std std-ref">Top</span></a></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ztfanalysis.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ztfanalysis</span></code> – main programmer</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/ztfsingle.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>ztfanalysis – main programmer &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="sdapy.ztfanalysis.ztfsingle.__init__" href="generated/sdapy.ztfanalysis.ztfsingle.__init__.html" />
+    <link rel="prev" title="Licenses" href="license.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="ztfanalysis-main-programmer">
+<h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">ztfanalysis</span></code> – main programmer<a class="headerlink" href="#ztfanalysis-main-programmer" title="Permalink to this headline">¶</a></h1>
+<p>These classes provide various functions for other sdapy classes.</p>
+<div class="section" id="ztfsingle">
+<h2>ztfsingle<a class="headerlink" href="#ztfsingle" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.__init__.html#sdapy.ztfanalysis.ztfsingle.__init__" title="sdapy.ztfanalysis.ztfsingle.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.__init__</span></code></a>(self, ztfid[, iauid, z, …])</p></td>
+<td><p>initialize</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.config_ztfquery.html#sdapy.ztfanalysis.ztfsingle.config_ztfquery" title="sdapy.ztfanalysis.ztfsingle.config_ztfquery"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.config_ztfquery</span></code></a>(self[, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.parse_coo.html#sdapy.ztfanalysis.ztfsingle.parse_coo" title="sdapy.ztfanalysis.ztfsingle.parse_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.parse_coo</span></code></a>(self[, verbose, deg])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.mjd_now.html#sdapy.ztfanalysis.ztfsingle.mjd_now" title="sdapy.ztfanalysis.ztfsingle.mjd_now"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.mjd_now</span></code></a>(self[, jd])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.add_lc.html#sdapy.ztfanalysis.ztfsingle.add_lc" title="sdapy.ztfanalysis.ztfsingle.add_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.add_lc</span></code></a>(self, df, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.bin_fp_ztf.html#sdapy.ztfanalysis.ztfsingle.bin_fp_ztf" title="sdapy.ztfanalysis.ztfsingle.bin_fp_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.bin_fp_ztf</span></code></a>(self[, binDays, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.get_fp_atlas.html#sdapy.ztfanalysis.ztfsingle.get_fp_atlas" title="sdapy.ztfanalysis.ztfsingle.get_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.get_fp_atlas</span></code></a>(self[, binDays, clobber])</p></td>
+<td><p>get local ATLAS forced phot LCs or binned ATLAS forced phot LCs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.get_alert_ztf.html#sdapy.ztfanalysis.ztfsingle.get_alert_ztf" title="sdapy.ztfanalysis.ztfsingle.get_alert_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.get_alert_ztf</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.get_fp_ztf.html#sdapy.ztfanalysis.ztfsingle.get_fp_ztf" title="sdapy.ztfanalysis.ztfsingle.get_fp_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.get_fp_ztf</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>get local ZTF forced phot LCs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.query_fp_atlas.html#sdapy.ztfanalysis.ztfsingle.query_fp_atlas" title="sdapy.ztfanalysis.ztfsingle.query_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.query_fp_atlas</span></code></a>(self[, clobber, …])</p></td>
+<td><p>ATLAS forced phot query <a class="reference external" href="https://fallingstar-data.com/forcedphot/static/apiexample.py">https://fallingstar-data.com/forcedphot/static/apiexample.py</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.query_fp_ztf.html#sdapy.ztfanalysis.ztfsingle.query_fp_ztf" title="sdapy.ztfanalysis.ztfsingle.query_fp_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.query_fp_ztf</span></code></a>(self[, query, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.query_alert_ztf.html#sdapy.ztfanalysis.ztfsingle.query_alert_ztf" title="sdapy.ztfanalysis.ztfsingle.query_alert_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.query_alert_ztf</span></code></a>(self[, source])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.add_flux.html#sdapy.ztfanalysis.ztfsingle.add_flux" title="sdapy.ztfanalysis.ztfsingle.add_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.add_flux</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.query_spectra.html#sdapy.ztfanalysis.ztfsingle.query_spectra" title="sdapy.ztfanalysis.ztfsingle.query_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.query_spectra</span></code></a>(self[, source])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.query_tns.html#sdapy.ztfanalysis.ztfsingle.query_tns" title="sdapy.ztfanalysis.ztfsingle.query_tns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.query_tns</span></code></a>(self[, tns_botid, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.get_local_spectra.html#sdapy.ztfanalysis.ztfsingle.get_local_spectra" title="sdapy.ztfanalysis.ztfsingle.get_local_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.get_local_spectra</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.run.html#sdapy.ztfanalysis.ztfsingle.run" title="sdapy.ztfanalysis.ztfsingle.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.run</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.taum_to_EM.html#sdapy.ztfanalysis.ztfsingle.taum_to_EM" title="sdapy.ztfanalysis.ztfsingle.taum_to_EM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.taum_to_EM</span></code></a>(self[, vpeak, vpeake, vopt])</p></td>
+<td><p>taum and v to Mej and Ek</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.meas_specline.html#sdapy.ztfanalysis.ztfsingle.meas_specline" title="sdapy.ztfanalysis.ztfsingle.meas_specline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.meas_specline</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>fits on bolometric tail</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.tail_fit.html#sdapy.ztfanalysis.ztfsingle.tail_fit" title="sdapy.ztfanalysis.ztfsingle.tail_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.tail_fit</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>fits on bolometric tail</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.arnett_fit.html#sdapy.ztfanalysis.ztfsingle.arnett_fit" title="sdapy.ztfanalysis.ztfsingle.arnett_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.arnett_fit</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>power law on early lc currently explosion epoch is not a fitted parameter so do power law fits first</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.set_texp_midway.html#sdapy.ztfanalysis.ztfsingle.set_texp_midway" title="sdapy.ztfanalysis.ztfsingle.set_texp_midway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.set_texp_midway</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.est_host_c10.html#sdapy.ztfanalysis.ztfsingle.est_host_c10" title="sdapy.ztfanalysis.ztfsingle.est_host_c10"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.est_host_c10</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>should include milky way ebv, and due the additional color to host</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfsingle.lyman_bol.html#sdapy.ztfanalysis.ztfsingle.lyman_bol" title="sdapy.ztfanalysis.ztfsingle.lyman_bol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfsingle.lyman_bol</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>should correct with both host and milky ebv       will only use BCg</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ztfmultiple">
+<h2>ztfmultiple<a class="headerlink" href="#ztfmultiple" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfmultiple.__init__.html#sdapy.ztfanalysis.ztfmultiple.__init__" title="sdapy.ztfanalysis.ztfmultiple.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfmultiple.__init__</span></code></a>(self[, logger])</p></td>
+<td><p>initialize</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfmultiple.parse_meta.html#sdapy.ztfanalysis.ztfmultiple.parse_meta" title="sdapy.ztfanalysis.ztfmultiple.parse_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfmultiple.parse_meta</span></code></a>(self[, force])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfmultiple.format_meta.html#sdapy.ztfanalysis.ztfmultiple.format_meta" title="sdapy.ztfanalysis.ztfmultiple.format_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfmultiple.format_meta</span></code></a>(self[, Rv, idkey, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfmultiple.parse_meta_info.html#sdapy.ztfanalysis.ztfmultiple.parse_meta_info" title="sdapy.ztfanalysis.ztfmultiple.parse_meta_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfmultiple.parse_meta_info</span></code></a>(self, ztfid[, …])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfmultiple.load_data.html#sdapy.ztfanalysis.ztfmultiple.load_data" title="sdapy.ztfanalysis.ztfmultiple.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfmultiple.load_data</span></code></a>(self, ztfid[, force])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfmultiple.save_data.html#sdapy.ztfanalysis.ztfmultiple.save_data" title="sdapy.ztfanalysis.ztfmultiple.save_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfmultiple.save_data</span></code></a>(self, ztfid[, force])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.ztfmultiple.run.html#sdapy.ztfanalysis.ztfmultiple.run" title="sdapy.ztfanalysis.ztfmultiple.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ztfmultiple.run</span></code></a>(self[, axes])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="plotter">
+<h2>plotter<a class="headerlink" href="#plotter" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="generated/sdapy.ztfanalysis.plotter.init_fig.html#sdapy.ztfanalysis.plotter.init_fig" title="sdapy.ztfanalysis.plotter.init_fig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotter.init_fig</span></code></a>(self[, dpi, figsize, …])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ztfanalysis</span></code> – main programmer</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="license.html" title="previous chapter">Licenses</a></li>
+      <li>Next: <a href="generated/sdapy.ztfanalysis.ztfsingle.__init__.html" title="next chapter">sdapy.ztfanalysis.ztfsingle.__init__</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/ztfanalysis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

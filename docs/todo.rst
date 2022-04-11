@@ -1,14 +1,15 @@
 Todo List
 ===================================
 
-Circulate
---------------------
+1. test shock cooling fits
 
-1. test slack
+2. coordinate common physics for Arnett and tail forms
 
-2. tesk eso p2pi OB injection
+3. can force phot be parsed via API instead of emails?
 
-What else
+4. Na ID line doublet fits for host ebv
+
+What else?
 --------------------
 
 Drop me an `email <saberyoung@gmail.com>`_ if you had any requests

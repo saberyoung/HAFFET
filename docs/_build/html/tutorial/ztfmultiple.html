@@ -1,0 +1,627 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Telescope and Observatory &#8212; sn_data_analysis: sdapy 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="telescope-and-observatory">
+<span id="multiple"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">Telescope</span> <span class="pre">and</span> <span class="pre">Observatory</span></code><a class="headerlink" href="#telescope-and-observatory" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="ztfsingle.html#single"><span class="std std-ref">Previous</span></a></div>
+</div>
+<p>On the basis of telescope pointings setup (which is described in the <span class="xref std std-ref">previous chapter</span>), here in this chapter we will describe the construction and usage of <cite>KOBE telescope</cite> and <cite>observatory</cite>.</p>
+<div class="section" id="telescope">
+<span id="multiple1"></span><h2>Telescope<a class="headerlink" href="#telescope" title="Permalink to this headline">¶</a></h2>
+<p><cite>KOBE telescope</cite> object contains 2 attributes:</p>
+<ul class="simple">
+<li><p><cite>pointings</cite> - telescope pointings</p></li>
+<li><p><cite>telname</cite> - telescope name</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import telescope
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>telescope<span class="o">()</span>
+&gt;&gt;&gt; a.telname
+&gt;&gt;&gt; a.pointings
+</pre></div>
+</div>
+<ol class="arabic" id="kbtel11">
+<li><p>set pointings</p>
+<p>The pointing settings are described in <span class="xref std std-ref">previous chapter</span>,
+here we show again in general:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize a `telescope` object</span>
+&gt;&gt;&gt; from kobe import telescope
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>telescope<span class="o">()</span>
+
+<span class="c1"># now pointings is Nonetype</span>
+&gt;&gt;&gt; a.pointings
+
+<span class="c1"># set tiling schedule</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings
+&lt;kobe.KBpointings.tilings object at 0x113557fd0&gt;
+
+<span class="c1"># generate tilings</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limdec<span class="o">=[</span><span class="m">0</span>,90<span class="o">])</span>
+&gt;&gt;&gt; a.pointings.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">2337</span>&gt;
+n       ra      dec    fovra   fovdec
+int64  float64  float64 float64 float64
+----- --------- ------- ------- -------
+<span class="m">0</span>       <span class="m">3</span>.0     <span class="m">0</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">1</span>       <span class="m">6</span>.0     <span class="m">0</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2</span>       <span class="m">9</span>.0     <span class="m">0</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3</span>      <span class="m">12</span>.0     <span class="m">0</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">4</span>      <span class="m">15</span>.0     <span class="m">0</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">5</span>      <span class="m">18</span>.0     <span class="m">0</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+...       ...     ...     ...     ...
+<span class="m">2331</span>  <span class="m">57</span>.32197    <span class="m">87</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2332</span> <span class="m">114</span>.64394    <span class="m">87</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2333</span>  <span class="m">171</span>.9659    <span class="m">87</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2334</span> <span class="m">229</span>.28787    <span class="m">87</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2335</span> <span class="m">286</span>.60984    <span class="m">87</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2336</span> <span class="m">343</span>.93181    <span class="m">87</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+
+<span class="c1"># visualize</span>
+&gt;&gt;&gt; a.locshow_tel<span class="o">()</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;tel1&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/tel1.png"><img alt="tel1.png" class="align-center" src="tutorial/../static/tel1.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic" id="kbtel12" start="2">
+<li><p>set telescope name</p>
+<p>Considering we have to distinguish different telescopes, to define a name for each telescope is needed, thus <cite>KOBE</cite> provide <cite>set_telname</cite> method:</p>
+<p>If one give the <cite>telname</cite> directly, it would be applied as the telescope name:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.set_telname<span class="o">(</span><span class="nv">telname</span><span class="o">=</span><span class="s1">&#39;VST&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.telname
+<span class="s1">&#39;VST&#39;</span>
+</pre></div>
+</div>
+<p>Otherwise, <cite>KOBE</cite> will check all cashed telescope names, select the largest one from those integers, and plus one as the <cite>telname</cite>.
+If no integer name found, use 0 instead:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.set_telname<span class="o">()</span>
+&gt;&gt;&gt; a.telname
+<span class="m">0</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel13" start="3">
+<li><p>check telescope</p>
+<p>If <cite>telname</cite> and <cite>pointings</cite> are parsed correctly, <cite>check_tel</cite> function will work, otherwise it will return an <cite>AssertionError</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.check_tel<span class="o">()</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="observatory">
+<span id="kbtel2"></span><h2>Observatory<a class="headerlink" href="#observatory" title="Permalink to this headline">¶</a></h2>
+<p>After having <cite>telescope</cite>, the next step is to set up an <cite>observatory</cite> object.
+It includes 3 attributes:</p>
+<ul class="simple">
+<li><p>telescopes - a series of telescopes located at the observaroty</p></li>
+<li><p>location - location of observaroty</p></li>
+<li><p>obsname - name of observaroty</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import observatory
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>observatory<span class="o">()</span>
+&gt;&gt;&gt; a.telescopes
+<span class="o">{}</span>
+&gt;&gt;&gt; a.location
+&gt;&gt;&gt; a.obsname
+</pre></div>
+</div>
+<ol class="arabic" id="kbtel21">
+<li><p>set telescopes</p>
+<p>The telescope settings are described <span class="xref std std-ref">above</span>.
+As an example, we try to define 2 telescopes for one observatory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># we set one telescope with tiling strategy</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">limdec</span><span class="o">=[</span>-20,90<span class="o">]</span>,fovra<span class="o">=</span><span class="m">3</span>, <span class="nv">fovdec</span><span class="o">=</span><span class="m">3</span><span class="o">)</span>
+&gt;&gt;&gt; a.set_telname<span class="o">()</span>
+
+<span class="c1"># add the telescope to observatory</span>
+&gt;&gt;&gt; a.add_telescope<span class="o">()</span>
+INFO:kobe.KBobservatory:telescope <span class="m">0</span> added
+
+<span class="c1"># we add one more telescope with galaxy strategy</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;G&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">limdist</span><span class="o">=[</span><span class="m">0</span>,40<span class="o">])</span>
+&gt;&gt;&gt; a.set_telname<span class="o">()</span>
+
+<span class="c1"># add the telescope to observatory</span>
+&gt;&gt;&gt; a.add_telescope<span class="o">()</span>
+INFO:kobe.KBobservatory:telescope <span class="m">1</span> added
+
+<span class="c1"># now we have 2 telescopes at the observatory</span>
+&gt;&gt;&gt; a.telescopes
+<span class="o">{</span><span class="m">0</span>: &lt;kobe.KBpointings.tilings object at 0x11b86b390&gt;, <span class="m">1</span>: &lt;kobe.KBpointings.galaxies object at 0x11b84db38&gt;<span class="o">}</span>
+<span class="c1"># and both of them have already generated a list of pointings</span>
+&gt;&gt;&gt; a.telescopes<span class="o">[</span><span class="m">0</span><span class="o">]</span>.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">3110</span>&gt;
+n       ra      dec    fovra   fovdec
+int64  float64  float64 float64 float64
+----- --------- ------- ------- -------
+<span class="m">0</span>   <span class="m">3</span>.19253   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">1</span>   <span class="m">6</span>.38507   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">2</span>    <span class="m">9</span>.5776   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3</span>  <span class="m">12</span>.77013   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">4</span>  <span class="m">15</span>.96267   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">5</span>   <span class="m">19</span>.1552   -20.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+...       ...     ...     ...     ...
+<span class="m">3104</span> <span class="m">309</span>.79026    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3105</span>  <span class="m">344</span>.2114    <span class="m">85</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3106</span>  <span class="m">85</span>.96113    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3107</span> <span class="m">171</span>.92225    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3108</span> <span class="m">257</span>.88338    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+<span class="m">3109</span>  <span class="m">343</span>.8445    <span class="m">88</span>.0     <span class="m">3</span>.0     <span class="m">3</span>.0
+
+<span class="c1"># we can visualize them</span>
+&gt;&gt;&gt; a.locshow_obs<span class="o">(</span><span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="nv">filepath</span><span class="o">=</span><span class="s1">&#39;obs&#39;</span>,wdir<span class="o">=</span><span class="s1">&#39;./&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/obs.png"><img alt="obs.png" class="align-center" src="tutorial/../static/obs.png" style="width: 800px;" /></a>
+<p>Then, one can remove any of them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.del_telescope<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+&gt;&gt;&gt; a.telescopes
+<span class="o">{</span><span class="m">0</span>: &lt;kobe.KBpointings.tilings object at 0x11a41cfd0&gt;<span class="o">}</span>
+</pre></div>
+</div>
+<p>Or, copy one of them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># to_telescope will adopt telecsope 0 settings to the current telname and pointings</span>
+&gt;&gt;&gt; a.to_telescope<span class="o">(</span><span class="m">0</span><span class="o">)</span>
+
+&gt;&gt;&gt; a.set_telname<span class="o">(</span><span class="m">3</span><span class="o">)</span>
+&gt;&gt;&gt; a.add_telescope<span class="o">()</span>
+INFO:kobe.KBobservatory:telescope <span class="m">3</span> added
+&gt;&gt;&gt; a.telescopes
+<span class="o">{</span><span class="m">0</span>: &lt;kobe.KBpointings.tilings object at 0x11d541fd0&gt;, <span class="m">3</span>: &lt;kobe.KBpointings.galaxies object at 0x11d57a278&gt;<span class="o">}</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel22" start="2">
+<li><p>set observatory location</p>
+<p>Despite a list of telescopes, another important ingrediant for <cite>observatory</cite> is its location.
+For <cite>KOBE</cite>, there’re 3 approaches to parse the location:</p>
+<p>2.1 via an observatory name</p>
+<p>When user ask <cite>KOBE</cite> to parse a location via an obsname,
+<cite>KOBE</cite> will firstly check if it’s included by <cite>observatory.EarthLocation_from_kobe</cite>.
+If not, <cite>KOBE</cite> will then check with <cite>astropy.coordinates.EarthLocation.of_site</cite>.
+Since astropy query will sometimes take time (depends on the network), we recommend user to add your observatory in <cite>observatory.EarthLocation_from_kobe</cite> so that to save time.</p>
+<p>For instance, if <cite>keck</cite> is called frequently, one could add the following line to <cite>observatory.EarthLocation_from_kobe</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">keck</span> <span class="o">=</span> <span class="n">EarthLocation</span><span class="o">.</span><span class="n">from_geodetic</span><span class="p">(</span><span class="o">-</span><span class="mf">155.47833333333332</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="mf">19.828333333333326</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">deg</span><span class="p">,</span> <span class="mi">4160</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>and then parse via obsname will save time:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;keck&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.location
+&lt;EarthLocation <span class="o">(</span>-5464487.81759887, -2492806.59108569, <span class="m">2151240</span>.19451846<span class="o">)</span> m&gt;
+</pre></div>
+</div>
+<p>2.2 via coordinates</p>
+<p>user could parsed location via coordinates inetead:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">longitude</span><span class="o">=</span>-155.48, <span class="nv">latitude</span><span class="o">=</span><span class="m">19</span>.83, <span class="nv">elevation</span><span class="o">=</span><span class="m">4160</span><span class="o">)</span>
+&gt;&gt;&gt; a.location
+&lt;EarthLocation <span class="o">(</span>-5464503.34830818, -2492621.64331625, <span class="m">2151413</span>.87241013<span class="o">)</span> m&gt;
+</pre></div>
+</div>
+<p>2.3 via astropy.coordinates.EarthLocation</p>
+<p>one could also provide an <cite>astropy.coordinates.EarthLocation</cite> object directly to <cite>KOBE</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># suppose b is an `astropy.coordinates.EarthLocation` object</span>
+a.parse_location<span class="o">(</span><span class="nv">location</span><span class="o">=</span>b<span class="o">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel23" start="3">
+<li><p>set observatory name</p>
+<p>Similar to <cite>telescope</cite>, to define a name for <cite>observatory</cite> is essential for a recognition purpose.
+One can set the <cite>obsname</cite> via <cite>set_obsname</cite> as followed:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.set_obsname<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;keck&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.obsname
+<span class="s1">&#39;keck&#39;</span>
+</pre></div>
+</div>
+<p>There’s no need to set <cite>obsname</cite>, if the <cite>observatory</cite> location is parsed via a name or coordinates, e.g.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;keck&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.obsname
+<span class="s1">&#39;keck&#39;</span>
+
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">longitude</span><span class="o">=</span>-155.48, <span class="nv">latitude</span><span class="o">=</span><span class="m">19</span>.83, <span class="nv">elevation</span><span class="o">=</span><span class="m">4160</span><span class="o">)</span>
+&gt;&gt;&gt; a.obsname
+<span class="s1">&#39;T-155.48-19.83&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel24" start="4">
+<li><p>check observatory</p>
+<p>If <cite>obsname</cite> is parsed correctly,
+<cite>check_obs</cite> method will work normally, otherwise it will return an <cite>AssertionError</cite>.
+Meanwhile, if <cite>telescopes</cite> attribute is empty, it will alert a warning.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; a.check_obs<span class="o">()</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="observatory-frame">
+<span id="kbtel3"></span><h2>Observatory Frame<a class="headerlink" href="#observatory-frame" title="Permalink to this headline">¶</a></h2>
+<p>After the <cite>location</cite> of an <cite>observatory</cite> set correctly (check <a class="reference internal" href="#kbtel2"><span class="std std-ref">above</span></a>),
+once observation time parsed, <cite>KOBE</cite> could generate an <cite>astropy</cite> frame via <cite>KOBE frame</cite> class.</p>
+<p>The <cite>frame</cite> object contains 2 attributes:</p>
+<ul class="simple">
+<li><p>frame - an astropy frame</p></li>
+<li><p>obstime - observation time or times</p></li>
+</ul>
+<ol class="arabic" id="kbtel31">
+<li><p>parse a frame</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize a frame and set location as keck for example</span>
+&gt;&gt;&gt; from kobe import frame
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>frame<span class="o">()</span>
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;keck&#39;</span><span class="o">)</span>
+
+<span class="c1"># then, let&#39;s try to parse observing time(s), the options include:</span>
+<span class="c1">#     1. an astropy.time.Time</span>
+<span class="c1">#     2. `str` now - present currently</span>
+<span class="c1">#     3. a time `str`, e.g. 1999-01-01T00:00:00.123456789</span>
+<span class="c1">#     4. a `float` or `int` number, means how much time before or later than currently</span>
+<span class="c1">#        e.g. time=-3600 (timeu=sec) stands for 1 hour before</span>
+<span class="c1">#     5. sequence of above options</span>
+&gt;&gt;&gt; a.parse_time<span class="o">(</span><span class="nv">time</span><span class="o">=</span><span class="s1">&#39;now&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.obstime
+&lt;Time object: <span class="nv">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span> <span class="nv">format</span><span class="o">=</span><span class="s1">&#39;datetime&#39;</span> <span class="nv">value</span><span class="o">=</span><span class="m">2020</span>-03-16 <span class="m">07</span>:57:08.115352&gt;
+&gt;&gt;&gt; a.parse_frame<span class="o">()</span>
+&gt;&gt;&gt; a.frame
+&lt;AltAz Frame <span class="o">(</span><span class="nv">obstime</span><span class="o">=</span><span class="m">2020</span>-03-16 <span class="m">07</span>:57:08.115352, <span class="nv">location</span><span class="o">=(</span>-5464487.81759887, -2492806.59108569, <span class="m">2151240</span>.19451846<span class="o">)</span> m, <span class="nv">pressure</span><span class="o">=</span><span class="m">0</span>.0 hPa, <span class="nv">temperature</span><span class="o">=</span><span class="m">100</span>.0 deg_C, <span class="nv">relative_humidity</span><span class="o">=</span><span class="m">0</span>.0, <span class="nv">obswl</span><span class="o">=</span><span class="m">1</span>.0 micron<span class="o">)</span>&gt;
+
+&gt;&gt;&gt; a.parse_time<span class="o">(</span><span class="nv">time</span><span class="o">=[</span><span class="s1">&#39;now&#39;</span>,1000,<span class="s1">&#39;1999-01-01T00:00:00.123456789&#39;</span><span class="o">])</span>
+&gt;&gt;&gt; a.obstime
+array<span class="o">([</span>&lt;Time object: <span class="nv">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span> <span class="nv">format</span><span class="o">=</span><span class="s1">&#39;datetime&#39;</span> <span class="nv">value</span><span class="o">=</span><span class="m">2020</span>-03-24 <span class="m">08</span>:13:09.122735&gt;,
+       &lt;Time object: <span class="nv">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span> <span class="nv">format</span><span class="o">=</span><span class="s1">&#39;datetime&#39;</span> <span class="nv">value</span><span class="o">=</span><span class="m">2020</span>-03-24 <span class="m">08</span>:29:49.123365&gt;,
+       &lt;Time object: <span class="nv">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span> <span class="nv">format</span><span class="o">=</span><span class="s1">&#39;isot&#39;</span> <span class="nv">value</span><span class="o">=</span><span class="m">1999</span>-01-01T00:00:00.123&gt;<span class="o">]</span>,
+       <span class="nv">dtype</span><span class="o">=</span>object<span class="o">)</span>
+&gt;&gt;&gt; a.parse_frame<span class="o">()</span>
+&gt;&gt;&gt; a.frame
+&lt;AltAz Frame <span class="o">(</span><span class="nv">obstime</span><span class="o">=[</span>datetime.datetime<span class="o">(</span><span class="m">2020</span>, <span class="m">3</span>, <span class="m">24</span>, <span class="m">8</span>, <span class="m">13</span>, <span class="m">9</span>, <span class="m">122735</span><span class="o">)</span>
+             datetime.datetime<span class="o">(</span><span class="m">2020</span>, <span class="m">3</span>, <span class="m">24</span>, <span class="m">8</span>, <span class="m">29</span>, <span class="m">49</span>, <span class="m">123365</span><span class="o">)</span>
+             datetime.datetime<span class="o">(</span><span class="m">1999</span>, <span class="m">1</span>, <span class="m">1</span>, <span class="m">0</span>, <span class="m">0</span>, <span class="m">0</span>, <span class="m">123457</span><span class="o">)]</span>,
+             <span class="nv">location</span><span class="o">=(</span>-5464487.81759887, -2492806.59108569, <span class="m">2151240</span>.19451846<span class="o">)</span> m,
+             <span class="nv">pressure</span><span class="o">=</span><span class="m">0</span>.0 hPa, <span class="nv">temperature</span><span class="o">=</span><span class="m">100</span>.0 deg_C, <span class="nv">relative_humidity</span><span class="o">=</span><span class="m">0</span>.0, <span class="nv">obswl</span><span class="o">=</span><span class="m">1</span>.0 micron<span class="o">)</span>&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel32" start="2">
+<li><p>visibility calculations for observatory</p>
+<p>Once a frame parsed, we could then calculate several visibilities for the observaroty,
+e.g. sun constrain, moon illumination and so on:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the height of sun</span>
+&gt;&gt;&gt; from kobe import frame
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>frame<span class="o">()</span>
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;keck&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.calc_sun_height<span class="o">(</span><span class="nv">time</span><span class="o">=</span><span class="s1">&#39;2020-03-16 07:57:08.115352&#39;</span><span class="o">)</span>
+&lt;Latitude -48.30077726 deg&gt;
+
+<span class="c1"># calculate moon illumination (ranged from 0 to 1)</span>
+&gt;&gt;&gt; a.calc_moon_illumination<span class="o">(</span><span class="nv">time</span><span class="o">=</span><span class="s1">&#39;2020-01-01&#39;</span><span class="o">)</span>
+<span class="m">0</span>.2995534608971628
+
+<span class="c1"># estimate the start and end of the following observing night from an input time</span>
+&gt;&gt;&gt; a.at_night<span class="o">(</span><span class="nv">time</span><span class="o">=</span><span class="s1">&#39;2020-01-01&#39;</span><span class="o">)</span>
+<span class="o">(</span>&lt;Time object: <span class="nv">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span> <span class="nv">format</span><span class="o">=</span><span class="s1">&#39;iso&#39;</span> <span class="nv">value</span><span class="o">=</span><span class="m">2020</span>-01-01 <span class="m">05</span>:20:00.000&gt;, &lt;Time object: <span class="nv">scale</span><span class="o">=</span><span class="s1">&#39;utc&#39;</span> <span class="nv">format</span><span class="o">=</span><span class="s1">&#39;iso&#39;</span> <span class="nv">value</span><span class="o">=</span><span class="m">2020</span>-01-01 <span class="m">15</span>:40:00.000&gt;<span class="o">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel33" start="3">
+<li><p>visibility calculations for a list of coordinates</p>
+<p>One could also input a series of coordinates to ask for their visibilities, e.g. airmass, seperation to solar object, and so on.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># obtain alt, az angle</span>
+&gt;&gt;&gt; a.altaz<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">0</span>,45,90<span class="o">]</span>,dec<span class="o">=</span><span class="m">20</span>,time<span class="o">=</span><span class="m">1</span>,timeu<span class="o">=</span><span class="s1">&#39;jd&#39;</span><span class="o">)</span>
+&lt;SkyCoord <span class="o">(</span>AltAz: <span class="nv">obstime</span><span class="o">=</span><span class="m">2020</span>-03-26 <span class="m">04</span>:04:04.836131, <span class="nv">location</span><span class="o">=(</span>-5464487.81759887, -2492806.59108569, <span class="m">2151240</span>.19451846<span class="o">)</span> m, <span class="nv">pressure</span><span class="o">=</span><span class="m">0</span>.0 hPa, <span class="nv">temperature</span><span class="o">=</span><span class="m">100</span>.0 deg_C, <span class="nv">relative_humidity</span><span class="o">=</span><span class="m">0</span>.0, <span class="nv">obswl</span><span class="o">=</span><span class="m">1</span>.0 micron<span class="o">)</span>: <span class="o">(</span>az, alt<span class="o">)</span> in deg
+<span class="o">[(</span><span class="m">288</span>.81014475,  <span class="m">7</span>.26921235<span class="o">)</span>, <span class="o">(</span><span class="m">278</span>.23873761, <span class="m">48</span>.46060971<span class="o">)</span>,
+<span class="o">(</span> <span class="m">75</span>.07976199, <span class="m">89</span>.33053841<span class="o">)]</span>&gt;
+
+<span class="c1"># calculate the airmass</span>
+&gt;&gt;&gt; a.calc_airmass<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">0</span>,45,90<span class="o">]</span>,dec<span class="o">=[</span><span class="m">20</span>,-20,0<span class="o">]</span>,time<span class="o">=</span><span class="s1">&#39;2020-03-25 03:44:03.391660&#39;</span><span class="o">)</span>
+&lt;Quantity <span class="o">[</span><span class="m">4</span>.56849008, <span class="m">1</span>.730989  , <span class="m">1</span>.07024843<span class="o">]</span>&gt;
+
+<span class="c1"># calculate specific fields seperation to the sun</span>
+&gt;&gt;&gt; a.calc_solar<span class="o">(</span><span class="nv">solarobj</span><span class="o">=</span><span class="s1">&#39;sun&#39;</span>, <span class="nv">time</span><span class="o">=</span><span class="s1">&#39;2020-03-25 00:00:00&#39;</span>, <span class="nv">ra</span><span class="o">=</span><span class="m">30</span>, <span class="nv">dec</span><span class="o">=</span><span class="m">60</span><span class="o">)</span>
+&lt;Angle <span class="o">[</span><span class="m">74</span>.76922248<span class="o">]</span> deg&gt;
+
+<span class="c1"># calculate specific fields seperation to the galactic plane</span>
+&gt;&gt;&gt; a.calc_galactic<span class="o">(</span><span class="nv">time</span><span class="o">=</span><span class="s1">&#39;2020-03-25 00:00:00&#39;</span>, <span class="nv">ra</span><span class="o">=</span><span class="m">30</span>, <span class="nv">dec</span><span class="o">=</span><span class="m">60</span><span class="o">)</span>
+&lt;Angle <span class="o">[</span><span class="m">1</span>.73839012<span class="o">]</span> deg&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel34" start="4">
+<li><p>visibility calculations for <cite>pointings</cite> and <cite>candidates</cite></p>
+<p>Instead of input coordinates manually, above functions are also applicable for <cite>pointings</cite> and <cite>candidates</cite> attributes if available:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># since for this case, we need both `frame` and `pointings` (or `candidates`)</span>
+<span class="c1"># we should import their son class, i.e. schedule instead</span>
+&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+
+<span class="c1"># set pointings</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limdec<span class="o">=[</span><span class="m">0</span>,90<span class="o">])</span>
+
+<span class="c1"># parse observatory location</span>
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;keck&#39;</span><span class="o">)</span>
+
+<span class="c1"># get alt, az angle for all pointings</span>
+&gt;&gt;&gt; a.altaz_pointings<span class="o">(</span><span class="nv">time</span><span class="o">=</span><span class="s1">&#39;2020-01-01&#39;</span><span class="o">)</span>
+&lt;SkyCoord <span class="o">(</span>AltAz: <span class="nv">obstime</span><span class="o">=</span><span class="m">2020</span>-01-01 <span class="m">00</span>:00:00.000, <span class="nv">location</span><span class="o">=(</span>-5464487.81759887, -2492806.59108569, <span class="m">2151240</span>.19451846<span class="o">)</span> m, <span class="nv">pressure</span><span class="o">=</span><span class="m">0</span>.0 hPa, <span class="nv">temperature</span><span class="o">=</span><span class="m">100</span>.0 deg_C, <span class="nv">relative_humidity</span><span class="o">=</span><span class="m">0</span>.0, <span class="nv">obswl</span><span class="o">=</span><span class="m">1</span>.0 micron<span class="o">)</span>: <span class="o">(</span>az, alt<span class="o">)</span> in deg
+<span class="o">[(</span><span class="m">101</span>.57698197, <span class="m">29</span>.37889098<span class="o">)</span>, <span class="o">(</span><span class="m">100</span>.27515512, <span class="m">26</span>.60745015<span class="o">)</span>,
+<span class="o">(</span> <span class="m">99</span>.03508821, <span class="m">23</span>.82472534<span class="o">)</span>, ..., <span class="o">(</span><span class="m">356</span>.8031899 , <span class="m">20</span>.50632869<span class="o">)</span>,
+<span class="o">(</span><span class="m">358</span>.90534896, <span class="m">22</span>.61682362<span class="o">)</span>, <span class="o">(</span>  <span class="m">1</span>.95809236, <span class="m">22</span>.06590241<span class="o">)]</span>&gt;
+
+<span class="c1"># for `candidates` case</span>
+<span class="c1"># It will be described in the next chapter</span>
+&gt;&gt;&gt; a.readc<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10,30<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span>-30,20,57<span class="o">])</span>
+&gt;&gt;&gt; a.altaz_candidates<span class="o">(</span><span class="nv">time</span><span class="o">=</span><span class="s1">&#39;2020-01-01&#39;</span><span class="o">)</span>
+&lt;SkyCoord <span class="o">(</span>AltAz: <span class="nv">obstime</span><span class="o">=</span><span class="m">2020</span>-01-01 <span class="m">00</span>:00:00.000, <span class="nv">location</span><span class="o">=(</span>-5464487.81759887, -2492806.59108569, <span class="m">2151240</span>.19451846<span class="o">)</span> m, <span class="nv">pressure</span><span class="o">=</span><span class="m">0</span>.0 hPa, <span class="nv">temperature</span><span class="o">=</span><span class="m">100</span>.0 deg_C, <span class="nv">relative_humidity</span><span class="o">=</span><span class="m">0</span>.0, <span class="nv">obswl</span><span class="o">=</span><span class="m">1</span>.0 micron<span class="o">)</span>: <span class="o">(</span>az, alt<span class="o">)</span> in deg
+<span class="o">[(</span><span class="m">131</span>.06454937, <span class="m">16</span>.24572341<span class="o">)</span>, <span class="o">(</span> <span class="m">77</span>.35122346, <span class="m">28</span>.76716843<span class="o">)</span>,
+<span class="o">(</span> <span class="m">34</span>.91524674, <span class="m">18</span>.84961134<span class="o">)]</span>&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="kbtel35" start="5">
+<li><p>visibility plots</p>
+<p>To make visibility result shown directly, we provide methods to visualize them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># import frame class</span>
+&gt;&gt;&gt; from kobe import frame
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>frame<span class="o">()</span>
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;keck&#39;</span><span class="o">)</span>
+
+<span class="c1"># sun height plot</span>
+&gt;&gt;&gt; import numpy as np
+<span class="c1"># show the height of sun at keck, every half an hour from now to 10 hours later</span>
+&gt;&gt;&gt; a.calc_sun_height<span class="o">(</span><span class="nv">time</span><span class="o">=</span>np.arange<span class="o">(</span><span class="m">20</span><span class="o">)</span>*1800,show<span class="o">=</span>True,marker<span class="o">=</span><span class="s1">&#39;o&#39;</span>,color<span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;sunh&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/sunh.png"><img alt="sunh.png" class="align-center" src="tutorial/../static/sunh.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># moon illumination</span>
+<span class="c1"># show the moon illumination at keck, every day from now till 20 days later</span>
+&gt;&gt;&gt; a.calc_moon_illumination<span class="o">(</span><span class="nv">time</span><span class="o">=</span>np.arange<span class="o">(</span><span class="m">20</span><span class="o">)</span>,timeu<span class="o">=</span><span class="s1">&#39;jd&#39;</span>,show<span class="o">=</span>True,marker<span class="o">=</span><span class="s1">&#39;o&#39;</span>,color<span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;mooni&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/mooni.png"><img alt="mooi.png" class="align-center" src="tutorial/../static/mooni.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># for asiago, calculate airmass for 3 coordinates, every half an hour from now to 10 hours later</span>
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="nv">obsname</span><span class="o">=</span><span class="s1">&#39;asiago&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.calc_airmass<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">0</span>,20,40<span class="o">]</span>,dec<span class="o">=[</span><span class="m">20</span>,20,20<span class="o">]</span>,time<span class="o">=</span>np.arange<span class="o">(</span><span class="m">20</span><span class="o">)</span>*1800,show<span class="o">=</span>True, <span class="nv">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; import pylab as pl
+&gt;&gt;&gt; pl.legend<span class="o">()</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;airmass&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/airmass.png"><img alt="airmass.png" class="align-center" src="tutorial/../static/airmass.png" style="width: 800px;" /></a>
+<p>Meanwhile, visualization functions is also applicable to <cite>pointings</cite> and <cite>candidates</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="s1">&#39;asiago&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limdec<span class="o">=[</span><span class="m">30</span>,40<span class="o">]</span>, <span class="nv">limra</span><span class="o">=[</span><span class="m">40</span>,50<span class="o">])</span>
+&gt;&gt;&gt; a.calc_airmass_pointings<span class="o">(</span><span class="nv">time</span><span class="o">=</span>np.arange<span class="o">(</span><span class="m">20</span><span class="o">)</span>*1800,show<span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; import pylab as pl
+&gt;&gt;&gt; pl.legend<span class="o">()</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;airmassp&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/airmassp.png"><img alt="airmassp.png" class="align-center" src="tutorial/../static/airmassp.png" style="width: 800px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+&gt;&gt;&gt; a.parse_location<span class="o">(</span><span class="s1">&#39;asiago&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.readc<span class="o">(</span><span class="nv">ra</span><span class="o">=[</span><span class="m">1</span>,10,30<span class="o">]</span>, <span class="nv">dec</span><span class="o">=[</span><span class="m">30</span>,20,57<span class="o">])</span>
+&gt;&gt;&gt; a.calc_airmass_candidates<span class="o">(</span><span class="nv">time</span><span class="o">=</span>np.arange<span class="o">(</span><span class="m">20</span><span class="o">)</span>*1800,show<span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; import pylab as pl
+&gt;&gt;&gt; pl.legend<span class="o">()</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;airmassc&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/airmassc.png"><img alt="airmassc.png" class="align-center" src="tutorial/../static/airmassc.png" style="width: 800px;" /></a>
+</li>
+</ol>
+<ol class="arabic simple" id="kbtel36" start="6">
+<li><p>rank pointings based on visibility</p></li>
+</ol>
+</div>
+<div class="section" id="observatories">
+<span id="kbtel4"></span><h2>Observatories<a class="headerlink" href="#observatories" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple" id="kbtel41">
+<li><p>set a list of observatories</p></li>
+</ol>
+<p>Then one can define a list of observatories, as shown below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># import `KOBE chedule`, a</span>
+&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+
+<span class="c1"># add one `observatory`, lapalma</span>
+&gt;&gt;&gt; a.add_observatory<span class="o">(</span><span class="s1">&#39;lapalma&#39;</span><span class="o">)</span>
+
+<span class="c1"># at lapalma, define a telescope, VST</span>
+<span class="c1"># whose field of view is 1 by 1 deg</span>
+<span class="c1"># here, in order to show tilings clearly (1 by 1 deg is too small)</span>
+<span class="c1"># we show OBs which is composed of 3 by 3 tilings</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limdec<span class="o">=[</span>-90,0<span class="o">])</span>
+&gt;&gt;&gt; a.add_telescope<span class="o">(</span><span class="s1">&#39;VST&#39;</span><span class="o">)</span>
+
+<span class="c1"># then we could define another observatory, asiago</span>
+&gt;&gt;&gt; a.add_observatory<span class="o">(</span><span class="s1">&#39;asiago&#39;</span><span class="o">)</span>
+
+<span class="c1"># at asiago, define a telescope, schmidt</span>
+&gt;&gt;&gt; a.set_pointings<span class="o">(</span><span class="nv">strategy</span><span class="o">=</span><span class="s1">&#39;T&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.pointings.generatep<span class="o">(</span><span class="nv">fovra</span><span class="o">=</span><span class="m">3</span>,fovdec<span class="o">=</span><span class="m">3</span>,limdec<span class="o">=[</span><span class="m">0</span>,90<span class="o">])</span>
+&gt;&gt;&gt; a.add_telescope<span class="o">(</span><span class="s1">&#39;schmidt&#39;</span><span class="o">)</span>
+
+<span class="c1"># then we have the observatories</span>
+&gt;&gt;&gt; a.observatories
+<span class="o">{</span><span class="s1">&#39;lapalma&#39;</span>: <span class="o">{</span><span class="s1">&#39;VST&#39;</span>: &lt;kobe.KBpointings.tilings object at 0x11f3481d0&gt;<span class="o">}</span>, <span class="s1">&#39;asiago&#39;</span>: <span class="o">{</span><span class="s1">&#39;schmidt&#39;</span>: &lt;kobe.KBpointings.tilings object at 0x11f348240&gt;<span class="o">}}</span>
+&gt;&gt;&gt; a.observatories<span class="o">[</span><span class="s1">&#39;lapalma&#39;</span><span class="o">][</span><span class="s1">&#39;VST&#39;</span><span class="o">]</span>.data
+&lt;Table <span class="nv">length</span><span class="o">=</span><span class="m">27666</span>&gt;
+n              ra             dec    fovra   fovdec
+int64         float64         float64 float64 float64
+----- ----------------------- ------- ------- -------
+<span class="m">0</span> -1.6331239353195196e+16   -90.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">0</span>               <span class="m">171</span>.89607   -90.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">0</span>   <span class="m">1</span>.633123935319554e+16   -90.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">0</span>               <span class="m">114</span>.59738   -89.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">0</span>               <span class="m">171</span>.89607   -89.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">0</span>               <span class="m">229</span>.19476   -89.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+...                     ...     ...     ...     ...
+<span class="m">3073</span>               <span class="m">357</span>.47579    <span class="m">19</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">3073</span>               <span class="m">358</span>.53341    <span class="m">19</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">3073</span>               <span class="m">359</span>.59103    <span class="m">19</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">3073</span>               <span class="m">357</span>.46923    <span class="m">20</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">3073</span>               <span class="m">358</span>.53341    <span class="m">20</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+<span class="m">3073</span>               <span class="m">359</span>.59759    <span class="m">20</span>.0     <span class="m">1</span>.0     <span class="m">1</span>.0
+
+<span class="c1"># and we can visualize them</span>
+&gt;&gt;&gt; a.locshow_all<span class="o">()</span>
+&gt;&gt;&gt; a.savefig<span class="o">(</span><span class="s1">&#39;observatories&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="tutorial/../static/observatories.png"><img alt="observatories.png" class="align-center" src="tutorial/../static/observatories.png" style="width: 800px;" /></a>
+<ol class="arabic simple" id="kbtel42" start="2">
+<li><p>plot the sky</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># import `KOBE chedule`, a</span>
+&gt;&gt;&gt; from kobe import schedule
+&gt;&gt;&gt; <span class="nv">a</span><span class="o">=</span>schedule<span class="o">()</span>
+
+<span class="c1"># plot the sky</span>
+&gt;&gt;&gt; a.plot_sky<span class="o">()</span>
+
+<span class="c1"># paser a time</span>
+&gt;&gt;&gt; a.parse_time<span class="o">(</span><span class="s1">&#39;20200101&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; a.plot_sky<span class="o">(</span><span class="nv">clear</span><span class="o">=</span>True<span class="o">)</span>
+
+<span class="c1"># paser observatories</span>
+</pre></div>
+</div>
+<p>Check more detials in the corresponding API page.</p>
+<div class="line-block">
+<div class="line"><span class="xref std std-ref">Previous</span></div>
+<div class="line"><span class="xref std std-ref">Next</span></div>
+<div class="line"><span class="xref std std-ref">Top</span></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">sn_data_analysis: sdapy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial page</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ztfanalysis.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ztfanalysis</span></code> – main programmer</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/ztfmultiple.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

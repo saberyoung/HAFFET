@@ -15,8 +15,8 @@ and all of them could be installed via `pip`, e.g.::
    * Only Linux and MAC OS have been tested, for Windows everything reamins unknown.
    * Considering the Python version, the tool is working for Python 3.
 
-Source installation with Pypi (RECOMMENDED)
---------------------------------------------
+Source installation with Pypi (RECOMMENDED but not available yet)
+------------------------------------------------------------------
 
 It is possible to build the latest ``sdapy`` with `pip <http://www.pip-installer.org>`_ ::
 

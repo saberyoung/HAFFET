@@ -1,22 +1,10 @@
-KOBE tutorial
+Tutorial page
 ===================================
 
-Documentation for KOBE is hosted by `Read the Docs <http://kobe.readthedocs.org/en/stable/>`_.
+Documentation of `sdapy` is hosted by `Read the Docs <http://sdapy.readthedocs.org/en/stable/>`_.
 
-:ref:`1. Scheme and General settings  <kbscheme>`
+:ref:`1. for single object  <single>`
 --------------------------------------------------
 
-:ref:`2. Pointing <kbpoint>`
+:ref:`2. for multiple objects <multiple>`
 ----------------------------------------------
-
-:ref:`3. Telescope and Observatory <kbtel>`
--------------------------------------------------
-
-:ref:`4. Candidates <kbcand>`
--------------------------------------------------
-
-:ref:`5. Triggers <kbtrigger>`
-----------------------------------------
-
-:ref:`6. Priorization and Optimization <kbprio>`
--------------------------------------------------

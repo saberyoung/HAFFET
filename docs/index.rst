@@ -26,7 +26,7 @@ Documentation
 .. toctree::
    :maxdepth: 1
 
-   install   
+   install
    tutorial
    issues
    todo
@@ -39,13 +39,7 @@ Reference/API
 .. toctree::
    :maxdepth: 1
    
-   general
-   pointings
-   telescope
-   observatory
-   candidates
-   triggers         
-   schedule
+   ztfanalysis   
    
 Indices and tables
 ====================

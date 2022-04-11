@@ -14,7 +14,6 @@ warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import pylab as pl
 import matplotlib.image as mpimg
 from scipy.optimize import curve_fit
 from scipy import integrate

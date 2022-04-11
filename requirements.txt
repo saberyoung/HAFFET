@@ -2,3 +2,19 @@ numpy
 matplotlib
 astropy
 numpydoc
+george
+pandas
+scipy
+joblib
+corner
+requests
+#multiprocessing >= 3.0
+emcee
+extinction
+uncertainties
+fundamentals
+openapi-codec
+astrocalc
+operator-courier
+python-math
+h5py
