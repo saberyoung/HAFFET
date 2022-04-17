@@ -166,7 +166,7 @@ class ztfmultiple(object):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
         datafile = '%s/%s' % (kwargs['datadir'], kwargs['datafile']%ztfid )        
         if os.path.exists(datafile):
-            if kwargs['verbose']: print (  'load:', datafile )
+            #if kwargs['verbose']: print (  'load:', datafile )
             self.data[ztfid] = load(datafile)
             
     def save_data(self, ztfid, force=False, **kwargs):
