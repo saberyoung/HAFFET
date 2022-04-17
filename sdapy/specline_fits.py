@@ -11,10 +11,10 @@ from uncertainties.unumpy import nominal_values, std_devs
 from scipy.optimize import curve_fit
 from astropy import units
 from astropy.constants import c
-from .functions import *
-from .models import *
-from .filters import *
-from .corner_hack import quantile
+from sdapy.functions import *
+from sdapy.models import *
+from sdapy.filters import *
+from sdapy.corner_hack import quantile
 
 class handle_spectrum:    
     def __init__(self, wave, flux, z, ebv, cw, region=None,

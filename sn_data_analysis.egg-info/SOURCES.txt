@@ -624,12 +624,6 @@ docs/static/logo.ico
 docs/static/logo.png
 docs/tutorial/ztfmultiple.rst
 docs/tutorial/ztfsingle.rst
-notebook/demo1.ipynb
-notebook/demo2.ipynb
-notebook/demo3.ipynb
-notebook/demo4.ipynb
-notebook/demo5.ipynb
-notebook/demo6.ipynb
 notebook/demo7.ipynb
 notebook/.ipynb_checkpoints/demo1-checkpoint.ipynb
 notebook/.ipynb_checkpoints/demo2-checkpoint.ipynb
@@ -644,6 +638,7 @@ sdapy/dump.py
 sdapy/filters.py
 sdapy/functions.py
 sdapy/gaussian_process.py
+sdapy/keypairs.py
 sdapy/model_fitters.py
 sdapy/models.py
 sdapy/pbar.py

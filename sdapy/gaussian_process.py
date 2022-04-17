@@ -12,8 +12,8 @@ import george, os, emcee
 from scipy.optimize import least_squares, minimize
 import matplotlib.pyplot as plt
 from multiprocessing import Pool
-from .filters import central_wavelengths
-from .functions import *
+from sdapy.filters import central_wavelengths
+from sdapy.functions import *
 
 class fit_gp:
     """Fits data with gaussian process.

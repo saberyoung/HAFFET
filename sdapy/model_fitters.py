@@ -13,10 +13,10 @@ from scipy.optimize import minimize, curve_fit
 import matplotlib.pyplot as plt
 import emcee, time
 from multiprocessing import Pool
-from .functions import *
-from .corner_hack import quantile
-from . import models
-from .filters import central_wavelengths
+from sdapy.functions import *
+from sdapy.corner_hack import quantile
+from sdapy import models
+from sdapy.filters import central_wavelengths
 
 class fit_model:
     """Fits data with power law.

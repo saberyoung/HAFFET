@@ -1,7 +1,7 @@
 from scipy.integrate import simps
 import math
 import numpy as np
-from .filters import central_wavelengths
+from sdapy.filters import central_wavelengths
 
 class constants:
     # covert things to cgs units

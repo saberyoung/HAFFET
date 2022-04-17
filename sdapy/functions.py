@@ -97,4 +97,19 @@ def get_samples_scipy(h5_file):
 
 def get_numpy(v):
     try:    return v.to_numpy() # pandas dataframe
-    except: return v            # numpy array already
+    except: return v            # numpy array
+
+def is_seq(o):
+    """Check if the object is a sequence
+
+    Parameters
+    ----------
+    o : any object
+           The object to check
+        
+    Returns
+    -------
+        is_seq : bool, scalar
+           True if *o* is a sequence, False otherwise
+    """
+    return hasattr(o, "__len__")

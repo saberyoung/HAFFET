@@ -10,7 +10,7 @@ from __future__ import print_function
 description="run analysis on SNe based on ZTF data"
 import os, sys, re, math, glob, warnings, \
     logging, requests, emcee, corner, random, \
-    shlex, subprocess, argparse, time, json, configparser
+    shlex, subprocess, argparse, time, json
 warnings.filterwarnings("ignore")
 import numpy as np
 import pandas as pd
@@ -31,14 +31,15 @@ from io import StringIO
 from pathlib import Path
 from collections import OrderedDict
 
-from .gaussian_process import fit_gp
-from .model_fitters import fit_model
-from .filters import *
-from .models import *
-from .functions import Mbol_to_Lbol, get_numpy, bbody
-from .specline_fits import handle_spectrum
-from .pbar import get_progress_bar
-from . import __path__, corner_hack
+from sdapy.gaussian_process import fit_gp
+from sdapy.model_fitters import fit_model
+from sdapy.filters import *
+from sdapy.models import *
+from sdapy.functions import *
+from sdapy.specline_fits import handle_spectrum
+from sdapy.pbar import get_progress_bar
+from sdapy.keypairs import get_keypairs
+from sdapy import __path__, corner_hack
 srcpath = __path__[0]
 
 __all__ = ('ztfsingle', 'ztfmultiple', 'plotter')
@@ -61,26 +62,6 @@ if __name__ == "__main__":
     parser.add_argument("-c", "--clobber",dest="clobber",default=False,\
                         action="store_true",help='Redo analysis')
     args = parser.parse_args()        
-
-
-def set_default():
-    _dir = srcpath
-    if  os.path.isfile('sda.default'):
-        print(">> WARNING: using local sda.default file")
-        _dir = ''
-    return _dir
-
-def read_default():
-    
-    _dir = set_default()
-    config = configparser.ConfigParser()
-    config.read(_dir+'/sda.default')    
-    optlist = {}
-    for s in config.sections():
-        optlist[s] = {}
-        for o in config.options(s):
-            optlist[s][o] = config.get(s,o)
-    return optlist
 
 class ztfmultiple(object):
 
@@ -185,7 +166,7 @@ class ztfmultiple(object):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
         datafile = '%s/%s' % (kwargs['datadir'], kwargs['datafile']%ztfid )        
         if os.path.exists(datafile):
-            print (  datafile )
+            if kwargs['verbose']: print (  'load:', datafile )
             self.data[ztfid] = load(datafile)
             
     def save_data(self, ztfid, force=False, **kwargs):
@@ -242,8 +223,10 @@ class ztfsingle(object):
             'datadir'   : '/Users/yash0613/Library/CloudStorage/Box-Box/ztf_data/tmp/',
                                   # where to put and read products,
                                   #   e.g. mc samples, plots, etc
-            'sigma'     : 5,      # signal noise ratio for detections
+            'sigma'     : 5,      # signal noise ratio for detections            
             'fsigma'    : 1,      # signal noise ratio for fittings
+            'zp'        : 23.9,   # 23.9 for micro Jansky, as what atlas did
+                                  # mab = -2.5 * log10(fv[Jy]/3631) = -2.5 * log10(fv[mJy]) + 2.5*log10(3631*1e6)
             'color_thre': 1.,     # cross match g and r within how many days for color epoch
             'c10temp'   : 1.,     # which template to use for g-r comparison                        
             'clipsigma' : None,   # for LC clipping
@@ -381,7 +364,7 @@ class ztfsingle(object):
             'ax_xlim'    : [-50,120],  # x lim, x is phase relative to peak,
                                        #  only working when t0 avaibale
         }
-                 
+        
         # ----- define logger ----- #
         #if logger is None:
         #    logging.basicConfig(level = logging.INFO)
@@ -398,7 +381,8 @@ class ztfsingle(object):
         
         # set to ZTF data dir
         os.environ["ZTFDATA"] = self.kwargs['targetdir']
-        global bts, marshal, fritz
+        global bts, marshal, fritz, ztfquery
+        import ztfquery
         from ztfquery import bts, marshal, fritz
         
         self.ztfid  = ztfid
@@ -417,17 +401,21 @@ class ztfsingle(object):
         else:
             self.t0 = 0  # if None, try to get it via GP since it was needed for fits/pl/arnett...
         self.tpeak  = dict()  # peak epoch relative to self.t0
-        self.fpeak  = dict()  # peak Fmcmc for GP or fit
+        self.fpeak  = dict()  # peak flux for GP or fit
         self.axes   = axes    # if axes is None, will init axes
                               # if axes is False, will not make plots
-                              # otherwise, make axes = [ax,ax1,ax2, ...], where ax is defined by user              
-
-    def config_ztfquery(self, fritz_token='733be155-a0c2-41c6-b994-d877fb4a0088',
-                        marshal_username='saberyoung', marshal_password='Ys_19900615', ):
-        ztfquery.io.set_account('fritz', token=fritz_token, force=True)
-        ztfquery.io.set_account('marshal', username=marshal_username, password=marshal_password)
-        ztfquery.io.test_irsa_account()
-
+                              # otherwise, make axes = [ax,ax1,ax2, ...], where ax is defined by user               
+        
+    def config_ztfquery(self, wdir=None):
+        optlist = get_keypairs(wdir)
+        if len(optlist) > 0:
+            assert 'fritz' in optlist.keys()
+            ztfquery.io.set_account('fritz', token=optlist['fritz']['token'], force=True)
+            assert 'marshal' in optlist.keys()
+            ztfquery.io.set_account('marshal', username=optlist['marshal']['usr'],
+                                    password=optlist['marshal']['pwd'])
+            ztfquery.io.test_irsa_account()
+            
     def parse_coo(self, verbose=True, deg=True):
         assert self.ra is not None and self.dec is not None
         degunits = False
@@ -448,18 +436,46 @@ class ztfsingle(object):
         if jd: return Time.now().jd
         else:  return Time.now().mjd
 
-    def add_lc(self, df, **kwargs):
+    def add_lc(self, df, source=None, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        assert 'mag' in df.keys() and 'emag' in df.keys() and 'jdobs' in df.keys()
+        ck1 = 'mag' in df.keys() and 'emag' in df.keys() and 'jdobs' in df.keys() and 'filter' in df.keys()
+        ck2 = 'flux' in df.keys() and 'eflux' in df.keys() and 'jdobs' in df.keys() and 'filter' in df.keys()
+        assert ck1 or ck2, 'rename columns to mag/emag/jdobs/filter or flux/eflux/jdobs/filter'
+        df['source'] = source
         if not 'lc' in self.__dict__:
             self.lc = df
         else:
             self.lc = self.lc.append(df, ignore_index=True).drop_duplicates()
         jdmin, jdmax = kwargs['jdmin'], kwargs['jdmax']
         if jdmin is not None: self.lc = self.lc.query('jdobs>=@jdmin')
-        if jdmax is not None: self.lc = self.lc.query('jdobs<=@jdmax')
+        if jdmax is not None: self.lc = self.lc.query('jdobs<=@jdmax')        
         
-    def bin_fp_ztf(self, binDays=3, resultsPath=None, outPath=None, **kwargs):
+    def add_flux(self, **kwargs):        
+        assert 'lc' in self.__dict__        
+        assert 'mag' in self.lc.keys(), 'input mag'        
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
+        if 'limmag' in self.lc.keys():
+            self.lc = self.lc.query('limmag<99')
+            self.lc['flux'], self.lc['eflux'] = self.mag_to_flux(self.lc['mag'],
+                    limmag=self.lc['limmag'], sigma=kwargs['sigma'], zp=kwargs['zp'])
+        elif 'emag' in self.lc.keys():
+            self.lc['flux'], self.lc['eflux'] = self.mag_to_flux(self.lc['mag'],
+                    magerr=self.lc['emag'], sigma=kwargs['sigma'], zp=kwargs['zp'])
+        else:
+            self.lc['flux'] = self.mag_to_flux(self.lc['mag'], sigma=kwargs['sigma'], zp=kwargs['zp'])
+            
+    def add_mag(self, **kwargs):        
+        assert 'lc' in self.__dict__       
+        assert 'flux' in self.lc.keys(), 'input flux'
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        if 'eflux' in self.lc.keys():
+            self.lc = self.lc.query('eflux>0')
+            self.lc['mag'], self.lc['emag'], self.lc['limmag'] = self.flux_to_mag(self.lc['flux'],
+                    dflux=self.lc['eflux'], sigma=kwargs['sigma'], zp=kwargs['zp'])        
+        else:
+            self.lc['mag'] = self.flux_to_mag(self.lc['flux'], sigma=kwargs['sigma'], zp=kwargs['zp']) 
+            
+    def bin_fp_atlas(self, binDays=3, resultsPath=None, outPath=None, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         cmd = 'python %s/plot_atlas_fp.py stack %.2f %s '%(srcpath, binDays, resultsPath)
         if kwargs['jdmin'] is not None and kwargs['jdmax'] is not None:            
@@ -492,52 +508,35 @@ class ztfsingle(object):
                 if not os.path.exists(f_unbin):
                     print ('Error: %s not found'%f_unbin)
                     return None
-                self.bin_fp_ztf(binDays=binDays, resultsPath=f_unbin,
-                                outPath=wdir, **kwargs)
+                self.bin_fp_atlas(binDays=binDays, resultsPath=f_unbin, outPath=wdir, **kwargs)
             self._get_fp_atlas(f, binned=True, **kwargs)
             
     def _get_fp_atlas(self, f, binned=False, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        sigma = kwargs['sigma']
-        if binned:
-            df = pd.read_csv(f,sep = ',',skiprows=[0,1,2,3,4,5]).drop_duplicates().reset_index(drop=True)
-        else:
-            df = pd.read_csv(StringIO('\n'.join(open(f).readlines()).replace("###", "")), delim_whitespace=True)
-        df.rename(columns={'uJy':'flux','duJy':'eflux','F':'filter','MJD':'mjd',}, inplace=True)
-        # calc mag
-        mags, sigmamags, limmags = [], [], []
-        f, fe = [], []
-        for flux, fluxerr in zip(df['flux'], df['eflux']):
-            snr = flux/fluxerr                         
-            if flux > 0.0 and snr>sigma:
-                magpsf = -2.5*np.log10(flux) + 23.9
-                sigmamagpsf = abs(-2.5/np.log(10) * fluxerr / flux)
-            else:
-                magpsf = 99
-                sigmamagpsf = 99            
-            limmag = -2.5*np.log10(sigma*fluxerr) + 23.9
-            mags.append(magpsf)
-            sigmamags.append(sigmamagpsf)
-            limmags.append(limmag)
-            F0 = 10**(23.9/2.5)           
-            f.append( flux / F0 )
-            fe.append( fluxerr / F0 )            
-        df['mag'] = mags
-        df['emag'] = sigmamags
-        df['limmag'] = limmags        
-        df['jdobs'] = df['mjd'] + 2400000.5
-        df['Fratio'] = f
-        df['Fratio_unc'] = fe
-        self.add_lc(df, **kwargs)
+        sigma = kwargs['sigma']        
+        if binned: skiprows=[0,1,2,3,4,5]
+        else: skiprows=None
+        df = pd.read_csv(f,skiprows=skiprows,sep = ',',).drop_duplicates().reset_index(drop=True)
+        df.rename(columns={'uJy':'flux','duJy':'eflux','F':'filter',}, inplace=True)           
+        df['jdobs'] = df['MJD'] + 2400000.5
+        df['source'] = 'atlasfp'
+        self.add_lc(df, source='atlasfp', **kwargs)
+        self.add_mag(**kwargs)
         
-    def get_alert_ztf(self, **kwargs):
+    def get_alert_ztf(self, source='marshal', **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        df = marshal.get_local_lightcurves(self.ztfid)
-        self.add_lc(df, **kwargs)
-    
-    def get_fp_ztf(self, **kwargs):
+        assert source in ['marshal', 'fritz']
+        if source == 'marshal':
+            df = marshal.get_local_lightcurves(self.ztfid)
+        else:
+            df = fritz.get_local_lightcurves(self.ztfid)
+        df['source'] = source
+        self.add_lc(df, source=source, **kwargs)
+        self.add_flux(**kwargs)
+        
+    def get_fp_ztf(self, seeing_cut = 7., **kwargs):
         ''' get local ZTF forced phot LCs
-        '''
+        ''' 
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         targetdir = '%s/ForcePhot/'%kwargs['targetdir']
         sigma = kwargs['sigma']
@@ -565,48 +564,33 @@ class ztfsingle(object):
         eF0 = F0 / 2.5 * np.log(10) * df['ezp'].values
         Fpsf = df['Fpsf'].values
         eFpsf = df['Fpsf_unc'].values
-        Fratio = Fpsf / F0
-        eFratio2 = (eFpsf / F0)**2 + (Fpsf * eF0 / F0**2)**2
-        eFratio = np.sqrt(eFratio2)
-        df['Fratio'] = Fratio
-        df['Fratio_unc'] = eFratio
-        
+        # from Jy to micro Jy        
+        df['flux'] = Fpsf / F0 * 3631 * 1e6
+        df['eflux'] = np.sqrt( (eFpsf / F0)**2 + (Fpsf * eF0 / F0**2)**2 ) * 3631 * 1e6
         filt = df['filter']
-        filterid = np.zeros(len(df))
+        filterid, filters = np.zeros(len(df)), np.array([''] * len(df))
         filterid[filt=='ZTF_g']=1
         filterid[filt=='ZTF_r']=2
         filterid[filt=='ZTF_i']=3
-        df['filterid'] = filterid    
-        df['chi2_red'] = np.array([np.float(x) for x in df['chi2_red'].values])    
-        df['fcqfid'] = df['field']*10000 + df['ccdid']*100 + df['qid']*10 + df['filterid']
-    
-        # calc mag
-        mags, sigmamags, limmags, filters = [], [], [], []
-        for filtro, zpdiff, flux, fluxerr, snr in zip(df['filter'], df['zp'], 
-                    df['Fpsf'], df['Fpsf_unc'], df['Fpsf_snr']):
-            if flux > 0.0 and snr>sigma:
-                magpsf = -2.5*np.log10(flux) + zpdiff
-                sigmamagpsf = abs(-2.5/np.log(10) * fluxerr / flux)
-            else:
-                magpsf = 99
-                sigmamagpsf = 99
-            limmag = -2.5*np.log10(sigma*fluxerr) + zpdiff
-            mags.append(magpsf)
-            sigmamags.append(sigmamagpsf)
-            limmags.append(limmag)
-            filters.append(filtro.replace('ZTF_',''))    
-        df['mag'] = mags
-        df['emag'] = sigmamags
-        df['limmag'] = limmags
+        filters[filt=='ZTF_g']='g'
+        filters[filt=='ZTF_r']='r'
+        filters[filt=='ZTF_i']='i'
+        df['filterid'] = filterid
         df['filter'] = filters
-        self.add_lc(df, **kwargs)
+        df['chi2_red'] = np.array([np.float(x) for x in df['chi2_red'].values])    
+        df['fcqfid'] = df['field']*10000 + df['ccdid']*100 + df['qid']*10 + df['filterid']              
+        df = df.query('seeing < @seeing_cut')
+        self.add_lc(df, source='ztffp', **kwargs)
+        self.add_mag(**kwargs)
         
-    def query_fp_atlas(self, clobber=False, verbose=True,
-            mjdstart=None, mjdend=None, atlas_username='saberyoung', 
-            atlas_passord='Ys19900615', **kwargs):
+    def query_fp_atlas(self, wdir=None, clobber=False, verbose=True,
+            mjdstart=None, mjdend=None, **kwargs):
         ''' ATLAS forced phot query
         https://fallingstar-data.com/forcedphot/static/apiexample.py
         '''
+        optlist = get_keypairs(wdir)
+        if len(optlist) == 0: return
+        assert 'atlas' in optlist.keys()
         BASEURL = "https://fallingstar-data.com/forcedphot"
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         radeg, decdeg = self.parse_coo(verbose=verbose, deg=True)        
@@ -627,8 +611,8 @@ class ztfsingle(object):
             token = os.environ.get('ATLASFORCED_SECRET_KEY')
             if verbose: print('Using stored token')
         else:
-            data = {'username': atlas_username,
-                    'password': atlas_passord}
+            data = {'username': optlist['atlas']['usr'],
+                    'password': optlist['atlas']['pwd'],}
             resp = requests.post(url=f"{BASEURL}/api-token-auth/", data=data)
 
             if resp.status_code == 200:
@@ -710,9 +694,11 @@ class ztfsingle(object):
         filepath.parent.mkdir(parents=True, exist_ok=True)
         dfresult.to_csv(f)
 
-    def query_fp_ztf(self, query=False, ztf_email='sheng.yang@astro.su.se',
-            ztf_userpass='augj975', clobber=False, verbose=True, jdstart=None,
-            jdend=None, **kwargs):
+    def query_fp_ztf(self, query=False, wdir=None, clobber=False,
+            verbose=True, jdstart=None, jdend=None, **kwargs):
+        optlist = get_keypairs(wdir)
+        if len(optlist) == 0: return
+        assert 'ztf' in optlist.keys()
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         radeg, decdeg = self.parse_coo(verbose=verbose, deg=True)        
         try: jdstart = float(jdstart)
@@ -733,7 +719,7 @@ class ztfsingle(object):
             ' -q -O log.txt '+ \
             '"https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi?'+\
             'ra=%.7f&dec=%.7f&jdstart=%.5f&jdend=%.5f&'%(radeg, decdeg, jdstart, jdend)+\
-            'email=%s&userpass=%s"'%(ztf_email, ztf_userpass)
+            'email=%s&userpass=%s"'%(optlist['ztf']['email'], optlist['ztf']['pwd'])
         if query: subprocess.Popen(line, shell=True)
         else:  print (self.ztfid, c.ra.deg, c.dec.deg, jdstart, jdend, line)
             
@@ -743,27 +729,51 @@ class ztfsingle(object):
         if source in ['marshal',None]:
             marshal.download_lightcurve(self.ztfid)         
         if source in ['fritz',None]:
-            fritz.download_lightcurve(self.ztfid)
-            
-    def add_flux(self, **kwargs):
-        assert 'lc' in self.__dict__        
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        lc = self.lc
-        if 'Fratio' in self.lc:
-            # to flux Jy        
-            lc['flux'], lc['flux_unc'] = self.mag_to_flux(lc['mag'], magerr=lc['emag'])
-            lcdet = lc.query('mag<99')
-            maxflux = max(lcdet['flux'])            
-            lc['Fmcmc'] = maxflux*lc['Fratio']/max(lcdet['Fratio'])           
-            lc['Fmcmc_unc'] = lc['Fmcmc']*lc['Fratio_unc']/lc['Fratio']
-        else:            
-            # to flux Jy
-            ''' !!! make sure no upper limit mag numbers here !!!'''
-            lc['flux'], lc['flux_unc'] = self.mag_to_flux(lc['mag'], magerr=lc['emag'])
-            lc['Fmcmc'] = lc['flux']
-            lc['Fmcmc_unc'] = lc['flux_unc']
-        self.lc = lc.query('Fmcmc_unc>0')
-
+            fritz.download_lightcurve(self.ztfid)                
+        
+    def calibrate_baseline(self, ax=None, key='fcqfid', source='ztffp',
+                    xmin=-100, xmax=-20, ax_xlim=None, ax_ylim=None):
+        assert xmin < xmax
+        assert self.t0 > 2400000, 'set t0 first'
+        xp = self.t0
+        tb = self.lc
+        if source is not None:
+            tb = tb.query("source==@source")
+        fcqfs = np.unique(tb[key].values)
+        colors = ['limegreen', 'cyan', 'skyblue', 'purple',
+                  'r', 'm', 'pink', 'gold', 'orange', 'y', 'grey']    
+        baseline = dict()
+        for n, fcqfid in enumerate(fcqfs):            
+            ix = tb[key].values==fcqfid            
+            thistime = (tb['jdobs'][ix] - 2458000)
+            if ax is not None:
+                ax.errorbar(thistime, tb['flux'][ix], tb['eflux'][ix], 
+                         fmt='.', color=colors[n],
+                         label = '%s = %s, Nobs = %d'%(key, fcqfid, np.sum(ix)))
+            # baseline            
+            __ = np.logical_and(tb['jdobs'][ix]>=xp+xmin, tb['jdobs'][ix]<=xp+xmax)
+            if len(tb['jdobs'][ix][__]) > 0:
+                xx = tb['jdobs'][ix][__] - 2458000
+                yy = tb['flux'][ix][__]
+                yye = tb['eflux'][ix][__]
+                y0 = np.average(yy, weights=1/yye/yye)
+                baseline[fcqfid] = y0
+                if ax is not None:
+                    ax.errorbar(xx, yy, yye, marker='o', markersize=12,
+                                ls='', fillstyle='none', color=colors[n])                
+                    ax.axhline(y0, color=colors[n])               
+        if ax is not None:
+            ax.axvline(xp-2458000, color='k', ls='-')            
+            ax.axvline(xp+xmin-2458000, color='r', ls='--')
+            ax.axvline(xp+xmax-2458000, color='r', ls='--')        
+            ax.grid(ls=":")
+            ax.set_xlabel('JD - 2458000 (days)')
+            ax.set_ylabel('f')
+            ax.legend(loc = 'best', fontsize=10, frameon=False)
+            if ax_ylim is not None: ax.set_ylim(ax_ylim)
+            if ax_xlim is not None: ax.set_xlim(ax_xlim)                        
+        return baseline
+    
     def query_spectra(self, source=None, **kwargs):        
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         assert source in ['marshal', 'fritz',None]
@@ -772,16 +782,18 @@ class ztfsingle(object):
         if source in ['fritz',None]:
             fritz.download_spectra(self.ztfid, get_object=True, store=True, verbose=False)
 
-    def query_tns(self, tns_botid=131335, tns_botname = "kinder_bot",
-                  tns_api='603cc592cbb2b9ac8d63fcf5dfbe18e0bd981982',
-                  **kwargs):
+    def query_tns(self, wdir=None, **kwargs):
+        optlist = get_keypairs(wdir)
+        if len(optlist) == 0: return
+        assert 'tns' in optlist.keys()
         TNS         = "sandbox.wis-tns.org"
         url_tns_api = "https://" + TNS + "/api/get"
         search_url  = url_tns_api + "/search"
-        tns_marker = 'tns_marker{"tns_id": "' + str(tns_botid) + '", "type": "bot", "name": "' + tns_botname + '"}'        
+        tns_marker = 'tns_marker{"tns_id": "' + str(optlist['tns']['id']) + \
+            '", "type": "bot", "name": "' + optlist['tns']['name'] + '"}'        
         headers = {'User-Agent': tns_marker}
         json_file = OrderedDict(search_obj)
-        search_data = {'api_key': TNS_API_KEY, 'data': json.dumps(json_file)}
+        search_data = {'api_key': optlist['tns']['api'], 'data': json.dumps(json_file)}
         response = requests.post(search_url, headers = headers, data = search_data)
         
     def get_local_spectra(self,**kwargs):
@@ -799,7 +811,7 @@ class ztfsingle(object):
                     'instru': tel, 'w': get_numpy(data['lbda']),'f': get_numpy(data['flux'])}
                 except:  print ( os.path.join(dir_,d) )
         # spec from fritz
-        _spec = fritz.FritzSpectrum.from_name( self.ztfid )
+        _spec = fritz.FritzSpectrum.from_name( self.ztfid,force_dl=False )
         if _spec is not None:
             if type(_spec) is list:
                 for _ in _spec: 
@@ -828,7 +840,7 @@ class ztfsingle(object):
         
         ''' parse local data via ztfid '''    
         self.get_fp_ztf()  # obtain forced phot lc              
-        self.add_flux() # add Fmcmc item
+        self.add_flux() # add flux item
         self.clip_lc()  # remove lc outliers        
         
         ''' other infos '''        
@@ -920,7 +932,7 @@ class ztfsingle(object):
         
         ''' parse local data via ztfid '''        
         self.get_local_forced_lightcurves()  # obtain forced phot lc              
-        self.add_flux() # add Fmcmc item        
+        self.add_flux() # add flux item        
         self.clip_lc()  # remove lc outliers        
         
         ''' other infos '''        
@@ -1481,8 +1493,7 @@ class ztfsingle(object):
                 yy = yy[__]
                 yye = yye[__]
                 mm = self.flux_to_mag(yy, dflux=None)
-                mme = abs(self.flux_to_mag(yy, dflux=None)-
-                          self.flux_to_mag(yy+yye, dflux=None))                          
+                mme = abs(self.flux_to_mag(yy, dflux=None)-self.flux_to_mag(yy+yye, dflux=None))                          
                 self.cbb[3][_filt] = (mm,mme)
         if len(self.cbb[2])>0: self.cbb[2]['t'] = _jds
         if len(self.cbb[3])>0: self.cbb[3]['t'] = _jds
@@ -1537,8 +1548,36 @@ class ztfsingle(object):
             try: _df[_] = pd.to_numeric(_df[_])
             except: pass
         self.lc_match = _df
-    
-    def explosion_pl(self,**kwargs):
+
+    def ext_lc(self,filt='g',num=3,**kwargs):
+        ''' add LC points based on intepolations
+        which can be used for instance the power law fits when no enough early data exists.
+        '''
+        assert self.t0 > 2400000, '!!!either input jdpeak or do GP first'
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
+        
+        assert 'gpcls' in self.__dict__            
+        rel_flux_cutoff = float(kwargs['rel_flux_cutoff'])
+        rel_flux_cutfrom = float(kwargs['rel_flux_cutfrom'])
+        tm = self.fpeak['GP'][filt][0]
+        y1 = tm * rel_flux_cutoff
+        y2 = tm * rel_flux_cutfrom
+            
+        __ = np.logical_and(self.gpcls.f_pred==filt, self.gpcls.x_pred<self.t0)
+        xx = self.gpcls.x_pred[__]
+        yy = self.gpcls.y_pred[__]
+        yye = self.gpcls.y_prede[__]
+        
+        __ = np.logical_and(yy>=y2, yy<=y1)
+        _xx, _yy, _yye = xx[__], yy[__], yye[__]
+            
+        num = min(num, len(_xx)-1)
+        _id = np.arange(0,len(_xx),1)
+        _rid = np.random.choice(_id, num, replace=False)
+        
+        return _xx[_rid], _yy[_rid], _yye[_rid]
+        
+    def explosion_pl(self,ext_filt=None,ext_num=None,**kwargs):
         ''' power law on early lc
         '''        
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
@@ -1547,7 +1586,7 @@ class ztfsingle(object):
         elif kwargs['pl_type'] == 2: clobber = True
         elif kwargs['pl_type'] == 3: clobber = False
         else: return
-                
+        
         ncores = kwargs['ncores']
         if ncores is None: ncores = cpu_count() - 1
 
@@ -1565,20 +1604,33 @@ class ztfsingle(object):
         
         # t: rest frame phase relative to r band peak
         t = (get_numpy(df['jdobs'])-self.t0)/(1+self.z)        
-        f = get_numpy(df['Fmcmc'])
-        f_unc = get_numpy(df['Fmcmc_unc'])
+        f = get_numpy(df['flux'])
+        f_unc = get_numpy(df['eflux'])
         f_zp = np.zeros_like(f)
         f_zp_unc = np.zeros_like(f_unc)
         bands = np.array(['']*len(t))
         for filt in kwargs['pl_bands']:            
             this_chip = np.where(df['filter'] == filt)
-            if 'fit' in self.fpeak:
-                tm = self.fpeak['fit'][filt][0]
-            else:
-                tm = self.fpeak['GP'][filt][0]
+            if 'fit' in self.fpeak:  tm = self.fpeak['fit'][filt][0]
+            else:  tm = self.fpeak['GP'][filt][0]
             f_zp[this_chip] = f[this_chip]/tm*fscale
             f_zp_unc[this_chip] = f_unc[this_chip]/tm*fscale
             bands[this_chip] = filt
+            if ext_filt is not None:
+                assert ext_num is not None
+                if ext_filt == filt:                    
+                    xx,yy,yye = self.ext_lc(filt=ext_filt,num=ext_num,**kwargs)
+                elif filt in ext_filt:
+                    xx,yy,yye = self.ext_lc(filt=filt,num=ext_num,**kwargs)
+                else:
+                    continue                
+                _xx = (xx-self.t0)/(1+self.z) 
+                _yy = yy/tm*fscale
+                _yye = yye/tm*fscale                
+                t = np.append(t, _xx)
+                f_zp = np.append(f_zp, _yy)
+                f_zp_unc = np.append(f_zp_unc, _yye)
+                bands =  np.append(bands, np.array([filt]*len(_xx)))                
         __ = np.where(f_zp < rel_flux_cutoff * fscale)
         t = t[__]
         f_zp = f_zp[__]
@@ -1769,8 +1821,8 @@ class ztfsingle(object):
             self.lc = self.lc.query('jdobs<=@self.t0+@pmax and jdobs>=@self.t0+@pmin')
         
         lc = self.lc
-        self.gpcls = fit_gp(np.array(lc['jdobs']), np.array(lc['Fmcmc']),
-                    np.array(lc['Fmcmc_unc']), filters=np.array(lc['filter']))        
+        self.gpcls = fit_gp(np.array(lc['jdobs']), np.array(lc['flux']),
+                    np.array(lc['eflux']), filters=np.array(lc['filter']))        
         self.gpcls.train(kernel=kwargs['kernel'], fix_scale=kwargs['fix_scale'],
               gp_mean=kwargs['gp_mean'], opt_routine=kwargs['gp_routine'],
               nwalkers=kwargs['nwalkers'], nsteps=kwargs['nsteps'],
@@ -1822,7 +1874,7 @@ class ztfsingle(object):
             if len(lc) <= 5: continue
             # fit on rest frame phase relative to r band peak            
             self.fitcls[filt] = fit_model((np.array(lc['jdobs'])-self.t0)/(1+self.z),
-                    np.array(lc['Fmcmc']), np.array(lc['Fmcmc_unc']), filters=None)            
+                    np.array(lc['flux']), np.array(lc['eflux']), filters=None)            
             self.fitcls[filt].train(t_fl=18, opt_routine=kwargs['fit_routine'],
                     fit_mean=kwargs['fit_method'], nwalkers=kwargs['nwalkers'],
                     nsteps=kwargs['nsteps'], nsteps_burnin=kwargs['nsteps_burnin'], ncores=ncores,
@@ -1860,7 +1912,7 @@ class ztfsingle(object):
             for f in np.unique(self.lc['filter']):                
                 _lc = self.lc.query('filter==@f')
                 outlier_mask = sigma_clip(
-                    data=_lc['Fmcmc'],
+                    data=_lc['flux'],
                     sigma=clipsigma,
                     sigma_lower=None,
                     sigma_upper=None,
@@ -1917,9 +1969,9 @@ class ztfsingle(object):
                 elif 'GP' in self.fpeak and filt in self.fpeak['GP']:
                     fmax = self.fpeak['GP'][filt][0]
                 else:
-                    fmax = max(filt_lc['Fmcmc'])
+                    fmax = max(filt_lc['flux'])
                 fl1, fl2 = fmax*level1, fmax*level2            
-                self.earlypoints[filt] = len(filt_lc.query('Fmcmc >= @fl1 and Fmcmc <= @fl2'))
+                self.earlypoints[filt] = len(filt_lc.query('flux >= @fl1 and flux <= @fl2'))
         
     def on_sntype(self, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
@@ -1988,7 +2040,7 @@ class ztfsingle(object):
             elif 'GP' in self.fpeak and filt in self.fpeak['GP']:
                 fms.append( self.fpeak['GP'][filt][0] )
             else:
-                fms.append( max(self.lc.query('filter==@filt')['Fmcmc']) )                 
+                fms.append( max(self.lc.query('filter==@filt')['flux']) )                 
             showbands.append(filt)
             
         t0 = self.t0
@@ -2112,8 +2164,8 @@ class ztfsingle(object):
             # normalize flux item in ax
             if 'ax' in self.__dict__ and self.ax is not None:
                 __lc = self.lc.query('filter==@filt')
-                self.ax.errorbar(__lc['jdobs']-axt0, __lc['Fmcmc']/fm*fscale+ys[filt],
-                             yerr=__lc['Fmcmc_unc']/fm*fscale, alpha=kwargs['alphabest'], **PROP1f[filt])
+                self.ax.errorbar(__lc['jdobs']-axt0, __lc['flux']/fm*fscale+ys[filt],
+                             yerr=__lc['eflux']/fm*fscale, alpha=kwargs['alphabest'], **PROP1f[filt])
                 
             ''' ax2 mag plot '''
             if 'ax2' in self.__dict__ and self.ax2 is not None:
@@ -2350,10 +2402,10 @@ class ztfsingle(object):
         return pd.DataFrame(data=__arr)
     
     @staticmethod
-    def mag_to_flux(mag, magerr=None, units='zp', zp=25., wavelength=None):
-        mag = get_numpy(mag)            
-        magerr = get_numpy(magerr)           
+    def mag_to_flux(mag, magerr=None, limmag=None, sigma=5., units='zp', zp=23.9, wavelength=None):
         ''' with flux/mag zerop '''
+        mag = get_numpy(mag)
+        zp = get_numpy(zp)                          
         if units not in ['zp', 'phys']:
             raise ValueError("units must be 'zp' or 'phys'")
         elif units == 'zp':
@@ -2363,32 +2415,44 @@ class ztfsingle(object):
             if wavelength is None: raise ValueError("wavelength must be float or array if units == 'phys'")
             flux = 10**(-(mag+2.406)/2.5) / wavelength**2                
         __ = np.where( mag==99 )
-        flux[__] = min(flux)        
-        if magerr is None: return flux        
-        dflux = np.abs(flux*(-magerr/2.5*np.log(10)))
-        dflux[__] = 0.1
+        if limmag is None and magerr is None:
+            flux[__] = min(flux)
+            return flux
+        elif limmag is not None:
+            limmag = get_numpy(limmag)
+            dflux = 10**((limmag - zp)/(-2.5))/sigma           
+        elif magerr is not None:        
+            magerr = get_numpy(magerr)
+            dflux = np.abs(flux*(-magerr/2.5*np.log(10)))            
+        flux[__] = dflux[__]
         return flux, dflux
         
-    @staticmethod
-    def flux_to_mag(flux, dflux=None, units='zp', zp=25., wavelength=None):
-        flux = get_numpy(flux)        
-        dflux = get_numpy(dflux)          
+    @staticmethod    
+    def flux_to_mag(flux, dflux=None, sigma=5., units='zp', zp=23.9, wavelength=None):
         """ Converts fluxes (erg/s/cm2/A) into AB magnitudes with flux/mag zerop """
-        if units not in ['zp', 'phys']: raise ValueError("units must be 'zp' or 'phys'")
+        
+        flux = get_numpy(flux)
+        zp = get_numpy(zp)                   
+        if units not in ['zp', 'phys']:
+            raise ValueError("units must be 'zp' or 'phys'")
         elif units == 'zp':
             if zp is None: raise ValueError("zp must be float or array if units == 'zp'")
             wavelength = 1.
         else:
             if wavelength is None: raise ValueError("wavelength must be float or array if units == 'phys'")
-            zp = -2.406                    
+            zp = -2.406
         mag = -2.5*np.log10(flux*wavelength**2) + zp
         if dflux is None: return mag
-        __ = np.where( flux/dflux < 1 )
-        mag[__] = np.nan        
+        
+        dflux = get_numpy(dflux)
+        snr = flux/dflux
+        limmag = -2.5*np.log10(sigma*dflux) + zp
         dmag = np.abs( -2.5/np.log(10) * dflux / flux )
-        dmag[__] = np.nan   
-        return mag, dmag
-
+        __ = np.where( snr < sigma )             
+        mag[__] = 99
+        dmag[__] = 99
+        return mag, dmag, limmag                        
+    
     @staticmethod
     def bin_df(df, deltah = 1., xkey='jdobs', fkey='filter'):        
         
