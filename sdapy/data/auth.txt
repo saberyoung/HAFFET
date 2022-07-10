@@ -1,0 +1,19 @@
+[marshal]     ;   ------------    Growth marshal
+usr:     saberyoung     #  str # username
+pwd:     Ys_19900615    #  str # password
+
+[fritz]     ;   ------------    fritz
+token:     733be155-a0c2-41c6-b994-d877fb4a0088   # str #  Token
+
+[atlas]     ;   ------------   ATLAS force photometry
+usr:     saberyoung     # str # username
+pwd:     Ys19900615     # str # password
+
+[ztf]     ;   ------------     ZTF force photometry
+email:    sheng.yang@astro.su.se   # str # email
+pwd:      augj975                 # str # password
+
+[tns]     ;   ------------     TNS API
+id:      131335         # str # bot id
+name:    kinder_bot     # str # bot name
+api:     603cc592cbb2b9ac8d63fcf5dfbe18e0bd981982  # str # bot api key

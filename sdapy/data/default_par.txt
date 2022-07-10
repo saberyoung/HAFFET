@@ -1,0 +1,182 @@
+## This is a sample sdapy configuration file
+##
+
+[snelist]   ;   ------------    for snerun.snelist
+## ***************************************************************************
+## * SNELIST                                                                 *
+## ***************************************************************************
+syntax    :       #  str  #  filter meta table
+verbose   : True    #  eval #  Enable progress report
+clobber   : False   #  eval #  Redo analysis
+idkey     : ZTFID   #  str  #  meta key as index, default set with ZTF name
+idkey1    : IAUID   #  str  #  meta key1, could be IAU or other externel survey name
+sortkey   : peakabs #  str  #  meta key to sort table
+rakey     : RA      #  str  #  meta key for ra
+deckey    : Dec     #  str  #  meta key for dec
+zkey      : redshift#  str  #  meta key for redshift
+distkey   : dist    #  str  # meta key for distance
+dmkey     : dm      #  str  # meta key for distance module
+mkwebvkey : ebv     #  str  # meta key for milky way ebv
+hostebvkey: hostebv #  str  # meta key for host ebv
+mkwavkey  : A_V     #  str  # meta key for milky way Av
+hostavkey : host_AV #  str  # meta key for host Av
+typekey   : type    #  str  # meta key for SN type
+peaktkey  : peakt   #  str  # meta key for jd at peak
+Rv        : 3.1     # eval  # E(B-V) to AV
+jdpeak_shift:  2458000  # eval # peak jd shift
+
+[snobject]  ;   ------------    for snerun.snobject
+## ***************************************************************************
+## * SNOBJECT general                                                        *
+## ***************************************************************************
+clobber   : False  #  eval #  Redo analysis
+verbose   : True   #  eval # show detailed processing informations
+lctype    : ['ztffp']  # eval  # what lcs to be includes: 'ztffp', 'ztfgm', 'ztffritz', or 'atlasfp'
+spectype  : ['fritz']  # eval  # what spectra to be included
+mjdstart  :        # str   # ztf/atlas fp query start
+mjdend    :        # str   # ztf/atlas fp query end
+dstart    : -100   # str   # if no *mjdstart* input and meanwhile jdpeak available, how many days prior to peak to start the fp query
+dend      : 100    # str   # if no *mjdstart* input and meanwhile jdpeak available, how many days after peak to end the fp query, if leave blancket will end till the current time
+tdbin     : 1      # eval  # threshold to be used to bin lcs or cross match colours, unit in days
+set_tpeak_method :    # str   # set t0 with peak from [gp] Gaussian process or [fit] multiband_main/Bazin fits or [bol] bol_main/Arnett fits or leave blanckt as with input jdpeak
+set_tpeak_filter : r  # str   # set t0 with peak of which band
+set_texp_method  :    # str   # set texp with [fit] power law fits or [bolmain] bolometric LC fits or [bolearly] shock cooling fits or leave blanckt as with middle of last nondetection to the first detection
+set_texp_filter  : r  # str   # set texp with peak of which band
+snrt         : 5      #  eval # signal noise ratio threshold for detections 
+fsigma    : 1      #  eval  # signal noise ratio for fittings
+clipsigma : None   #  eval  # for LC clipping
+flux_scale : 100   #  eval  # normalize flux peak
+hostebv_bands :  ['g','r']  # eval  # color comparison for host ebv estimation
+color_bands :  ['g','r']    # eval  # whicn 2 bands were used to calculate colors
+color_interp  : [1,2,3]     # eval  # how to make color. 1: epochs with both filters within *tdbin* days. 2: epochs with one filter, and the other from analytic fits. 3. epochs with one filter, and the other from Gaussian process
+bb_bands   : ['g','r','i']  #  eval # filters to make blackbody
+bb_interp  : [1,2,3]        #  eval # how to make blackbody. 1: epochs with all filters within *color_thre* hours. 2: epochs with one filter, and the others from analytic fits.  3. epochs with one filter, and the other from Gaussian process
+make_bol  : ['lyman','bb']  # eval  # how to make bolometric lcs: with BC defined by Lyman approach, or blackbody fits
+
+## ***************************************************************************
+## * PLOTTER                                                                 *
+## ***************************************************************************
+plot_bands : None   #  eval  # which bands to show: None, or ['r', 'g']
+plot_nsamples  : 8  #  eval  # how many random MC samples to be plotted
+plot_mcmct     : .5 #  eval  # in order to select good mc samples for plotting purpose, rangiing from 0 to 1
+dpi     : 400       #  eval  # matplotlib resolution
+figsize : (8, 10)   #  eval  # figure size
+figpath : %%s.png   #  str   # figure path
+alphabest : .6      #  eval  # alpha p for best sample
+alphasample : .2    #  eval  # alpha p for other sample
+ax_xlim : [-50,120] #  eval  # x lim, x is phase relative to peak, only working when t0 avaibale
+ax_ylim    : None   #  eval  # ylim
+ax2_ylim   : None   #  eval  #
+ax3_ylim   : None   #  eval  #
+ax4_ylim   : None   #  eval  #
+
+## ***************************************************************************
+## * Gaussian Process                                                        *
+## ***************************************************************************
+gp_redo   : False          #  eval # if cached file exists, redo or read
+gp_bands  : ['r', 'g']     #  eval # 
+gp_routine: minimize       #  str  #  Possible choices are: minimize, mcmc, leastsq.
+gp_mean   : bazin          #  str  # Mean y_data function. Possible choices are: mean, gaussian, bazin, villar.
+gp_fitr   : [-60, 120] #  eval  # gp fit range, relative to peak
+gp_plotr  : [-60, 120] #  eval  # gp plot range, relative to peak. if None, will not plot gp samplings
+kernel    : matern32       #  str  # Kernel to be used with the gaussian process. Possible choices are: matern52, matern32, squaredexp.
+fix_scale : True   #  eval  # If fix default gaussian process param
+
+## ***************************************************************************
+## * MCMC and scipy fits                                                     *
+## ***************************************************************************
+ncores    : None     #  eval  # how many cores to run multi-processing
+nwalkers  : 30     #  eval  # number of walkers
+nsteps    : 2000    #  eval  # number of MC steps
+nsteps_burnin : 1000    #  eval  # number of MC burn in steps        
+thin_by   : 1  #  eval  # If you only want to store and yield every thin_by samples in the chain, set thin_by to an integer greater than 1. When this is set, iterations * thin_by proposals will be made.
+maxfev    : 20000  #  eval  # for scipy. The maximum number of calls to the function.          
+emcee_burnin : True #  eval  #
+use_emcee_backend : True #  eval  #
+quantile   : [0.16, 0.50, 0.84]  #  eval  # use 50 percentile as mean, 1 sigma: 68%% -> 16%% - 84%%
+scipysamples : 100 #  eval  #
+sguess    : True #  eval  #
+
+## ***************************************************************************
+## * FITTING MODULES                                                         *
+## ***************************************************************************
+fit_methods : ['bz2', 'arnett2', 'gauss']  #  eval # fitting model list
+fit_redo    : False  #  eval  # if False by default, when cached file exists, read samples from cached sample file. for mcmc, if given nsteps is larger than that of cached sample, continue fits to nsteps, otherwise return samples. if True, when cached file exists, redo everything for new fitting samples
+
+###''' engine templates for multiband lcs '''###
+#engine_name_type   : lc      #  str  # fits with what data? lc, mbol or spec
+#engine_name_xrange : None    #  eval # fits x range relative to the self.t0
+#engine_name_xrangep: None    #  eval # fits finished, predict x range, if None same as *engine_name_xrange*
+#engine_name_yrange : None    #  eval # fits y range
+#engine_name_bands  : None    #  eval # fits data from which bands
+#engine_name_routine: mcmc    #  str  #  Which technic to be used to realize optimization. Possible choices are: minimize, mcmc, leastsq.
+
+######   engine: multiband_early
+multiband_early_type   : lc            # str  #
+multiband_early_xrange : [-50, 0]      # eval #
+multiband_early_xrangep: [-50, 0]      # eval #
+multiband_early_yrange : [-.1, .4]     # eval #
+multiband_early_bands  : ['r', 'g']    # eval #
+multiband_early_routine: mcmc           # str  #
+
+######   engine: multiband_main
+multiband_main_type   : lc            # str  #
+multiband_main_xrange : [-30, 40]     # eval #
+multiband_main_xrangep: [-30, 40]     # eval #
+multiband_main_yrange : None          # eval #
+multiband_main_bands  : ['r', 'g']    # eval #
+multiband_main_routine: mcmc           # str  #
+
+###''' engine templates for bolometric lcs'''###
+#engine_name_type   : mbol    #  str  # fits with what data? lc, mbol or spec
+#engine_name_xrange : None    #  eval # fits x range relative to the self.t0
+#engine_name_xrangep: None    #  eval # fits finished, predict x range, if None same as *engine_name_xrange*
+#engine_name_yrange : None    #  eval # fits y range between 0 and 1
+#engine_name_color_interp   : [1,2,3]   #  eval # which *color_interp* be used to fit bol models
+#engine_name_routine: mcmc    #  str  #  Which technic to be used to realize optimization. Possible choices are: minimize, mcmc, leastsq.
+
+######   engine: bol_early
+bol_early_type   : mbol, mbolbb  #  str  #
+bol_early_xrange : [-20,-10] #  eval #
+bol_early_xrangep: [-20,-10] #  eval #
+bol_early_yrange : None      #  eval #
+bol_early_routine: minimize  #  str  #
+bol_early_color_interp   : [1,2,3]     #  eval #
+
+######   engine 4: bol_main
+bol_main_type   : mbol, mbolbb  #  str  #
+bol_main_xrange : [-30, 40] #  eval #
+bol_main_xrangep: [-30, 40] #  eval #
+bol_main_yrange : None      #  eval #
+bol_main_routine: minimize  #  str  #
+bol_main_color_interp   : [1,2,3]     #  eval #
+
+######   engine 5: bol_tail
+bol_tail_type   : mbol, mbolbb  #  str  #
+bol_tail_xrange : [60,100] #  eval #
+bol_tail_xrangep: [60,100] #  eval #
+bol_tail_yrange : None      #  eval #
+bol_tail_routine: minimize  #  str  #
+bol_tail_color_interp   : [1,2,3]     #  eval #
+
+######   engine 6: bol_full
+bol_full_type   : mbol, mbolbb  #  str  #
+bol_full_xrange : [-20,100] #  eval #
+bol_full_xrangep: [-20,100] #  eval #
+bol_full_yrange : None      #  eval #
+bol_full_routine: minimize  #  str  #
+bol_full_color_interp   : [1,2,3]     #  eval #
+
+######   engine 7: specline
+specline_type   : spec          #  str  #
+specline_routine: mcmc          #  str  #
+spec_snr          :  10         #  eval # if no error from spectra, add noise level of snr
+bin_method        :  savgol     #  str  # method used to bin spectrum
+bin_size          :  11         #  eval # size used to bin spectrum, in AA
+savgol_order      :  2          #  eval # polynomial order for savgol filter
+continuum_method  :  poly       #  str  # The function type for continumm fitting, valid functions are "scalar", "linear", "quadratic", "cubic", "poly", and "exponential"
+continuum_degree  :  7          #  eval # degree of polynomial when method="poly", for continuum fitting
+pfactor           :  20         #  eval # threshold used for peak detection
+sn_line           :             #  str  # which line to fit, e.g. 'H~$\alpha$', 'He~5876$\AA$', 'O~7774$\AA$'
+specfit_phase     :  [-20, 60]  # eval  # phase range to decide which spectra should be fitted
+spec_shift        :  2.         # eval  # define shift as fnorm / *shift*

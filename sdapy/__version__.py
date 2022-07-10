@@ -1,2 +1,7 @@
+name = 'sn_data_analysis'
 version = '0.0.0.1'
 description = 'sn_data_analysis: some tools to play with LCs and spectra of transienting sources'
+python_requires='>=2.7'
+url='https://github.com/saberyoung/sn_data_analysis.git'
+author='Sheng Yang'
+author_email='sheng.yang@astro.su.se'

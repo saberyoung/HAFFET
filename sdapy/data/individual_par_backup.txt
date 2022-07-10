@@ -1,0 +1,283 @@
+#ZTF21abmlldj gp_type=1 fit_fitr=[-50,30] pl_type=0 Arnett_type=0 Arnett_style=1 Arnett_copt=[1,2,3] Arnett_fitr=[-50,20] Tail_type=0 ax_xlim=[-80,120] ax_ylim=[-10,200] ax2_ylim=[-17,-20] ax4_ylim=[1e42,3e43] verbose=True
+
+ZTF19abqxibq Arnett_type=1 Arnett_style=1 Arnett_routine='trf' Arnett_copt=[1,2,3] pl_type=1 pl_bands=['r','g'] pl_routine='mcmc' ax_ylim=[-10,200] Tail_type=0 Tail_routine='trf' Tail_style=1 fit_type=1 fit_routine='trf' fit_fitr=[-30,20] Tail_fitr=[40,120]
+
+ZTF19abcegvm fit_type=1 Arnett_type=0 Arnett_style=1 Arnett_copt=[1,2,3] Tail_type=0 fit_bands=['g','r'] fit_fitr=[-50,50] fit_plotr=[-50,50] fit_routine='mcmc' ax_xlim=[-80,80] ax_ylim=[-10,200] ax2_ylim=[-17,-20] nsteps=20000 nsteps_burnin=2000 verbose=True spec_type=1 spec_fitr=[1000,15000]
+
+ZTF19aapwnmb ax_ylim=[-10,200] ax2_ylim=[-17,-20]
+
+ZTF19aarfyvc ax_ylim=[-10,200] ax2_ylim=[-17,-20] pl_type=1 pl_routine='mcmc' Tail_type=0 fit_Type=1 fit_routine='trf' verbose=True Arnett_style=1 Arnett_type=1 spec_type=1 spec_fitr=[1000,10000]
+
+ZTF19abrirmk spec_type=1 spec_fitr=[1000,10000] pl_type=1 verbose=True
+
+ZTF19abauylg Tail_type=1 pl_type=1 verbose=True ax_ylim=[-10,200]
+
+ZTF18aaxmhvk Tail_type=1 ax_ylim=[-10,200] ax2_ylim=[-16,-20] Tail_fitr=[30,100] Tail_plotr=[30,100] Tail_copt=[1,2,3] pl_type=1 pl_routine='mcmc' verbose=True Arnett_style=1
+
+ZTF19abfiqjg Tail_type=0 ax_ylim=[-10,200] pl_type=0 spec_type=1 spec_fitr=[1000,10000]
+
+ZTF18aceqrrs Arnett_type=1 Tail_type=0 fit_type=0 fit_fitr=[-20,20] Arnett_fitr=[-20,20] Arnett_copt=[1,2,3]
+
+ZTF19abztknu Tail_type=1 Tail_fitr=[50,100] Tail_copt=[1,2,3] pl_type=1 pl_routine='mcmc' verbose=True Arnett_type=1 Arnett_style=1 Arnett_copt=[1,2,3] ax_ylim=[-10,200] spec_type=1 spec_fitr=[1000,14000]
+
+ZTF20acvebcu pl_type=1 Arnett_style=1 Arnett_type=1 verbose=True 
+
+ZTF21aalhgqi Tail_type=0 pl_type=1 Arnett_style=1 Arnett_type=1 verbose=True
+
+ZTF19acllsbq ax_xlim=[-80,100] Tail_type=0 pl_type=0 Arnett_style=1 Arnett_type=1 fit_type=1 fit_bands=['g'] verbose=True ax_ylim=[-10,200] ax2_ylim=[-17,-20] spec_type=1 spec_fitr=[1000,10000]
+
+ZTF20accbsxa Tail_type=0 pl_type=0 Arnett_style=1 Arnett_type=1 fit_type=1 verbose=True verbose=True spec_type=1 spec_fitr=[1000,14000]
+
+ZTF19acgjosf Arnett_type=1 Arnett_style=1 pl_type=0 pl_bands=['r'] fit_type=0 ax_ylim=[-10,200] ax2_ylim=[-17,-20] Arnett_copt=[1,3] verbose=True
+
+ZTF19aanijpu ax_xlim=[-80,100] fit_fitr=[-50,25] fit_plotr=[-50,25] fit_type=1 Arnett_type=1 pl_type=0 verbose=True Arnett_copt=[1,2,3] Tail_type=1 Tail_copt=[1,2,3] Arnett_style=3 Tail_fitr=[40,100] Arnett_fitr=[-20,20] Arnett_plotr=[-40,25] spec_type=1 spec_fitr=[1000,14000]
+
+ZTF20aazhyrs pl_type=1 verbose=True
+
+ZTF19aalouag ax_xlim=[-80,120] ax_ylim=[-10,200] ax2_ylim=[-16,-19] fit_fitr=[-20,25] fit_type=0 Arnett_type=1 pl_type=1 verbose=True Arnett_copt=[1,2,3] Tail_type=1 Tail_copt=[1,2,3] Arnett_style=3 Tail_fitr=[80,120] Arnett_fitr=[-25,25] nsteps_burnin=50000 spec_type=1 spec_fitr=[1000,10000]
+
+ZTF20aclnplo ax_xlim=[-30,80] fit_fitr=[-20,25] fit_type=1 Arnett_type=1 pl_type=1 verbose=True Arnett_copt=[1,2,3] Tail_type=1 Arnett_style=1 Tail_copt=[1] Tail_fitr=[20,100] Tail_plotr=[20,100]
+
+ZTF18aczqzrj ax_xlim=[-30,120] ax_ylim=[-10,160] fit_type=1 Arnett_type=1 pl_type=1 verbose=True Arnett_copt=[1,2,3] Tail_type=0 Arnett_style=1 nsteps_burnin=20000 spec_fitr=[6000,18000]
+
+ZTF21abmxiuf ax_xlim=[-70,120] ax_ylim=[-10,160] fit_type=1 fit_fitr=[-60,30] pl_type=0 Arnett_type=1 Arnett_style=3 Tail_type=0 verbose=True Arnett_copt=[1,2,3] Arnett_fitr=[-50,40] Arnett_plotr=[-50,40] Arnett_routine='trf'
+
+ZTF18achcpwu ax_xlim=[-60,120] ax_ylim=[-10,160] Arnett_type=1 Tail_type=0 pl_type=0 verbose=True Arnett_style=1 Arnett_copt=[1,3] spec_type=1 spec_fitr=[6000,12000] Arnett_fitr=[-20,60] Arnett_plotr=[-20,60] Arnett_routine='trf'
+
+ZTF18adasisj fit_type=0 Arnett_type=1 Arnett_style=1 pl_type=1 verbose=True spec_type=1 spec_fitr=[2000,10000] ax_xlim=[-50,80] ax_ylim=[-10,160] Tail_type=0
+
+ZTF21aacufip pl_type=0 verbose=True nsteps_burnin=5000 spec_type=1 spec_fitr=[7000,18000]
+
+ZTF19aafmyow Arnett_type=1 Tail_type=1 fit_bands=['r'] fit_fitr=[-30,20] fit_type=1 gp_type=1 Arnett_copt=[1,2,3] Arnett_style=1 fit_routine='trf' spec_type=1 spec_fitr=[7000,14000]
+
+ZTF18abfzhct verbose=True pl_type=1 Arnett_plotr=[40,100] ax_xlim=[-50,80] ax_ylim=[-10,160]
+
+ZTF19abvdgqo Tail_type=0 pl_type=1 Arnett_type=1 Arnett_style=1 verbose=True ax_xlim=[-30,60] ax_ylim=[-10,200]
+
+ZTF19abtsnyy Tail_type=0 pl_type=0 Arnett_type=0 Arnett_style=1 fit_type=0 verbose=True nsteps_burnin=60000 Arnett_fitr=[-60,60] Arnett_plotr=[-60,60] ax_xlim=[-90,100] ax_ylim=[-10,160] ax2_ylim=[-15,-19] ax4_ylim=[1e41,1e43] spec_type=0 spec_fitr=[1000,8000]
+
+ZTF20aazpyhy Tail_type=0 Arnett_type=1 Arnett_style=1 pl_type=1 spec_type=1 spec_fitr=[1000,10000] verbose=True
+
+ZTF20abefbpl verbose=True bolopt=[1] fit_bands=['r'] fit_type=1 gp_type=1 fit_fitr=[-10,25] Arnett_fitr=[-10,25] Arnett_plotr=[-10,25] Arnett_style=1 Arnett_copt=[1,2,3]
+
+ZTF19aatheus Arnett_type=1 Arnett_style=1 Tail_type=1 Tail_copt=[1] fit_type=1 fit_fitr=[-30,30] fit_bands=['r'] verbose=True fit_routine='trf' Arnett_routine='trf' Arnett_fitr=[-5,40] Arnett_plotr=[-10,40]
+
+ZTF20abqdkne Tail_type=1 Tail_fitr=[40,100] fit_type=1 fit_fitr=[-25,20] fit_plotr=[-25,20] pl_type=1 Arnett_style=1 Arnett_type=1 Arnett_fitr=[-25,20] verbose=True spec_type=1 spec_fitr=[1000,10000] ax_ylim=[-10,200] ax4_ylim=[1e41,1e43] plot_bands=['g','r']
+
+ZTF19abdoior ax_xlim=[-40,80] ax_ylim=[-10,200] verbose=True Tail_type=0 Arnett_style=1 pl_type=1 Arnett_style=1 Arnett_type=1
+
+ZTF20aamqmhj verbose=True pl_type=1 Arnett_type=1 Arnett_style=1 fit_type=1 Arnett_fitr=[-10,50] ax_ylim=[-10,150] ax4_ylim=[1e41,1e43] plot_bands=['r','g'] Tail_type=1
+
+ZTF19aamsetj verbose=True fit_type=1 fit_fitr=[-15,30] Arnett_fitr=[-15,30] Arnett_type=1 spec_type=1 spec_fitr=[4000,8000]
+
+ZTF20abzjcdg fit_type=0 Tail_type=0 Arnett_type=1 Arnett_style=1 verbose=True spec_type=1 spec_fitr=[4000,8000] Arnett_fitr=[-25,40] Arnett_copt=[1,2,3]
+
+ZTF18acnncve fit_type=0 Tail_type=0 Arnett_type=1 Arnett_style=1 verbose=True pl_type=0
+
+ZTF21abccaue ax_xlim=[-60,80] ax_ylim=[-10,200] verbose=True Tail_type=0 fit_type=0 spec_type=1 spec_fitr=[1000,10000]
+
+ZTF20aaelulu fit_type=1 Tail_type=1 Tail_copt=[1] verbose=True pl_type=0 Tail_copt=[1] Tail_fitr=[25,100] spec_type=1 spec_fitr=[2000,15000]
+
+ZTF20abcjdwu pl_type=0 Arnett_style=1 Arnett_type=1 verbose=True nsteps_burnin=10000
+
+ZTF20acxqxyw Tail_type=0 Arnett_style=1 pl_type=1 verbose=True
+
+ZTF21aaaosoq Tail_type=1 Tail_fitr=[30,80] Tail_plotr=[30,80] Arnett_style=1 Arnett_type=1
+
+ZTF19aamgghn Tail_type=1 Tail_fitr=[30,80] Tail_plotr=[30,80] Arnett_style=1 Arnett_type=1 pl_type=1 verbose=True ax_ylim=[-10,200]
+
+ZTF20abvquuo Tail_type=0 Arnett_style=1 Arnett_type=1 spec_type=1 spec_fitr=[1000,14000]
+
+ZTF21aarmuxl Tail_type=0 Arnett_style=1 Arnett_type=1 pl_type=0 verbose=True
+
+ZTF20actpqgc Tail_type=0 Arnett_style=1 Arnett_type=1 pl_type=1 verbose=True spec_type=1 spec_fitr=[1000,12000]
+
+ZTF20aakodyh fit_type=1 fit_bands=['r'] Arnett_type=1 Tail_type=0 Arnett_style=1 spec_type=1 spec_fitr=[1000,9000]
+
+ZTF20abxpoxd fit_type=1 fit_fitr=[-40,40] Arnett_fitr=[-40,40] Tail_type=0 pl_type=1 Arnett_type=1 verbose=True ax_xlim=[-60,130] ax_ylim=[-10,200] spec_type=1 spec_fitr=[1000,10000]
+
+ZTF18abecbks ax_xlim=[-40,80] ax_ylim=[-10,200] verbose=True pl_type=1
+
+ZTF20aaiftgi Tail_type=0 Arnett_style=1 Arnett_type=1 fit_type=1 spec_type=1 spec_fitr=[1000,10000] spec_guess_red=False
+
+ZTF20abwxywy Tail_type=0 Arnett_style=1 Arnett_type=1 fit_type=1 fit_bands=['r','g'] verbose=True pl_type=1 spec_type=1 spec_fitr=[4000,16000] ax_ylim=[-10,200]
+
+ZTF18acsjrbc ax_xlim=[-40,80] ax_ylim=[-10,200] verbose=True Tail_type=0 spec_type=1 spec_fitr=[5000,12000]
+
+ZTF20abkiarz verbose=True spec_type=1 spec_fitr=[5000,12000]
+
+ZTF21aannoix Tail_type=0 spec_type=1 spec_fitr=[1000,12000] pl_type=1 verbose=True
+
+ZTF21aaufwyh Tail_type=0 pl_type=1 verbose=True spec_type=1 spec_fitr=[4000,12000]
+
+ZTF18abjyjdz fit_type=1 Arnett_type=1 Arnett_style=1 spec_type=1 spec_fitr=[4000,12000]
+
+ZTF20aammtwx ax_xlim=[-40,80] ax_ylim=[-10,200] Tail_type=0 spec_type=1 spec_fitr=[1000,10000]
+
+ZTF21abahiow pl_type=1 verbose=True Arnett_type=1 Arnett_style=1
+
+ZTF19aavoweu ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-14,-18] Tail_type=1 Tail_fitr=[40,80] Tail_plotr=[40,80] pl_type=1 verbose=True spec_type=1 spec_fitr=[1000,10000] spec_guess_red=False
+
+ZTF19aakpcuw ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-14,-18] spec_type=1 spec_fitr=[1000,10000]
+
+ZTF20abywsut verbose=True
+
+ZTF19abzqywg Arnett_type=1 Arnett_style=1 Arnett_copt=[1,2,3] fit_type=0 fit_fitr=[-20,20] spec_type=1 spec_fitr=[3000,10000]
+
+ZTF20acjbzrh ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-14,-18] ax4_ylim=[1e40,5e42] fit_type=0 spec_type=1 spec_fitr=[1000,10000] Arnett_type=1 Arnett_style=1 Arnett_copt=[1,2,3]
+
+ZTF21aarnjyd ax_xlim=[-60,70] ax_ylim=[-10,200] pl_type=1 verbose=True Arnett_type=1 Arnett_style=3 Tail_type=0 Arnett_fitr=[-40,40] Arnett_plotr=[-30,30] spec_type=1 spec_fitr=[3000,10000]
+
+ZTF20acwofhd ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-14,-18] fit_type=1 fit_bands=['g'] fit_fitr=[-30,30] Tail_type=1 Tail_fitr=[30,100] Tail_plotr=[30,100] Tail_copt=[1] spec_type=1 spec_fitr=[3000,14000] pl_type=0 verbose=True
+
+ZTF21abplhpw Tail_type=0 pl_type=1 verbose=True
+
+ZTF19abqqrgy Tail_type=1 Tail_copt=[1,2,3] Tail_fitr=[25,60] Tail_plotr=[25,70] spec_type=1 spec_fitr=[3000,14000] pl_type=1 verbose=True
+
+ZTF20abvvnqh Tail_type=0 spec_type=1 spec_fitr=[1000,10000] pl_type=1 verbose=True nsteps_burnin=30000
+
+ZTF20actekrw Tail_type=0 spec_type=1 spec_fitr=[2000,12000] pl_type=1 verbose=True
+
+ZTF21abimnii Tail_type=1 Tail_copt=[1,2,3] Tail_fitr=[50,80] Tail_plotr=[50,80] pl_type=1 verbose=True ax_ylim=[-10,140]
+
+ZTF20aamdyln Tail_type=0 spec_type=1 spec_fitr=[1000,14000] pl_type=0 verbose=True
+
+ZTF21aaqldsk Tail_type=0 pl_type=1 Arnett_type=1 Arnett_style=1 verbose=True nsteps_burnin=40000 spec_type=1 spec_fitr=[1000,10000]
+
+ZTF19aavitlq fit_fitr=[-40,40] fit_type=1 fit_bands=['r'] Arnett_type=1 Arnett_style=1 Tail_type=1 Tail_copt=[1] spec_type=1 spec_fitr=[3000,18000]
+
+ZTF20abbpkng Tail_type=0 ax_xlim=[-40,60] ax_ylim=[-10,200] ax2_ylim=[-14,-18]
+
+ZTF20aajcdad gp_type=1 fit_type=2 fit_routine='trf' pl_type=1 nsteps=20000 Arnett_type=1 Arnett_routine='mcmc' Tail_type=1 Tail_style=1 Tail_plotr=[40,120] Tail_routine='mcmc' Arnett_style=1 Arnett_plotr=[-20,40] nsteps=20000 nsteps_burnin=5000 ax_xlim=[-50,100] plotsamples=8 ax_ylim=[-10,200] ax2_ylim=[-14,-18] verbose=True joint_type=1 joint_style=1 joint_routine='mcmc' sguess=False plot_bands=['g','r','i','o']
+
+ZTF19aailsge ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-14,-18] Arnett_type=1 Arnett_style=1 spec_type=1 spec_fitr=[3000,14000]
+
+ZTF21aahdqrg Tail_type=0
+
+ZTF19aadnhdo fit_bands=['r'] fit_type=1 Tail_type=0 spec_type=1 spec_fitr=[3000,14000]
+
+ZTF20abdnpdo Tail_type=0 pl_type=0 verbose=True spec_type=1 spec_fitr=[6000,14000] ax_xlim=[-40,80] ax_ylim=[-10,150]
+
+ZTF20acpjqxp Tail_type=0 pl_type=0 verbose=True spec_type=1 spec_fitr=[3000,14000] ax_xlim=[-40,80] ax_ylim=[-10,150] nsteps_burnin=50000
+
+ZTF19aaxzdtw ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-14,-18] pl_type=1 Arnett_type=1 Arnett_style=1 verbose=True spec_type=1 spec_fitr=[3000,14000]
+
+ZTF19acmelor Tail_type=0 spec_type=1 spec_fitr=[1000,14000] spec_guess_red=False
+
+ZTF19aanfukh Tail_type=0 spec_type=1 spec_fitr=[1000,14000] spec_guess_red=False
+
+ZTF20aavhyel Tail_type=1 Tail_copt=[1,2,3] Tail_fitr=[30,80] Tail_plotr=[40,80] Arnett_type=1 Arnett_style=1 verbose=True Tail_routine='mcmc' spec_type=1 spec_fitr=[1000,10000]
+
+ZTF20acueziy Tail_type=0 pl_type=1 verbose=True spec_type=1 spec_fitr=[7000,18000]
+
+ZTF20abjpvce ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-14,-18] Arnett_type=1 Arnett_style=1 Tail_type=0 pl_type=1 verbose=True spec_type=1 spec_fitr=[6000,12000]
+
+ZTF19acyogrm Tail_type=0 pl_type=1 verbose=True spec_type=1 spec_fitr=[3000,18000] ax_xlim=[-40,70] ax_ylim=[-10,200]
+
+ZTF21abraccv verbose=True fit_type=1 fit_fitr=[-30,30] fit_bands=['g','r'] fit_routine='mcmc' Arnett_type=1 Arnett_style=1 Tail_type=1 Tail_copt=[1,2,3] clipsigma=5 sguess=False ax4_ylim=[1e40,1e43] pl_type=1 verbose=True spec_type=1 spec_fitr=[2000,14000]
+
+ZTF18abeamgv Tail_type=1 pl_type=1 verbose=True Arnett_type=1 Arnett_style=1 Tail_copt=[1] Tail_fitr=[30,80]
+
+ZTF18abeyqpr Arnett_type=1 Arnett_style=1 Tail_type=0 nsteps_burnin=50000 pl_type=0 verbose=True spec_type=1 spec_fitr=[2000,14000] spec_guess_red=False
+
+ZTF20aaurfnl fit_type=1 Arnett_type=1 Tail_type=1 fit_bands=['r'] Arnett_style=1 Arnett_fitr=[-25,25] Arnett_plotr=[-25,25] Tail_opt=[1] Tail_fitr=[20,70] Tail_plotr=[20,70] spec_type=1 spec_fitr=[0,8000] spec_guess_red=False
+
+ZTF21aanvncv verbose=True pl_type=1 verbose=True spec_type=1 spec_fitr=[7000,12000] Tail_type=0
+
+ZTF19aaoxvfe Tail_type=0
+
+ZTF19abqmsbk Tail_type=0 Arnett_type=1 Arnett_style=1 spec_type=1 spec_fitr=[8000,18000]
+
+ZTF18abkjnqy Tail_type=0 Arnett_type=1 fit_type=1 fit_fitr=[-40,25] Arnett_style=1 Arnett_copt=[1] pl_type=1 verbose=True spec_type=1 spec_fitr=[3000,16000]
+
+ZTF21aayqrgx Arnett_type=1 Arnett_style=1 Arnett_copt=[1] pl_type=1 verbose=True spec_type=1 spec_fitr=[6000,16000]
+
+ZTF21aawogdl Arnett_type=1 Arnett_style=1 Arnett_copt=[1] pl_type=0 verbose=True
+
+ZTF19aakirwj Tail_type=0 fit_type=0 Arnett_type=1 Arnett_style=3 Arnett_copt=[1,2,3] Arnett_fitr=[-10,30] Arnett_plotr=[-10,30] spec_type=1 spec_fitr=[0,10000] spec_guess_red=False
+
+ZTF19aawsday Tail_type=1 fit_type=0 Arnett_type=1 Arnett_style=3 Arnett_copt=[1,2,3] spec_type=1 spec_fitr=[0,10000]
+
+ZTF21aaxtctv Arnett_type=1 Arnett_style=1 Arnett_copt=[1] Tail_type=0 Arnett_fitr=[-30,50] Arnett_plotr=[-30,50] pl_type=1 verbose=True spec_type=1 spec_fitr=[6000,10000]
+
+ZTF18abdkkwa pl_type=1 verbose=True spec_type=1 spec_fitr=[5000,18000]
+
+ZTF19adcfsad Tail_type=0 pl_type=1 verbose=True spec_type=1 spec_fitr=[4000,12000]
+
+ZTF21abcgaln fit_bands=['r'] Arnett_type=1 Arnett_style=1 fit_type=1 spec_type=1 spec_fitr=[4000,12000]
+
+ZTF18aaxiuyp Tail_type=0 ax_xlim=[-40,100] ax_ylim=[-10,200] ax2_ylim=[-14,-18] ax4_ylim=[1e40,1e43] pl_type=1 verbose=True spec_type=1 spec_fitr=[4000,12000]
+
+ZTF20abusrwm Tail_type=0 pl_type=1 verbose=True spec_type=1 spec_fitr=[3000,14000] ax_xlim=[-40,100] ax_ylim=[-10,200]
+
+ZTF20abhlncz Tail_type=0 Arnett_type=1 Arnett_style=1 pl_type=1 verbose=True
+
+ZTF20aaertpj verbose=True Tail_type=1 pl_type=1 verbose=True Arnett_type=1 Arnett_style=1
+
+ZTF19aalfsqm fit_bands=['r'] fit_type=1 Arnett_type=0 Tail_type=0
+
+ZTF20aavzffg Tail_type=1 Tail_fitr=[30,80] Tail_plotr=[30,80] Tail_copt=[1,2,3]
+
+ZTF21abngbrl Tail_type=0 fit_bands=['g'] Arnett_type=1 Arnett_style=1 fit_type=1 Arnett_copt=[1,2]
+
+ZTF18aakkrjm Tail_type=1 Tail_fitr=[30,80] Tail_plotr=[30,80] Tail_copt=[1,2,3] pl_type=1 verbose=True
+
+ZTF21aaqwfqe Tail_type=1 Tail_fitr=[30,80] Tail_plotr=[30,80] Tail_copt=[1,2,3] pl_type=1 verbose=True
+
+ZTF21abieuta Tail_type=0 pl_type=1 verbose=True Arnett_type=1 Arnett_style=1
+
+ZTF20aaxvzja Tail_type=0 pl_type=1 verbose=True Arnett_type=1 Arnett_style=1
+
+ZTF19abafmwj ax_xlim=[-40,70] ax_ylim=[-10,200] ax2_ylim=[-14,-18] ax4_ylim=[1e41,5e42] pl_type=0 verbose=True Arnett_type=1 Arnett_style=1 spec_type=1 spec_fitr=[2000,14000] nsteps_burnin=50000
+
+ZTF20abtkjfw Tail_type=0 pl_type=1 verbose=True Arnett_type=1 Arnett_style=1 spec_type=1 spec_fitr=[2000,14000]
+
+ZTF18aczcumi fit_type=0 fit_bands=['r'] Arnett_type=1 Arnett_style=1 ax_xlim=[-40,70] ax_ylim=[-10,200] ax2_ylim=[-14,-17] ax4_ylim=[1e41,1e42] spec_type=1 spec_fitr=[2000,12000] Arnett_fitr=[-20,20] Arnett_copt=[1,2,3]
+
+ZTF19ackjjwf verbose=True pl_type=1 verbose=True Arnett_type=1 Arnett_style=1 spec_type=1 spec_fitr=[2000,14000]
+
+ZTF19acdabep fit_bands=['r'] Tail_type=0 Arnett_type=1 Arnett_style=1 fit_type=1 pl_type=0 verbose=True spec_type=1 spec_fitr=[1000,10000] ax_xlim=[-40,70] ax_ylim=[-10,200]
+
+ZTF19aceqjqw ax_xlim=[-40,50] ax_ylim=[-10,200] ax2_ylim=[-14,-18] ax4_ylim=[1e41,3e42] Tail_type=0 fit_type=0 Arnett_type=0 Arnett_fitr=[-18,18] Arnett_style=3 Arnett_routine='mcmc' verbose=True
+
+ZTF19acbmojx ax_xlim=[-40,120] ax_ylim=[-10,200] ax2_ylim=[-13,-17] ax4_ylim=[1e41,3e42] Tail_type=0
+
+ZTF21abklcjq ax_xlim=[-40,80] ax_ylim=[-10,200] ax2_ylim=[-13,-17] Tail_type=1 Tail_fitr=[30,80] Tail_plotr=[30,80] spec_type=1 spec_fitr=[1000,7000] pl_type=1 verbose=True spec_type=1 spec_fitr=[2000,8000] Arnett_type=1 Arnett_style=1
+
+ZTF21abimeun Arnett_type=1 Tail_type=0 Arnett_copt=[1,2,3] Arnett_style=1 spec_type=1 spec_fitr=[8000,16000]
+
+ZTF20abysxbk fit_bands=['r'] Arnett_type=1 Arnett_style=1 ax_xlim=[-40,50] ax_ylim=[-10,150] ax2_ylim=[-13,-17]
+
+ZTF20aalcyih ax_xlim=[-40,100] ax_ylim=[-10,150] ax2_ylim=[-13,-17] Arnett_type=1 Arnett_style=1 Tail_type=0 pl_type=1 verbose=True
+
+ZTF19aceqvhl spec_type=1 spec_fitr=[1000,10000]
+
+ZTF20aavgcnu fit_type=0 spec_type=1 spec_fitr=[1000,10000] Arnett_type=1 Arnett_copt=[1,2,3] Arnett_style=1 Tail_type=0
+
+ZTF21abdkojo spec_type=1 spec_fitr=[3000,20000] pl_type=0 verbose=True
+
+ZTF20abaszgh fit_type=1 fit_bands=['r'] Arnett_type=1 Arnett_style=1 fit_fitr=[-40,40] Tail_type=0
+
+ZTF21aaaubig fit_type=1 fit_bands=['r','g'] fit_fitr=[-50,25] Arnett_type=1 Arnett_style=1 Tail_fitr=[40,100] Tail_type=1 pl_type=0 verbose=True spec_guess_red=False
+
+ZTF20acfqngt ax_xlim=[-40,100] ax_ylim=[-10,150] ax2_ylim=[-13,-17] Tail_type=1 Tail_copt=[1,2,3] pl_type=0 verbose=True spec_type=1 spec_fitr=[3000,10000]
+
+ZTF20aborzxc spec_type=1 spec_fitr=[1000,10000] pl_type=1 verbose=True ax_xlim=[-40,100] ax_ylim=[-10,150] Arnett_type=1 Arnett_style=1
+
+ZTF19aailcgs fit_type=0 Arnett_type=1 Arnett_style=1 Tail_type=1 Arnett_copt=[1,2,3] Arnett_fitr=[-25,25] spec_type=1 spec_fitr=[5000,14000] Tail_fitr=[25,100]  Tail_plotr=[25,100]
+
+ZTF20aaekkuv Arnett_type=1 Arnett_style=1
+
+ZTF20aagewqr fit_bands=['r'] spec_type=1 spec_fitr=[3000,10000] Tail_type=0 Arnett_type=1 Arnett_style=1
+
+ZTF20aaoflta spec_type=1 spec_fitr=[1000,6000] Arnett_type=1 Arnett_style=1
+
+ZTF21abcgnql spec_type=1 spec_fitr=[9000,19000] Arnett_type=1 Arnett_copt=[1,2,3] Arnett_fitr=[-10,30] Arnett_plotr=[-25,30]
+
+ZTF20aaiahra fit_bands=['r'] Arnett_type=1 Arnett_style=1 ax4_ylim=[1e40,1e42]
+
+ZTF21aaqhhfu spec_type=1 spec_fitr=[5000,16000] Arnett_type=1 Arnett_style=1 Arnett_fitr=[-10,30] Arnett_plotr=[-25,30]
+
+ZTF21abrqrsz Arnett_type=1 Arnett_style=1 Arnett_copt=[1,2,3] Arnett_fitr=[-25,30] spec_type=1 spec_fitr=[1000,9000] pfactor=1000
+
+ZTF20acpzaoa verbose=True

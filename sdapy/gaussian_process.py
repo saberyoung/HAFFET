@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 from multiprocessing import Pool
 from sdapy.filters import central_wavelengths
 from sdapy.functions import *
+from sdapy.corner_hack import corner_hack
 
 class fit_gp:
     """Fits data with gaussian process.
@@ -70,10 +71,10 @@ class fit_gp:
         except: # otherwise, numpy array
             self.x = x_data
             self.y = y_data
-            self.yerr = yerr_data        
+            self.yerr = yerr_data    
         self.filters = filters
         self.parse_filters()        
-        self.y_norm = y_data.max()
+        self.y_norm = self.y.max()
         self.gp = None
         self.meanp = None
 
@@ -94,8 +95,12 @@ class fit_gp:
         assert opt_routine in ['mcmc', 'minimize', 'leastsq']
         assert gp_mean in ['mean', 'gaussian', 'bazin', 'villar']
         assert kernel in ['matern52', 'matern32', 'squaredexp']
-
-        mcmc_h5_file = '%s/%s'%(datadir, mcmc_h5_file)
+        self.datadir = datadir
+        
+        _s = ''
+        for f in central_wavelengths:            
+            if f in self.filters: _s += f
+        mcmc_h5_file = '%s/%s_%s'%(datadir, mcmc_h5_file, _s)
         if not '.h5' in mcmc_h5_file:  mcmc_h5_file = '%s.h5'%mcmc_h5_file
         
         # lc mean model
@@ -317,11 +322,12 @@ class fit_gp:
         
         # initial guess
         gp.compute(x, yerr)
-
+        
         # check if cache exists or not        
         if not os.path.exists(mcmc_h5_file):
             pass
         elif clobber:
+            print ('remove %s' % mcmc_h5_file)
             os.remove( mcmc_h5_file )
         else:
             if opt_routine=='mcmc':
@@ -329,7 +335,7 @@ class fit_gp:
                 p_final = np.mean(self.samples, axis=0)
                 gp.set_parameter_vector(p_final)
                 self.meanp = gp.get_parameter_dict()        
-                self.gp = gp                
+                self.gp = gp
                 return
         
         # optimization routine for hyperparameters
@@ -387,9 +393,11 @@ class fit_gp:
             self.meanp = gp.get_parameter_dict()        
             self.gp = gp
         
-    def save_corner(self, saveplotas=None):
+    def save_corner(self, figpath, quantiles=[.05,.95]):
         ''' generate corner plots '''
+
         
+        '''
         if not saveplotas is None and not self.samples is None:  
             import corner                
             fig = corner.corner(self.samples, labels = list(self.meanp.keys()),
@@ -405,8 +413,20 @@ class fit_gp:
             fig.savefig( saveplotas )
             print('saving figure as %s' % saveplotas)
             plt.close('all')        
-            
-    def predict(self, x_pred=None, step = 1e-2, clobber=False, returnv=False):
+        '''
+        
+        _fign = '{}/{}.png'.format(self.datadir, figpath)
+        if not os.path.exists(_fign):                      
+            cfig = corner_hack(self.samples, labels=list(self.meanp.keys()),
+                               label_kwargs={'fontsize':16}, ticklabelsize=13,
+                               show_titles=True, quantiles=quantiles,
+                               title_fmt=".2f", title_kwargs={'fontsize':16},
+                               plot_datapoints=True, plot_contours=True)                          
+            cfig.savefig(_fign, bbox_inches='tight')
+        fignames.append(_fign)
+        return fignames
+    
+    def predict(self, x_pred=None, step = 1, clobber=False, returnv=False):
         ''' output GP products '''
         if 'x_pred' in self.__dict__ and not clobber and not returnv: return
         if x_pred is None:
@@ -441,3 +461,16 @@ class fit_gp:
             _w = central_wavelengths[f]            
             if _w == w: return  f
         return
+
+    def set_peak(self, clobber=False):        
+        if 'tpeak' in self.__dict__ and not clobber: return
+        self.tpeak = dict() 
+        self.fpeak = dict()        
+        for filt in np.unique(self.f_pred):
+            __ = np.where(self.f_pred==filt)
+            xx = self.x_pred[__]
+            yy = self.y_pred[__]
+            yye = self.y_prede[__]
+            __max = np.argmax(yy)            
+            self.tpeak[filt] = xx[__max]
+            self.fpeak[filt] = ( yy[__max], yye[__max] )

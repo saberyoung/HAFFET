@@ -1,14 +1,29 @@
-from setuptools import setup
-from sdapy. __version__ import version, description
+from setuptools import find_packages, setup
+from sdapy. __version__ import name, version, description, python_requires, author, author_email, url
 
 setup(
-    name='sn_data_analysis',
+    name=name,
     version=version,
     description=description,
-    python_requires='>=2.7',
-    packages=[
-        'sdapy',
-    ],   
+    python_requires=python_requires,
+    url=url,
+    author=author,
+    author_email=author_email,    
+    packages=find_packages(),
+    package_data={
+        '': [
+            'data/auth.txt',
+            'data/meta.txt',
+            'data/default_par.txt',
+            'data/individual_par.txt',
+            'data/c10_template.txt',
+        ]
+    },        
+    entry_points = {
+        'console_scripts' :
+        ['sdapy_run = sdapy.snerun:main',
+         'sdapy_gui = sdapy.sneGui:main',],
+    },
     install_requires=[
         'astropy',
         'numpy',
@@ -22,5 +37,6 @@ setup(
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Astronomy',
     ],
-    zip_safe = False
+    zip_safe = False,
+    include_package_data=True
 )
