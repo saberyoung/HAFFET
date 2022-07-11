@@ -7,9 +7,9 @@ import numpy as np
 import os
 LOCALSOURCE = os.getenv('ZTFDATA',"./Data/")
             
-def engine(self, model_name, engine_name, **kwargs):
+def engine(self, model_name, engine_name, sourcename=None, **kwargs):
     ''' engine used to fit spectral lines
-    '''
+    '''    
     if 'fitcls' not in self.__dict__: self.fitcls = dict()
     if engine_name not in self.fitcls: self.fitcls[engine_name] = dict()
     for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
@@ -18,8 +18,9 @@ def engine(self, model_name, engine_name, **kwargs):
     source = kwargs['%s_type'%engine_name]
     assert source in self.__dict__, 'Error: having %s first before fitting'%source
     source = eval('self.%s'%source)
+    if sourcename is not None: sourcename = '_'.join(sourcename.split())
     
-    if len(kwargs['sn_line']) == 0:        
+    if len(kwargs['sn_line']) == 0 or kwargs['sn_line'] is None:
         if self.sntype in line_forsn:
             _sline = line_forsn[self.sntype]                          
         else:
@@ -29,7 +30,7 @@ def engine(self, model_name, engine_name, **kwargs):
         _sline = kwargs['sn_line']
     assert _sline in line_location, 'define line location for %s, otherwise use %s'%\
         (_sline, line_location.keys())
-    
+
     cw = line_location[_sline]
     # blueside: twice of the allowed maximum velocity
     # redside : line intrinstic wavelength
@@ -43,13 +44,16 @@ def engine(self, model_name, engine_name, **kwargs):
         phase  = float(source.data[_]['phase']) 
         if phase < kwargs['specfit_phase'][0] or phase > kwargs['specfit_phase'][1]:
             continue        
-        _source = '_'.join(_.split())        
+        _source = '_'.join(_.split())
+        if sourcename is not None and _source != sourcename: continue
+        __source = '%s_%s' % (_source, _sline)
         if _source not in self.fitcls[engine_name]:
-            self.fitcls[engine_name][_source] = dict() 
-        _sengine(self, _source, spec, model_name, engine_name, cw, region, guessw, **kwargs)
-    self.cw, self.region = cw, region
+            self.fitcls[engine_name][__source] = dict()
+        _sengine(self, _source, spec, model_name, engine_name,
+                 _sline, cw, region, guessw, **kwargs)
+    #self.cw, self.region = cw, region
     
-def _sengine(self, source, spec, model_name, engine_name, cw, region, guessw, **kwargs):
+def _sengine(self, source, spec, model_name, engine_name, sline, cw, region, guessw, **kwargs):
     '''
     df is a dictionary, instead of pandas dataframe
     '''
@@ -73,7 +77,7 @@ def _sengine(self, source, spec, model_name, engine_name, cw, region, guessw, **
     # check peaks
     if not -1 in findp: # no valley
         print ('no absorption feature detected for %s %s, check spectrum, pfactor, velocity range and intrinstic wavelength'%(self.objid, source))
-        self.fitcls[engine_name][source][model_name] = None
+        self.fitcls[engine_name]['%s_%s' % (source, sline)][model_name] = None
         return
     
     # bestv is the closest valley to the guess
@@ -82,13 +86,13 @@ def _sengine(self, source, spec, model_name, engine_name, cw, region, guessw, **
     
     if not 1 in findp: # no peaks
         print ('no absorption boundries detected for %s %s, check spectrum, pfactor, velocity range and intrinstic wavelength'%(self.objid, source))
-        self.fitcls[engine_name][source][model_name] = None
+        self.fitcls[engine_name]['%s_%s' % (source, sline)][model_name] = None
         return    
     _ = np.where(findp[1]<bestw)        
     bestr_left = findp[1][_]
     if len(bestr_left) == 0:
         print ('no blueend of absorption detected for %s %s, check spectrum, pfactor, velocity range and intrinstic wavelength'%(self.objid, source))
-        self.fitcls[engine_name][source][model_name] = None
+        self.fitcls[engine_name]['%s_%s' % (source, sline)][model_name] = None
         return
     bestr[0] = max(bestr_left)
     
@@ -124,16 +128,16 @@ def _sengine(self, source, spec, model_name, engine_name, cw, region, guessw, **
         input(source)
         
     # start fit        
-    self.fitcls[engine_name][source][model_name] = fit_model(
+    self.fitcls[engine_name]['%s_%s' % (source, sline)][model_name] = fit_model(
         w, f, f_unc, filters=None
     )
-    self.fitcls[engine_name][source][model_name].train(
+    self.fitcls[engine_name]['%s_%s' % (source, sline)][model_name].train(
         opt_routine=kwargs['%s_routine'%engine_name],
         fit_mean=model_name, nwalkers=kwargs['nwalkers'],
         nsteps=kwargs['nsteps'], nsteps_burnin=kwargs['nsteps_burnin'],
         ncores=kwargs['ncores'], thin_by=kwargs['thin_by'], maxfev=kwargs['maxfev'],
-        mcmc_h5_file='%s_%s_%s_%s'%\
-        (self.objid, model_name, kwargs['%s_routine'%engine_name], source),
+        mcmc_h5_file='%s_%s_%s_%s_%s'%\
+        (self.objid, model_name, kwargs['%s_routine'%engine_name], source, sline),
         emcee_burnin=kwargs['emcee_burnin'], datadir='%s/cache/'%LOCALSOURCE,
         use_emcee_backend=kwargs['use_emcee_backend'], scipysamples=kwargs['scipysamples'],
         clobber=kwargs['fit_redo'], verbose=kwargs['verbose'],sigma=kwargs['fsigma'],
@@ -142,5 +146,5 @@ def _sengine(self, source, spec, model_name, engine_name, cw, region, guessw, **
         bounds=((min(gh_bounds), min(ga_bounds), min(guessw[1])-cw, min(gs_bounds)),
                 (max(gh_bounds), max(ga_bounds), max(guessw[1])-cw, max(gs_bounds))),
     )
-    self.fitcls[engine_name][source][model_name].predict(quant=kwargs['quantile'])
-    self.fitcls[engine_name][source][model_name].get_random_samples()
+    self.fitcls[engine_name]['%s_%s' % (source, sline)][model_name].predict(quant=kwargs['quantile'])
+    self.fitcls[engine_name]['%s_%s' % (source, sline)][model_name].get_random_samples()

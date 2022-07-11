@@ -36,7 +36,7 @@ from matplotlib.gridspec import SubplotSpec
 
 # tkinter for the gui
 if sys.version_info.major == 3: 
-   import tkinter as Tk   
+   import tkinter as Tk
    from tkinter import filedialog, font
 else:
    import Tkinter as Tk
@@ -776,7 +776,7 @@ class MainMenu(Tk.Frame):
          if not 'lc' in self.ztfp.data[objid].__dict__.keys():
             self.Message('Warning: parse lc for %s first'%objid)
             return
-         ax = self.ztfp.data[objid].ax = self.add_subplot(111, zoomable='horizontal', cursor='both')         
+         ax = self.ztfp.data[objid].ax = self.add_subplot(111, zoomable='horizontal', cursor='both')
          self.ztfp.data[objid]._ax(
             show_title=False, show_legend=True, ylabel_2right=False,
             x0=2458000, source=None
@@ -892,7 +892,7 @@ class MainMenu(Tk.Frame):
             for s in np.unique(lc['source']): msg += ' - %s\n' % (s)                              
          else: msg += 'LC: - \n'
          if 'spec' in self.ztfp.data[objid].__dict__:
-            msg += 'spectra: %i epochs \n' % len(self.ztfp.data[objid].spec.data)
+            msg += 'spectra:\n  %i epochs \n' % len(self.ztfp.data[objid].spec.data)
          else:
             msg += 'spectra: - \n'
       if 'fits' in checkitems:
@@ -937,21 +937,16 @@ class MainMenu(Tk.Frame):
                      msg += '        %s \n' % model
          else:
             msg += 'Fits: - \n'
-      if 'spec' in checkitems:
-         if 'spec' in self.ztfp.data[objid].__dict__:
-            msg += 'Fits: \n'            
+      if 'sed' in checkitems:
+         if 'fitcls' in self.ztfp.data[objid].__dict__:
+            msg += 'Fits: \n'
             for engine in self.ztfp.data[objid].fitcls:
-               if engine not in ['bol_main', 'bol_early', 'bol_late']: continue
+               if engine not in ['specline']: continue
                msg += ' - %s\n' % (engine)
-               for source in self.ztfp.data[objid].fitcls[engine]:
-                  if source == 'mbol':
-                     msg += '    Lyman Bol LC \n'
-                  else:
-                     msg += '    BB Bol LC \n' % model 
-                  for model in self.ztfp.data[objid].fitcls[engine][source]:                  
-                     msg += '        %s \n' % model
+               for source in self.ztfp.data[objid].fitcls[engine]:                  
+                  msg += '    %s \n'%source
          else:
-            msg += 'Fits: - \n'     
+            msg += 'Fits: - \n'
       return msg
 
    ### popup for scatter ###
@@ -1231,7 +1226,7 @@ class MainMenu(Tk.Frame):
                self.Message('Define a proper source name first')
                return
             self.ztfp.data[objid].get_external_phot(filename, source)
-            self.datainfo1.set(self.checkdata(objid))         
+            self.datainfo1.set(self.checkdata(objid, ['data']))
             tb = Tk.Label(self.datatop,textvariable=self.datainfo1,fg="red")             
       data1 = Tk.Label(self.datatop,text='external Photometry',fg="black")
       data1.grid(row=7,column=0)
@@ -1255,7 +1250,7 @@ class MainMenu(Tk.Frame):
                self.Message('Define a proper epoch first')
                return
             self.ztfp.data[objid].get_external_spectra(filename, epoch, tel='')
-            self.datainfo1.set(self.checkdata(objid))         
+            self.datainfo1.set(self.checkdata(objid, ['data']))
             tb = Tk.Label(self.datatop,textvariable=self.datainfo1,fg="red")      
       data1 = Tk.Label(self.datatop,text='external Spectra',fg="black")
       data1.grid(row=8,column=0)
@@ -1358,7 +1353,8 @@ class MainMenu(Tk.Frame):
       self.colorentry = Tk.Entry(Frame, justify=Tk.LEFT, width=6)
       self.colorentry.insert(0, colours)
       self.colorentry.grid(row=2, column=3)
-      
+
+      # source
       _Frame = Tk.LabelFrame(Frame, text="Source")
       _Frame.grid(row=0,column=0)
       sources = [None]
@@ -1370,7 +1366,7 @@ class MainMenu(Tk.Frame):
       lcsourceMenu = Tk.OptionMenu(_Frame, self.lcsource, *sources)
       lcsourceMenu.config(justify=Tk.LEFT,width=4)
       lcsourceMenu.grid(row=0,column=0,sticky=Tk.E)
-
+      
       def updatesource(k): self.lcsource.set( k )
       def updateinfos():
          sources = [None]
@@ -1546,6 +1542,9 @@ class MainMenu(Tk.Frame):
       def rungp():
          if self.clobberVar.get()==0: clobber=False
          else: clobber=True
+         source = self.lcsource.get()
+         self.Message('GP for source: %s with clobber=%s'%(source,clobber))
+         if len(source) == 0 or source == 'None': source=None
          gp_bands = self.colorentry.get().split()
          gp_fitr = [float(self.gpfitminentry.get()),float(self.gpfitmaxentry.get())]
          self.ztfp.data[objid].run_gp(
@@ -1558,7 +1557,8 @@ class MainMenu(Tk.Frame):
             nwalkers = int(self.nwalkerentry.get()),
             nsteps = int(self.nstepsentry.get()),
             nsteps_burnin = int(self.nstepburnsentry.get()),
-            gp_redo=clobber
+            gp_redo = clobber,
+            source = source,
          )
          self.datainfo2.set(self.checkdata(objid, ['fits']))
          tb = Tk.Label(labelFrame,textvariable=self.datainfo2, fg="red", justify= Tk.LEFT)
@@ -1567,6 +1567,9 @@ class MainMenu(Tk.Frame):
       def runpl():
          if self.clobberVar.get()==0: clobber=False
          else: clobber=True
+         source = self.lcsource.get()
+         self.Message('Multi early fits for source: %s with clobber=%s'%(source,clobber))
+         if len(source) == 0 or source == 'None': source=None
          fit_bands = self.colorentry.get().split()
          fit_fitr = [float(self.plfitminentry.get()),float(self.plfitmaxentry.get())]
          fit_fitp = [float(self.plplotminentry.get()),float(self.plplotmaxentry.get())]   
@@ -1580,7 +1583,8 @@ class MainMenu(Tk.Frame):
             nwalkers = int(self.nwalkerentry.get()),
             nsteps = int(self.nstepsentry.get()),
             nsteps_burnin = int(self.nstepburnsentry.get()),
-            fit_redo=clobber
+            fit_redo = clobber,
+            source = source,
          )
          self.datainfo2.set(self.checkdata(objid, ['fits']))
          tb = Tk.Label(labelFrame,textvariable=self.datainfo2, fg="red", justify= Tk.LEFT)
@@ -1589,6 +1593,9 @@ class MainMenu(Tk.Frame):
       def runbz():
          if self.clobberVar.get()==0: clobber=False
          else: clobber=True
+         source = self.lcsource.get()
+         self.Message('Multi main fits for source: %s with clobber=%s'%(source,clobber))
+         if len(source) == 0 or source == 'None': source=None
          fit_bands = self.colorentry.get().split()
          fit_fitr = [float(self.bzfitminentry.get()),float(self.bzfitmaxentry.get())]
          fit_fitp = [float(self.bzplotminentry.get()),float(self.bzplotmaxentry.get())]
@@ -1602,7 +1609,8 @@ class MainMenu(Tk.Frame):
             nwalkers = int(self.nwalkerentry.get()),
             nsteps = int(self.nstepsentry.get()),
             nsteps_burnin = int(self.nstepburnsentry.get()),
-            fit_redo=clobber,                                       
+            fit_redo = clobber,
+            source = source,
          )
          self.datainfo2.set(self.checkdata(objid, ['fits']))
          tb = Tk.Label(labelFrame,textvariable=self.datainfo2, fg="red", justify= Tk.LEFT)         
@@ -1988,48 +1996,76 @@ class MainMenu(Tk.Frame):
       # data infos
       row1 = Tk.Frame(self.bbtop1)      
       row1.grid(row=0,column=0,sticky=Tk.W)      
-      labelFrame = Tk.LabelFrame(row1, text="Data")
+      labelFrame = Tk.LabelFrame(row1, text="Bolometric Fits")
       labelFrame.grid(row=0,column=0)
       
       self.datainfo4 = Tk.StringVar()
       self.datainfo4.set(self.checkdata(objid, ['bolfit']))
       tb = Tk.Label(labelFrame,textvariable=self.datainfo4,fg="red")      
       tb.grid(row=0,column=0)
-
+      
       # row1 right
       Frame = Tk.Frame(self.bbtop1)
       Frame.grid(row=0,column=1,sticky=Tk.W)
       
       nsteps = snerun.snobject_pars['nsteps']
       l = Tk.Label(Frame,text='steps=',fg="black")      
-      l.grid(row=0,column=0)
+      l.grid(row=1,column=0)
       self.nstepsentry = Tk.Entry(Frame, justify=Tk.LEFT, width=6)
       self.nstepsentry.insert(0, nsteps)
-      self.nstepsentry.grid(row=0, column=1)
+      self.nstepsentry.grid(row=1, column=1)
       
       nsteps_burnin = snerun.snobject_pars['nsteps_burnin']      
       l = Tk.Label(Frame,text='burnin=',fg="black")      
-      l.grid(row=1,column=0)
+      l.grid(row=2,column=0)
       self.nstepburnsentry = Tk.Entry(Frame, justify=Tk.LEFT, width=6)
       self.nstepburnsentry.insert(0, nsteps_burnin)
-      self.nstepburnsentry.grid(row=1, column=1)
+      self.nstepburnsentry.grid(row=2, column=1)
 
       nwalkers = snerun.snobject_pars['nwalkers']      
       l = Tk.Label(Frame,text='walkers=',fg="black")      
-      l.grid(row=0,column=2)
+      l.grid(row=1,column=2)
       self.nwalkerentry = Tk.Entry(Frame, justify=Tk.LEFT, width=6)
       self.nwalkerentry.insert(0, nwalkers)
-      self.nwalkerentry.grid(row=0, column=3)
+      self.nwalkerentry.grid(row=1, column=3)
       
       if snerun.snobject_pars['color_interp'] is None:
          cinterp = [1,2,3]
       else:
          cinterp = snerun.snobject_pars['color_interp']
       l = Tk.Label(Frame,text='inter=',fg="black")      
-      l.grid(row=1,column=2)
+      l.grid(row=2,column=2)
       self.cinterpentry = Tk.Entry(Frame, justify=Tk.LEFT, width=6)
       self.cinterpentry.insert(0, cinterp)
-      self.cinterpentry.grid(row=1, column=3)
+      self.cinterpentry.grid(row=2, column=3)
+
+      # source
+      _Frame = Tk.LabelFrame(Frame, text="Source")
+      _Frame.grid(row=0,column=0)
+      sources = [None]
+      if 'mbol' in self.ztfp.data[objid].__dict__: sources = np.append(sources, 'mbol')
+      if 'mbolbb' in self.ztfp.data[objid].__dict__: sources = np.append(sources, 'mbolbb')
+      self.msource = Tk.StringVar()
+      self.msource.set( sources[0] )
+      
+      lcsourceMenu = Tk.OptionMenu(_Frame, self.msource, *sources)
+      lcsourceMenu.config(justify=Tk.LEFT,width=4)
+      lcsourceMenu.grid(row=0,column=0,sticky=Tk.E)
+      
+      def updatesource(k): self.msource.set( k )
+      def updateinfos():
+         sources = [None]
+         if 'mbol' in self.ztfp.data[objid].__dict__: sources = np.append(sources, 'mbol')
+         if 'mbolbb' in self.ztfp.data[objid].__dict__: sources = np.append(sources, 'mbolbb')
+         self.msource.set( sources[0] )         
+         # update option menu
+         menu = lcsourceMenu["menu"]
+         menu.delete(0, "end")
+         for t in sources:            
+            menu.add_command(label=t,command=lambda k=t: updatesource(k))  
+      button = Tk.Button(Frame,text="u",command=updateinfos)
+      button.config(justify=Tk.LEFT,width=1)
+      button.grid(row=0,column=1, sticky=Tk.SW)
       
       # bol early fits
       Frame = Tk.LabelFrame(self.bbtop1, text="Bolometric early (shock cooling)")
@@ -2224,6 +2260,9 @@ class MainMenu(Tk.Frame):
       def runmainbol():
          if self.clobberVar.get()==0: clobber=False
          else: clobber=True
+         source = self.msource.get()
+         self.Message('Bol main fits for source: %s'%(source))
+         if len(source) == 0 or source == 'None': source=None  
          fit_fitr = [float(self.bmfitminentry.get()),float(self.bmfitmaxentry.get())]
          fit_fitp = [float(self.bmplotminentry.get()),float(self.bmplotmaxentry.get())]
          cinterp = []
@@ -2240,7 +2279,8 @@ class MainMenu(Tk.Frame):
             nsteps = int(self.nstepsentry.get()),
             nsteps_burnin = int(self.nstepburnsentry.get()),
             bol_main_color_interp = cinterp,
-            fit_redo=clobber,
+            fit_redo = clobber,
+            source = source,
          )
          self.datainfo4.set(self.checkdata(objid, ['bolfit']))
          tb = Tk.Label(labelFrame,textvariable=self.datainfo4,fg="red")      
@@ -2255,7 +2295,7 @@ class MainMenu(Tk.Frame):
          cinterp = []
          for c in list(self.cinterpentry.get()):
             try: cinterp.append(int(c))
-            except: pass      
+            except: pass         
          self.ztfp.data[objid].run_fit(
             'bol_tail',
             fit_methods = [self.tailmodel.get()],
@@ -2316,7 +2356,7 @@ class MainMenu(Tk.Frame):
       menu.grid_columnconfigure(1, weight=1)
       menu.grid_columnconfigure(2, weight=100)
       menu.grid(row=0, column=0)
-
+      
       # data infos
       row1 = Tk.Frame(self.spectop)      
       row1.grid(row=0,column=0,sticky=Tk.W)      
@@ -2324,15 +2364,44 @@ class MainMenu(Tk.Frame):
       labelFrame.grid(row=0,column=0)
       
       self.datainfo5 = Tk.StringVar()
-      self.datainfo5.set(self.checkdata(objid, ['fits']))
-      tb = Tk.Label(labelFrame,textvariable=self.datainfo2, fg="red", justify= Tk.LEFT)
+      self.datainfo5.set(self.checkdata(objid, ['sed']))
+      tb = Tk.Label(labelFrame,textvariable=self.datainfo5, fg="red", justify= Tk.LEFT)
       tb.grid(row=0,column=0)         
       
       # MCMC
       # row1 right
-      Frame = Tk.Frame(self.datatop1)
+      Frame = Tk.Frame(self.spectop)
       Frame.grid(row=0,column=1,sticky=Tk.W)
+
+      # sources            
+      _Frame = Tk.LabelFrame(Frame, text="Source")
+      _Frame.grid(row=0,column=0,sticky=Tk.W)
+      sources = [None]
+      if 'spec' in self.ztfp.data[objid].__dict__:
+         sources = np.append(sources, list(self.ztfp.data[objid].spec.data.keys()))
+      self.specsource = Tk.StringVar()
+      self.specsource.set( sources[0] )
       
+      lcsourceMenu = Tk.OptionMenu(_Frame, self.specsource, *sources)
+      lcsourceMenu.config(justify=Tk.LEFT,width=4)
+      lcsourceMenu.grid(row=0,column=0,sticky=Tk.E)
+      
+      def updatesource(k): self.specsource.set( k )
+      def updateinfos():
+         sources = [None]
+         if 'spec' in self.ztfp.data[objid].__dict__:
+            sources = np.append(sources, list(self.ztfp.data[objid].spec.data.keys()))
+         self.specsource.set( sources[0] )         
+         # update option menu
+         menu = lcsourceMenu["menu"]
+         menu.delete(0, "end")
+         for t in sources:            
+            menu.add_command(label=t,command=lambda k=t: updatesource(k))  
+      button = Tk.Button(Frame,text="update",command=updateinfos)
+      button.config(justify=Tk.LEFT,width=1)
+      button.grid(row=0,column=1)
+      
+      #
       nsteps = snerun.snobject_pars['nsteps']
       l = Tk.Label(Frame,text='steps=',fg="black")      
       l.grid(row=1,column=0)
@@ -2353,45 +2422,78 @@ class MainMenu(Tk.Frame):
       self.nwalkerentry = Tk.Entry(Frame, justify=Tk.LEFT, width=6)
       self.nwalkerentry.insert(0, nwalkers)
       self.nwalkerentry.grid(row=1, column=3)
-      
-      if 'lc' in self.ztfp.data[objid].__dict__:
-         colours = list(np.unique(self.ztfp.data[objid].lc['filter']))
-      else:
-         colours = snerun.snobject_pars['plot_bands']
-      l = Tk.Label(Frame,text='colours=',fg="black")      
-      l.grid(row=2,column=2)
-      self.colorentry = Tk.Entry(Frame, justify=Tk.LEFT, width=6)
-      self.colorentry.insert(0, colours)
-      self.colorentry.grid(row=2, column=3)
-      
-      _Frame = Tk.LabelFrame(Frame, text="Source")
-      _Frame.grid(row=0,column=0)
-      sources = [None]
-      if 'lc' in self.ztfp.data[objid].__dict__:
-         sources = np.append(sources, np.unique(self.ztfp.data[objid].lc['source']))
-      self.lcsource = Tk.StringVar()
-      self.lcsource.set( sources[0] )
-      
-      lcsourceMenu = Tk.OptionMenu(_Frame, self.lcsource, *sources)
-      lcsourceMenu.config(justify=Tk.LEFT,width=4)
-      lcsourceMenu.grid(row=0,column=0,sticky=Tk.E)
 
-      def updatesource(k): self.lcsource.set( k )
-      def updateinfos():
-         sources = [None]
-         if 'lc' in self.ztfp.data[objid].__dict__:            
-            sources = np.append(sources, np.unique(self.ztfp.data[objid].lc['source']))
-         self.lcsource.set( sources[0] )         
-         # update option menu
-         menu = lcsourceMenu["menu"]
-         menu.delete(0, "end")
-         for t in sources:            
-            menu.add_command(label=t,command=lambda k=t: updatesource(k))  
-      button = Tk.Button(Frame,text="u",command=updateinfos)
-      button.config(justify=Tk.LEFT,width=1)
-      button.grid(row=0,column=1, sticky=Tk.SW)
+      # spectra fits
+      Frame = Tk.LabelFrame(self.spectop, text="spectral line fits")
+      Frame.grid(row=1,column=0,columnspan=2,sticky=Tk.W)
 
+      _Frame = Tk.LabelFrame(Frame, text="line")
+      _Frame.grid(row=0,column=0)      
+      lines = list(constants.line_location.keys())
+      self.specline = Tk.StringVar()
+      self.specline.set( lines[0] )
       
+      Menu = Tk.OptionMenu(Frame, self.specline, *lines)
+      Menu.config(justify=Tk.LEFT,width=4)
+      Menu.grid(row=0,column=0,sticky=Tk.W)
+      
+      _Frame = Tk.LabelFrame(Frame, text="Routine")
+      _Frame.grid(row=0,column=1)
+      _list = ['mcmc', 'minimize', 'leastsq']
+      self.specroutine = Tk.StringVar()
+      self.specroutine.set( snerun.snobject_pars['bol_early_routine'] )
+      Menu = Tk.OptionMenu(_Frame, self.specroutine, *_list)
+      Menu.config(justify=Tk.LEFT,width=8)
+      Menu.grid(row=0,column=0, sticky=Tk.W)
+      
+      _Frame = Tk.LabelFrame(Frame, text="Model")
+      _Frame.grid(row=0,column=2)
+      _list = ['gauss']
+      self.specmodel = Tk.StringVar()
+      self.specmodel.set( 'gauss' )
+      Menu = Tk.OptionMenu(_Frame, self.specmodel, *_list)
+      Menu.config(justify=Tk.LEFT,width=8)
+      Menu.grid(row=0,column=0, sticky=Tk.W)
+      
+      # done
+      def runfit():
+         if self.clobberVar.get()==0: clobber=False
+         else: clobber=True
+         source = self.specsource.get()
+         sn_line = self.specline.get()
+         self.Message('%s line fits for source: %s with clobber=%s'%(sn_line,source,clobber))
+         if len(source) == 0 or source == 'None': source=None
+         if len(sn_line) == 0 or sn_line == 'None': source=None
+         self.ztfp.data[objid].run_fit(
+            'specline',
+            fit_methods = [self.specmodel.get()],            
+            specline_routine = self.specroutine.get(),
+            nwalkers = int(self.nwalkerentry.get()),
+            nsteps = int(self.nstepsentry.get()),
+            nsteps_burnin = int(self.nstepburnsentry.get()),
+            fit_redo = clobber,
+            source = source,
+            sn_line = sn_line,
+         )
+         self.datainfo5.set(self.checkdata(objid, ['sed']))
+         tb = Tk.Label(labelFrame,textvariable=self.datainfo5, fg="red", justify= Tk.LEFT)         
+      button2 = Tk.Button(self.spectop,text="run fitting",command=runfit)
+      button2.grid(row=2, column=0, sticky=Tk.W)
+      
+      # corner plots
+      def speccontours():
+         # reset canvas
+         try:    self.fig.clear(False)
+         except: pass
+         self.currentfigure = 'contour'
+         ax = self.add_subplot(111, zoomable='horizontal', cursor='both')
+         self.ztfp.data[objid].show_corner(ax, engine='specline', model=None, source=None)
+         self.currentfiguresize = (ax.get_xlim(), ax.get_ylim())         
+         self.set_title(ax, objid)
+         self.set_limits( ax )
+         self.Message('Contour plots for %s'%objid)
+      inputFrameBut = Tk.Button(self.spectop, text="Contours", command=speccontours)
+      inputFrameBut.grid(row=2, column=1, sticky=Tk.W)
       
    ### popup for Flux LC ###  
    def fluxfit_popup(self):      
@@ -2401,10 +2503,59 @@ class MainMenu(Tk.Frame):
       self.fluxtop = Tk.Toplevel(self.parent)
       self.fluxtop.geometry("500x500+50+50")      
       self.fluxtop.title('Flux model generator')
+
+      # sources            
+      _Frame = Tk.LabelFrame(self.fluxtop, text="Source")
+      _Frame.grid(row=0,column=0,sticky=Tk.W)
+      sources = [None]
+      if 'lc' in self.ztfp.data[objid].__dict__:
+         sources = np.append(sources, np.unique(self.ztfp.data[objid].lc['source']))
+      self.lcsource1 = Tk.StringVar()
+      self.lcsource1.set( sources[0] )
+      
+      lcsourceMenu = Tk.OptionMenu(_Frame, self.lcsource1, *sources)
+      lcsourceMenu.config(justify=Tk.LEFT,width=4)
+      lcsourceMenu.grid(row=0,column=0,sticky=Tk.E)
+      
+      def updatesource(k): self.lcsource1.set( k )
+      def updateinfos():
+         sources = [None]
+         if 'lc' in self.ztfp.data[objid].__dict__:            
+            sources = np.append(sources, np.unique(self.ztfp.data[objid].lc['source']))
+         self.lcsource1.set( sources[0] )         
+         # update option menu
+         menu = lcsourceMenu["menu"]
+         menu.delete(0, "end")
+         for t in sources:            
+            menu.add_command(label=t,command=lambda k=t: updatesource(k))  
+      button = Tk.Button(self.fluxtop,text="update",command=updateinfos)
+      button.config(justify=Tk.LEFT,width=1)
+      button.grid(row=0,column=0)
+
+      def updateplot():
+         # reset canvas
+         try:    self.fig.clear(False)
+         except: pass
+         source = self.lcsource1.get()
+         self.Message('GP for source: %s'%(source))
+         if len(source) == 0 or source == 'None': source=None         
+         ax = self.ztfp.data[objid].ax = self.add_subplot(111, zoomable='horizontal', cursor='both')
+         self.ztfp.data[objid]._ax(
+            show_title=False, show_legend=True, ylabel_2right=False,
+            x0=2458000, source=source,
+         )
+         self.currentfiguresize = (ax.get_xlim(), ax.get_ylim())         
+         self.set_title(ax, objid)
+         self.set_limits( ax )
+         self.Message('Show Flux lcs for %s'%objid)
+         
+      button = Tk.Button(self.fluxtop,text="show",command=updateplot)
+      button.config(justify=Tk.LEFT,width=1)
+      button.grid(row=0,column=0, sticky=Tk.E)
       
       # Bazin fits
       menu = Tk.LabelFrame(self.fluxtop, text="Bazin model")      
-      menu.grid(row=0, column=0) 
+      menu.grid(row=1, column=0) 
       
       # default p
       filt = 'r'
@@ -2533,13 +2684,7 @@ class MainMenu(Tk.Frame):
       # show
       self.showbazinVar = Tk.IntVar(value=0) 
       showbazinButton = Tk.Checkbutton(menu, text="Bazin model",variable=self.showbazinVar)      
-      showbazinButton.grid(row=5,column=0,sticky=Tk.W)
-      #self.showtailVar = Tk.IntVar(value=0)
-      #showtailButton = Tk.Checkbutton(menu, text="Tail model",variable=self.showtailVar)
-      #showtailButton.grid(row=11,column=1,sticky=Tk.W)
-      #self.showsboVar = Tk.IntVar(value=0)
-      #showtailButton = Tk.Checkbutton(menu, text="SBO model",variable=self.showsboVar)
-      #showtailButton.grid(row=11,column=2,sticky=Tk.W)
+      showbazinButton.grid(row=5,column=0,sticky=Tk.W)     
       
    ### popup for bolometric LC fitter ###   
    def mbolfit_popup(self):

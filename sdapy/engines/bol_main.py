@@ -4,29 +4,30 @@ import numpy as np
 import os
 LOCALSOURCE = os.getenv('ZTFDATA',"./Data/")
 
-def engine(self, model_name, engine_name, **kwargs):
+def engine(self, model_name, engine_name, sourcename=None, **kwargs):
     ''' engine used to fit bolometric lc around the main peak
     '''
     if 'fitcls' not in self.__dict__: self.fitcls = dict()
     if engine_name not in self.fitcls: self.fitcls[engine_name] = dict()
     for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
 
-    assert self.t0 > 2400000, '!!!either input jdpeak or do GP first and set jdpeak with GP'    
-    sources = kwargs['%s_type'%engine_name].split(',')
-    if len( sources ) == 1:
-        source = sources[0]
-        assert source in self.__dict__, 'Error: having %s first before fitting'%source
+    assert self.t0 > 2400000, '!!!either input jdpeak or do GP first and set jdpeak with GP'
+    if sourcename is not None: sources = [sourcename]
+    else: sources = kwargs['%s_type'%engine_name].split(',')
+    #if len( sources ) == 1:
+    #    source = sources[0]
+    #    assert source in self.__dict__, 'Error: having %s first before fitting'%source
+    #    if source not in self.fitcls[engine_name]:
+    #        self.fitcls[engine_name][source] = dict()        
+    #    _sengine(self, source, model_name, engine_name, **kwargs)
+    #else:        
+    for source in sources:
+        if not source in self.__dict__:
+            print ('Error: having %s first before fitting'%source)
+            continue            
         if source not in self.fitcls[engine_name]:
-            self.fitcls[engine_name][source] = dict()        
+            self.fitcls[engine_name][source] = dict()            
         _sengine(self, source, model_name, engine_name, **kwargs)
-    else:        
-        for source in sources:
-            if not source in self.__dict__:
-                print ('Error: having %s first before fitting'%source)
-                continue            
-            if source not in self.fitcls[engine_name]:
-                self.fitcls[engine_name][source] = dict()            
-            _sengine(self, source, model_name, engine_name, **kwargs)
     
 def _sengine(self, source, model_name, engine_name, **kwargs):
     '''

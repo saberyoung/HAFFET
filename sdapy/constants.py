@@ -77,8 +77,8 @@ line_location = {
     'H~$\epsilon$': 3970,
     'He~5876$\AA$': 5876,
     'O~7774$\AA$': 7774,
-    'Na~I~D1$': 5896,
-    'Na~I~D2$': 5890,
+    'Na~I~D1': 5896,
+    'Na~I~D2': 5890,
 }
 line_forsn = {
     'SN Ib': 'He~5876$\AA$',       

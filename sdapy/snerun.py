@@ -26,10 +26,8 @@ from joblib import dump, load
 from io import StringIO
 from pathlib import Path
 from collections import OrderedDict
-from astrorapid.classify import Classify
+#from astrorapid.classify import Classify
 from bs4 import BeautifulSoup
-import ztfquery
-from ztfquery import marshal, fritz
 
 # self import
 from sdapy.gaussian_process import fit_gp
@@ -74,6 +72,12 @@ def check_dir():
             else:
                 sys.exit()
                 
+# check dir
+check_dir()
+
+import ztfquery
+from ztfquery import marshal, fritz
+
 # parameters
 snelist_pars = read_default.get_parameters(keylist='snelist')['snelist']
 snobject_pars = read_default.get_parameters(keylist='snobject')['snobject']
@@ -101,8 +105,6 @@ class snelist(object):
     
     def __init__(self, ax=None, **kwargs):                
         """ initialize """
-        # check dir
-        check_dir()
         
         # ----- read default parameters ----- #        
         defkwargs = read_kwargs(snelist_pars, 'snelist')
@@ -539,9 +541,7 @@ class snobject(object):
                  mkwebv=None, hostebv=None, sntype=None, dm=None,
                  jdpeak=None, fig=None, ax=None, ax1=None, ax2=None,
                  ax3=None, ax4=None, **kwargs):
-        # check dir
-        check_dir()
-        
+                
         # ----- read default parameters ----- #        
         defkwargs = read_kwargs(snobject_pars, 'snobject')
         
@@ -1207,7 +1207,7 @@ class snobject(object):
             subprocess.Popen(line, shell=True)
             print ('querying fp for %s (%.2f %.2f) from %.2f till %.2f\n->after reveive email, put content into %s' %
                    (self.objid, radeg, decdeg, jdstart, jdend, f))
-            time.sleep(kwargs['waittime'])
+            time.sleep(10)
             return
         
         # URL used to place a request        
@@ -1473,12 +1473,14 @@ class snobject(object):
                 for _i in i: ii.append(float(_i))
                 self.featurelist['rapid']['prediction'].append({'time': j, 'predict':ii})
 
-    def run_gp(self, **kwargs):
+    def run_gp(self, source=None, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
         
         lc = self.lc
-        gpfs = kwargs['gp_bands']
-        lc = lc.query('filter in @gpfs')        
+        gpfs = kwargs['gp_bands']        
+        lc = lc.query('filter in @gpfs')
+        if source is not None: lc = lc.query('source==@source')       
+        
         if self.t0 > 0: # cut lc first
             pmin,pmax = min(kwargs['gp_fitr']), max(kwargs['gp_fitr'])
             lc = lc.query('jdobs<=@self.t0+@pmax and jdobs>=@self.t0+@pmin')        
@@ -1499,18 +1501,20 @@ class snobject(object):
         elif kwargs['set_tpeak_method'] == 'gp':
             self.set_peak_gp(kwargs['set_tpeak_filter'])
             
-    def run_fit(self, enginetype, **kwargs):        
+    def run_fit(self, enginetype, source=None, **kwargs): 
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         for which in kwargs['fit_methods']:            
             _which = get_pars(which)
             engine = _which['engine']
             enginename = _which['enginename']            
             if enginename != enginetype: continue
-            print ('run %s %s' % (enginename, which))
-            engine(self, which, enginename, **kwargs)
+            #print ('run %s %s' % (enginename, which))            
+            engine(self, which, enginename, sourcename=source, **kwargs)
             
     def set_peak_gp(self, filt):
-        assert filt in self.gpcls.tpeak, '%s not available by GP'%filt
+        if not filt in self.gpcls.tpeak:
+            print ('%s not available by GP'%filt)
+            return
         self.t0 = self.gpcls.tpeak[filt]
         self.fpeak = self.gpcls.fpeak
         
@@ -2128,17 +2132,19 @@ class snobject(object):
             print ('Error: no lc defined, parse lc data first')
             return
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])       
-        fscale=float(kwargs['flux_scale'])        
+        fscale=float(kwargs['flux_scale'])
+        if source is not None: lc = self.lc.query('source==@source')
+        else:  lc = self.lc
         if kwargs['plot_bands'] is not None: plot_bands = kwargs['plot_bands']
-        else: plot_bands = np.unique(self.lc['filter'])
+        else: plot_bands = np.unique(lc['filter']) 
         for filt in plot_bands:
             ''' for each filter '''        
             
             # normalize flux item in ax
             if source is None:
-                __lc = self.lc.query('filter==@filt')
+                __lc = lc.query('filter==@filt')
             else:
-                __lc = self.lc.query('filter==@filt and source==@source')
+                __lc = lc.query('filter==@filt and source==@source')
             # peak flux
             fm, efm = self._flux_at(filt, 0, interpolation=None, **kwargs)            
             if fm is None: fm = __lc['flux'].max()
@@ -2220,7 +2226,7 @@ class snobject(object):
         if show_legend: self.ax.legend(fontsize=10, frameon=False)
         
     def _ax1(self, show_title=False, show_legend=False,
-             source=None, **kwargs):  #spectra plot
+             cw=None, region=None, **kwargs):  #spectra plot
         if self.ax1 is None:
             print ('Error: no ax1 defined, skipped spectra plots')
             return
@@ -2228,9 +2234,7 @@ class snobject(object):
             print ('Error: no spec defined, parse spectral data first')
             return
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-
-        cw, region = None, None
-        if 'cw' in self.__dict__: cw, region = self.cw, self.region
+        
         for _ in self.spec.data:
             spec   = self.spec.data[_]['data']
             phase  = float(self.spec.data[_]['phase'])
@@ -2261,10 +2265,12 @@ class snobject(object):
                             
             # fits            
             if 'fitcls' in self.__dict__:
-                if 'specline' in self.fitcls:
-                    if source in self.fitcls['specline']:                        
-                        for model in self.fitcls['specline'][source]:
-                            _model = self.fitcls['specline'][source][model]
+                if 'specline' in self.fitcls:                    
+                    for sourcename in self.fitcls['specline']:
+                        if not source in sourcename: continue
+                        print (source, sourcename, ys)
+                        for model in self.fitcls['specline'][sourcename]:                            
+                            _model = self.fitcls['specline'][sourcename][model]
                             if _model is None: continue
                             x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
                                                         plotnsamples=kwargs['plot_nsamples'])
@@ -2556,7 +2562,7 @@ class snobject(object):
             fignames = self.gpcls.save_corner(figpath)            
         else:  # fit
             models, modelnames, enginenames, sourcenames = self.get_model(
-                engine=engine,model=model, source=source
+                engine=engine, model=model, source=source
             )
             if len(models) == 0:
                 print ('No models found')

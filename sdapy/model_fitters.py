@@ -637,11 +637,14 @@ class fit_model:
 
     @staticmethod
     def run_scipy(func, p0, bounds, x, y, yerr, sigma=3, maxfev=2000, nsamp=None):                
-
+        
         try:
             params, covar = curve_fit(func, x, y, method='trf',
                 sigma=yerr, p0=p0, absolute_sigma=True, maxfev=maxfev, bounds=bounds)
         except:
+            import matplotlib.pyplot as plt
+            plt.plot(x,y,'ko')
+            plt.savefig('tmp.png')
             params, covar = curve_fit(func, x, y, method='trf',
                 p0=p0, maxfev=maxfev, bounds=bounds)        
         perr = np.sqrt(np.diag(covar))

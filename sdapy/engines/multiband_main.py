@@ -3,7 +3,7 @@ import numpy as np
 import os
 LOCALSOURCE = os.getenv('ZTFDATA',"./Data/")
 
-def engine(self, model_name, engine_name, **kwargs):
+def engine(self, model_name, engine_name, sourcename=None, **kwargs):
     ''' engine used to fit multiband lcs independently around the main peak
     '''
     if 'fitcls' not in self.__dict__: self.fitcls = dict()
@@ -15,6 +15,7 @@ def engine(self, model_name, engine_name, **kwargs):
     assert self.t0 > 2400000, '!!!either input jdpeak or do GP first and set jdpeak with GP'    
     
     df = source
+    if sourcename is not None: df = df.query('source==@sourcename')
     if kwargs['%s_bands'%engine_name] is not None:
         df = df.query('filter in %s' % kwargs['%s_bands'%engine_name])    
     if kwargs['%s_xrange'%engine_name] is not None:
