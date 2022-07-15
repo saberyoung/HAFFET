@@ -18,6 +18,7 @@ pyfits
 requests
 scipy
 setuptools
+sewpy
 tabulate
 tqdm
 uncertainties
