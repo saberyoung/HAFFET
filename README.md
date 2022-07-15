@@ -1,33 +1,67 @@
-# HAFFET (Hybrid Analytic Flux FittEr for Transients): codes to play with SN alike LCs and spectra
+# SNDA(SN Data Analysis) to analyze SN photometric and spectroscopic data
 
-**tutorial (not finished yet)**
-- online : https://haffet.readthedocs.io/en/latest/
-- offline :docs/_build/html/index.html
+This is the version of Docker set out to design for Windows users  by Marc Shen.
 
-usage
-=============
+Install and Use
+==
 
-install
---
-* python setup.py install
-* I have already listed some needed python packages in *requirements.txt*, and please let me know if I forgot sth
+### Install the Docker
 
-working directory
---
-* define a directory to put data, default using ./data/
-* or add your favorite location in ~/.bashrc, export ZTFDATA="/xxx/yyy/zzz/"
+Get and install Docker from https://www.docker.com/get-started/
 
-run
---
-* sdapy_run: run in terminal
-* sdapy_gui: a dedicated GUI (in beta version)
+### Install the program
 
-plan
-=============
-* will include spectral fitting and SNe scattering part into the GUI
-* will write a dedicated paper for the codes, please let me know if you're interested in joining
-* still need a good name and logo for the code... please let me know if you had sth in mind
+First, download this program.
 
-Q&A
-=============
-Let me (sheng.yang@astro.su.se) know if you had any questions
+Then do as follows.
+
+```bash
+mv -f arm.Dockerfile Dockerfile
+# If the computer is arm(arm32, arm64 .etc) architecture.
+
+mv -f amd.Dockerfile Dockerfile
+# If the computer is amd(x86, x64 .etc) architecture.
+```
+
+```bash
+sudo docker build -t test:v1 .
+```
+
+### Use
+
+Run the program with gui.
+
+```bash
+docker run -ti --rm -e DISPLAY=host.docker.internal:0.0 test:v1 sdapy_gui
+```
+
+## Description of different systems
+
+### Windows
+
+#### WSL
+
+You need WSL to run Docker.
+
+#### XServer
+
+To use this program you need to use this software together.
+
+https://sourceforge.net/projects/vcxsrv/
+
+### Linux & Mac
+
+Under Linux, you need to adjust the `DISPLAY` for your computer system.
+
+## Details
+
+Linux and Mac users are advised to use this program with the master branch page.
+
+**This method is mainly designed for Windows system.** 
+
+Of course, Linux and Mac systems can also use this program, but it is not necessary.
+
+## Q&A
+
+This is a brand new test, you can give us feedback on specific questions.
+
