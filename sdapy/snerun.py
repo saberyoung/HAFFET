@@ -7,6 +7,8 @@
 # Last Modified By  : syang <sheng.yang@astro.su.se>
 
 from __future__ import print_function
+
+import contextlib
 import os, sys, requests, emcee, corner, random, urllib,\
     shlex, subprocess, time, json, math, re, argparse
 import numpy as np
@@ -48,30 +50,11 @@ srcpath = __path__[0]
 LOCALSOURCE = os.getenv('ZTFDATA',"./Data/")
 
 def check_dir():
-    answ = None
-    if not os.path.isdir( LOCALSOURCE ):
-        if answ is None:
-            answ = input('as set, %s was the folder used to deal with data however not exists, create directory?(Y/N)'%LOCALSOURCE)
-        if answ.strip() in ['y', 'Y']:
-            try:
-                os.mkdir( LOCALSOURCE )
-            except:
-                raise OSError("Can't create destination directory (%s)!" % (LOCALSOURCE))
-        else:
-            sys.exit()
+    os.mkdir(LOCALSOURCE)
     for filestype in ['fritz', 'marshal', 'ForcePhot', 'ForcePhot_atlas', 'cache', 'plots', 'images']:
-        destdir = '%s/%s'%(LOCALSOURCE, filestype)
-        if not os.path.isdir( destdir ):
-            if answ is None:
-                answ = input('as set, %s was the folder used to deal with data however some sub folder not exists, create them?(Y/N)'%(LOCALSOURCE))
-            if answ.strip() in ['y', 'Y']:
-                try:
-                    os.mkdir( destdir )
-                except:
-                    raise OSError("Can't create destination directory (%s)!" % (destdir))
-            else:
-                sys.exit()
-                
+        destdir = f'{LOCALSOURCE}/{filestype}'
+        os.mkdir( destdir )
+
 # check dir
 check_dir()
 
@@ -89,9 +72,9 @@ keypairs_type = read_default.get_keypairs(return_type=True)
 def read_kwargs(kwargs, clsname):
     assert clsname in ['snelist', 'snobject']
     partype = read_default.get_parameters(return_type=True)[clsname]
-    _kwargs = dict()
+    _kwargs = {}
     for _key in kwargs:
-        if not _key in partype: continue
+        if _key not in partype: continue
         if partype[_key] == 'eval':
             _kwargs[_key] = eval( str(kwargs[_key]) )
         elif partype[_key] == 'str':
@@ -103,119 +86,83 @@ class snelist(object):
     # Static version info
     version = 1.0
     
-    def __init__(self, ax=None, **kwargs):                
+    def __init__(self, ax=None, **kwargs):
         """ initialize """
         
         # ----- read default parameters ----- #        
         defkwargs = read_kwargs(snelist_pars, 'snelist')
-        
+
         # ----- read meta ----- #
         self.kwargs = read_kwargs(kwargs, 'snelist')
         for _key in defkwargs: self.kwargs.setdefault(_key, defkwargs[_key])
-        
+
         # ----- define products ----- #
-        if not 'data' in self.__dict__: self.data = {}
-        if not 'meta' in self.__dict__: self.meta = {}
-        if not 'params' in self.__dict__: self.params = {}
+        if 'data' not in self.__dict__: self.data = {}
+        if 'meta' not in self.__dict__: self.meta = {}
+        if 'params' not in self.__dict__: self.params = {}
 
         self.ax = ax
-        self.dset = dict()
+        self.dset = {}
         
-    def parse_meta(self, force=False, **kwargs):
-        if len(self.meta) > 0 and not force: return
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        metafile = '%s/data/meta.txt'%srcpath
-        if not os.path.exists(metafile):
-            print ('!!! Warning: no meta parsed, check if %s exsist' % metafile)
+    def savefig(self, **kwargs):
+        for _key in self.kwargs:
+            kwargs.setdefault(_key, self.kwargs[_key])
+        if self.fig is None:
+            print('Error: no fig to be used to savefig')
             return
-        # read meta as pandas.dataframe
-        skiprows = []
-        for n,ll in enumerate(open(metafile).readlines()):
-            if ll[0] == '#' or len(ll.strip()) == 0: skiprows.append(n)
-        meta = pd.read_csv(metafile,sep=',', skiprows=skiprows).drop_duplicates()
-        if len(kwargs['syntax']) != 0: meta = meta.query(kwargs['syntax'])
-        self.meta = meta
-        if kwargs['verbose']: print ( 'meta %i objs'%( len(meta)) )
-        if len(meta) == 0:
-            print ('!!! Warning: no meta data parsed')
-            return        
-        # format meta
-        assert kwargs['idkey'] in self.meta.keys()
-        self.meta = self.meta.set_index(kwargs['idkey'])
-        if len(kwargs['sortkey']) != 0:
-            assert kwargs['sortkey'] in self.meta.keys()
-            self.meta = self.meta.sort_values(kwargs['sortkey'], ascending=False)
+        self.fig.set_size_inches(kwargs['figsize'][0], kwargs['figsize'][1])
+        if '%s' in kwargs['figpath']:
+            figpath = f"{LOCALSOURCE}/plots/{kwargs['figpath'] % self.objid}"
+        else:
+            figpath = f"{LOCALSOURCE}/plots/{kwargs['figpath']}"
+        self.fig.savefig(figpath, dpi=400, bbox_inches='tight')
+        if kwargs['verbose']:
+            print(f'saved fig to {figpath}')
 
     def parse_meta_one(self, idkey, objid, key):        
-        _meta = self.meta.query('%s==@objid'%idkey)        
-        if len(_meta) == 0: return       
+        _meta = self.meta.query(f'{idkey}==@objid')
+        if len(_meta) == 0: return
         if key in _meta:  return _meta[key][0]
         return
 
-    def parse_meta_all(self, kwargs, objid):        
-        # parse meta infos        
-        self.ra = self.parse_meta_one(kwargs['idkey'], objid, kwargs['rakey'])
-        self.dec = self.parse_meta_one(kwargs['idkey'], objid, kwargs['deckey'])
-        self.z = self.parse_meta_one(kwargs['idkey'], objid, kwargs['zkey'])
-        self.dist = self.parse_meta_one(kwargs['idkey'], objid, kwargs['distkey'])
-        self.dm = self.parse_meta_one(kwargs['idkey'], objid, kwargs['dmkey'])
-        self.mkwebv = self.parse_meta_one(kwargs['idkey'], objid, kwargs['mkwebvkey'])
-        self.hostebv = self.parse_meta_one(kwargs['idkey'], objid, kwargs['hostebvkey'])
-        self.mkwav = self.parse_meta_one(kwargs['idkey'], objid, kwargs['mkwavkey'])
-        self.hostav = self.parse_meta_one(kwargs['idkey'], objid, kwargs['hostavkey'])
-        self.sntype = self.parse_meta_one(kwargs['idkey'], objid, kwargs['typekey'])
-        self.jdpeak = self.parse_meta_one(kwargs['idkey'], objid, kwargs['peaktkey'])        
-        try:
-            self.z = float(self.z)
-        except:
-            self.z = float(input('!!!  Error: %s redshift of %s should be a number\n\nmanully set z=' % (self.z, objid)))
-        try:
-            self.dist = float(self.dist)
-        except:
-            print ('Warning: %s distance set with standard cosmology' % (objid))
-            self.dist = cosmo.luminosity_distance( self.z ).value
-        try:
-            self.dm = float(self.dm)
-        except:
-            self.dm = 5*np.log10(self.dist) + 25        
-        try:
-            self.mkwebv = float(self.mkwebv)
-        except:
-            try:
-                self.mkwebv = float(self.mkwav) / kwargs['rv']
-            except:
-                print ('Warning: %s no mkw ebv and av was found, set mkw ebv=0' % (objid))
-                self.mkwebv = 0        
-        try:
-            self.hostebv = float(self.hostebv)
-        except:
-            try:               
-                self.hostebv = float(self.hostav) / kwargs['rv']
-            except:
-                print ('Warning: %s no host ebv and av was found, set host ebv=0' % (objid))
-                self.hostebv = 0            
-        try:
-            self.jdpeak += kwargs['jdpeak_shift']
-        except:
-            pass
+    @staticmethod
+    def read_c10():
+        filename = f'{srcpath}/data/c10_template.txt'
+        assert os.path.exists(filename)
+        c10 = {}
+        for ll in open(filename).readlines():
+            if ll[0] == '#':
+                continue
+            if ll.split()[0] == 'color':
+                sntypes = ll.split()[1:]
+            else:
+                assert '-' in ll.split()[0], ll.split()[0]
+                assert len(ll.split()[0].split('-')) == 2
+                c1, c2 = ll.split()[0].split('-')
+                if (c1, c2) not in c10:
+                    c10[c1, c2] = {}
+                for n, i in enumerate(ll.split()[1:]):
+                    c10[c1, c2][sntypes[n]] = i
+        return c10
         
     def parse_params(self, force=False, **kwargs):
         ''' read individual_par.txt for particular SNe
         '''
         if len(self.params) > 0 and not force: return
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        parfile = '%s/data/individual_par.txt'%srcpath
+        parfile = f'{srcpath}/data/individual_par.txt'
         if not os.path.exists(parfile):
-            print ('!!! Warning: no prior information found, check if %s exsist' % parfile)
+            print(f'!!! Warning: no prior information found, check if {parfile} exsist')
             return
         partype = read_default.get_parameters(return_type=True)['snobject']
         for line in open(parfile).readlines():
             if line[0]=='#' or len(line.strip())==0: continue
-            obj = line.split()[0]                    
-            if obj not in self.params: self.params[obj] = dict()
+            obj = line.split()[0]
+            if obj not in self.params:
+                self.params[obj] = {}
             for _ in line.split()[1:]:
                 _key, _val = _.split('=')[0].strip(), _.split('=')[1].strip()
-                if not _key in partype: continue
+                if _key not in partype: continue
                 if partype[_key] == 'eval':
                     self.params[obj][_key]=eval(_val)
                 elif partype[_key] == 'str':                                
@@ -223,8 +170,8 @@ class snelist(object):
                     
     def load_data(self, objid, force=False, datafile='%s_data.clf', **kwargs):
         if objid in self.data and not force: return
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
-        datafile = '%s/cache/%s' % (LOCALSOURCE, datafile%objid ) 
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        datafile = f'{LOCALSOURCE}/cache/{datafile % objid}'
         if os.path.exists(datafile):
             if kwargs['verbose']: print (  'load:', datafile )
             self.data[objid] = load(datafile)
@@ -233,7 +180,7 @@ class snelist(object):
     
     def save_data(self, objid, force=False, datafile='%s_data.clf', **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        datafile = '%s/cache/%s' % (LOCALSOURCE, datafile%objid)
+        datafile = f'{LOCALSOURCE}/cache/{datafile % objid}'
         if kwargs['verbose']: print ('saved cache')
         if not os.path.exists(datafile) or force:
             if kwargs['verbose']: print (  'save:', datafile )
@@ -244,30 +191,30 @@ class snelist(object):
     def run(self, axes=None, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         self.parse_meta()
-        self.parse_params()               
-        with get_progress_bar(kwargs['verbose'], len(self.meta.index)) as pbar:            
-            for i, objid in enumerate(self.meta.index):
+        self.parse_params()
+        with get_progress_bar(kwargs['verbose'], len(self.meta.index)) as pbar:        
+            for objid in self.meta.index:
                 # parse meta infos
                 self.parse_meta_all(kwargs, objid)
-                
+
                 # load data
                 loaded = self.load_data(objid)
-                
+
                 if not loaded or kwargs['clobber']:
-                    par = dict()
+                    par = {}
                     if objid in self.params: par = self.params[objid]
-                    
+
                     # for each object                         
                     self.data[objid] = snobject(objid, z=self.z, ra=self.ra, dec=self.dec,
                             mkwebv=self.mkwebv, hostebv=self.hostebv, sntype=self.sntype,
                             dm=self.dm, jdpeak=self.jdpeak, axes=axes, **par)
-                    
+
                     # run
                     self.data[objid].test_run()
-                    
+
                     # save data
                     #saved = self.save_data(objid,force=True)
-                    
+
                     sys.exit(objid)
                 pbar.update(1)
 
@@ -297,14 +244,14 @@ class snelist(object):
             if self.dset[syntax][objid] is None: continue
             _x = self.get_par(objid, k)
             if _x is None:
-                print ('can not get %s for %s'%(k, objid))
+                print(f'can not get {k} for {objid}')
                 continue
-            x.append( float(_x) )            
-        if len(x) == 0:
+            x.append( float(_x) )
+        if not x:
             print ('no data parsed')
             return
         binwidthx = (np.max(np.abs(x))-np.min(np.abs(x)))/nbin
-        binx = np.arange(np.min(np.abs(x)), np.max(np.abs(x))+binwidthx, binwidthx)        
+        binx = np.arange(np.min(np.abs(x)), np.max(np.abs(x))+binwidthx, binwidthx)
         self.ax.hist(x, bins=binx, histtype='step', **kwargs)
         self.ax.set_xlabel(k, fontsize=fontsize, labelpad=labelpad )
         self.ax.set_ylabel('counts', fontsize=fontsize, labelpad=labelpad )        
@@ -317,15 +264,15 @@ class snelist(object):
             if self.dset[syntax][objid] is None: continue
             _x = self.get_par(objid, k1)
             if _x is None:
-                print ('can not get %s for %s'%(k1, objid))
+                print(f'can not get {k1} for {objid}')
                 continue
             _y = self.get_par(objid, k2)
             if _y is None:
-                print ('can not get %s for %s'%(k2, objid))
+                print(f'can not get {k2} for {objid}')
                 continue
             x.append( float(_x) )
             y.append( float(_y) )
-        if len(x) == 0:
+        if not x:
             print ('no data parsed')
             return
         self.ax.plot( x, y, **kwargs)
@@ -366,59 +313,48 @@ class snelist(object):
         self.ax_histx.set_ylabel('Counts')
         self.ax_histy.set_xlabel('Counts')
 
-    def showall(self, datatype, syntax=None, fontsize=12, labelpad=12,
-                lc_cond='mag<99 and filter=="r"', color_interp=[1],
-                **kwargs):
-        assert self.ax is not None
-        self.add_subset(syntax=syntax)
-        for objid in self.dset[syntax]:
-            if self.dset[syntax][objid] is None: continue                        
-            t0 = self.dset[syntax][objid].t0
-            z = self.dset[syntax][objid].z
-            dm = self.dset[syntax][objid].dm
+    @staticmethod
+    def bin_df(df, deltah = 1.0, xkey = 'jdobs', fkey = 'filter'):
+        jds = np.array(df[xkey])
+        if len(jds) == 0:
+            return
+        _jdbin = np.arange(min(jds), max(jds), float(deltah))
+        if len(_jdbin) == 0:
+            return
+        jdl = []
+        for jd in jds:
+            _id = np.argmin(abs(jd - _jdbin))
+            jdl.append(_jdbin[_id])
+        jdl = np.array(jdl)
+        unique_jd, counts = np.unique(jdl, return_counts=True)
+        single_jd, double_jd = list(unique_jd[counts == 1]), list(unique_jd[counts > 1])
 
-            if datatype == 'lc':
-                assert 'lc' in self.dset[syntax][objid].__dict__
-                lc = self.dset[syntax][objid].lc
-                if lc_cond is not None: lc = lc.query(lc_cond)
-                self.ax.plot( (lc['jdobs']-t0)/(1+z), lc['mag']-dm, **kwargs )
-                self.ax.set_xlabel('$t - T_{r,\mathrm{max}} \; (\mathrm{restframe \; d})$', 
-                                   fontsize=fontsize, labelpad=labelpad )
-                self.ax.set_ylabel('M$_{abs}$ (mag)', fontsize=fontsize, labelpad=labelpad )
-                #self.dset[syntax][objid]._ax(cond=lc_cond)
-
-            if datatype == 'colour':
-                assert 'colors' in self.dset[syntax][objid].__dict__
-                colors = self.dset[syntax][objid].colors
-                for _copt in color_interp:
-                    if _copt in colors:
-                        jd,g,r,ge,re = colors[_copt]
-                        self.ax.plot( (jd-t0)/(1+z), g-r, **kwargs )
-                self.ax.set_xlabel('$t - T_{r,\mathrm{max}} \; (\mathrm{restframe \; d})$', 
-                                   fontsize=fontsize, labelpad=labelpad )
-                self.ax.set_ylabel('Colour (mag)', fontsize=fontsize, labelpad=labelpad )
-                
-            if datatype == 'mbol':
-                assert 'mbol' in self.dset[syntax][objid].__dict__
-                mbol = self.dset[syntax][objid].mbol            
-                for _copt in color_interp:
-                    if _copt in mbol:
-                        self.ax.plot( (mbol[_copt][0]-t0)/(1+z), mbol[_copt][1], **kwargs )
-                self.ax.set_xlabel('$t - T_{r,\mathrm{max}} \; (\mathrm{restframe \; d})$',
-                                   fontsize=fontsize, labelpad=labelpad )
-                self.ax.set_ylabel('L$_{bol}$ (erg $s^{-1}$)', fontsize=fontsize, labelpad=labelpad )
+        __arr = []
+        if double_jd:
+            for jd in double_jd:
+                bDoubleJD = jdl == jd
+                __id = np.arange(len(jdl))[bDoubleJD]
+                __arr.extend(np.append(__df0, jd) for __df0 in df.values[__id])
+        for jd in single_jd:
+            bSingleJD = jdl == jd
+            __id = np.arange(len(jdl))[bSingleJD]
+            __arr.append(np.append(df.values[__id][0], jd))
+        return pd.DataFrame(__arr, columns=np.append(df.columns, 'jdbin'))
                         
-    def showfit(self, syntax=None, filt='r', funit='mag',
-                x_pred=None, step = 1, quant=[0.16, 0.50, 0.84], **kwargs):
+    def showfit(self, syntax=None, filt='r', funit='mag', x_pred=None, step = 1, quant = None, **kwargs):
+        if quant is None:
+            quant = [0.16, 0.50, 0.84]
         assert 'ax' in self.__dict__, 'init_fig() first'
         self.add_subset(syntax=syntax)
         for objid in self.dset[syntax]:
             if self.dset[syntax][objid] is not None:
                 if 'fitcls' not in self.dset[syntax][objid].__dict__:
-                    if self.verbose: print ('Warning: no fitcls for %s'%objid)
+                    if self.verbose:
+                        print(f'Warning: no fitcls for {objid}')
                     continue
                 if filt not in self.dset[syntax][objid].fitcls:
-                    if self.verbose: print ('Warning: no filter %s for %s fitcls'%(filt,objid))
+                    if self.verbose:
+                        print(f'Warning: no filter {filt} for {objid} fitcls')
                     continue
                 z = self.dset[syntax][objid].z
                 x, y, y1, y2, w = self.dset[syntax][objid].fitcls[filt].predict(x_pred=x_pred, 
@@ -428,22 +364,26 @@ class snelist(object):
                     self.ax.plot( x/(1+z), mm-self.data[objid].dm,**kwargs )
                 elif funit == 'flux':
                     if 'fpeak' not in self.dset[syntax][objid].__dict__:
-                        if self.verbose: print ('Warning: no fmax for %s'%(objid))
+                        if self.verbose:
+                            print(f'Warning: no fmax for {objid}')
                         continue
                     fmax = self.dset[syntax][objid].fpeak['fit'][filt][0]
                     self.ax.plot( x/(1+z), y/fmax,**kwargs )
     
-    def showgp(self, syntax=None, filt='r', funit='mag',
-                x_pred=None, step = 1, quant=[0.16, 0.50, 0.84], **kwargs):
+    def showgp(self, syntax=None, filt='r', funit='mag', x_pred=None, step = 1, quant = None, **kwargs):
+        if quant is None:
+            quant = [0.16, 0.50, 0.84]
         assert 'ax' in self.__dict__, 'init_fig() first'
         self.add_subset(syntax=syntax)
         for objid in self.dset[syntax]:
             if self.dset[syntax][objid] is not None:
                 if 'gpcls' not in self.dset[syntax][objid].__dict__:
-                    if self.verbose: print ('Warning: no fitcls for %s'%objid)
+                    if self.verbose:
+                        print(f'Warning: no fitcls for {objid}')
                     continue
                 if filt not in self.dset[syntax][objid].gpcls.f_pred:
-                    if self.verbose: print ('Warning: no filter %s for %s gpcls'%(filt,objid))
+                    if self.verbose:
+                        print(f'Warning: no filter {filt} for {objid} gpcls')
                     continue
                 z = self.dset[syntax][objid].z
                 t0 = self.dset[syntax][objid].t0
@@ -456,7 +396,8 @@ class snelist(object):
                     self.ax.plot( (x-t0)/(1+z), mm-self.data[objid].dm,**kwargs )
                 elif funit == 'flux':
                     if 'fpeak' not in self.dset[syntax][objid].__dict__:
-                        if self.verbose: print ('Warning: no fmax for %s'%(objid))
+                        if self.verbose:
+                            print(f'Warning: no fmax for {objid}')
                         continue
                     fmax = self.dset[syntax][objid].fpeak['GP'][filt][0]
                     self.ax.plot( (x-t0)/(1+z), y/fmax,**kwargs )
@@ -467,9 +408,10 @@ class snelist(object):
         for objid in self.dset[syntax]:
             if self.dset[syntax][objid] is not None:
                 if 'plcls' not in self.dset[syntax][objid].__dict__:
-                    if self.verbose: print ('Warning: no plcls for %s'%objid)
+                    if self.verbose:
+                        print(f'Warning: no plcls for {objid}')
                     continue
-                _forder, nf = dict(), 0                
+                _forder, nf = dict(), 0
                 for __filt in central_wavelengths:
                     if __filt in self.dset[syntax][objid].kwargs['pl_bands']:
                         _forder[__filt] = nf
@@ -486,14 +428,16 @@ class snelist(object):
                     self.ax.plot(t_pre, np.zeros_like(t_pre), **kwargs)
                     self.ax.plot(t_post, model_flux, **kwargs)
                     
-    def showarnett(self, syntax=None, x_pred=None, step = 1, 
-                   quant=[0.16, 0.50, 0.84], **kwargs):
+    def showarnett(self, syntax=None, x_pred=None, step = 1, quant = None, **kwargs):
+        if quant is None:
+            quant = [0.16, 0.50, 0.84]
         assert 'ax' in self.__dict__, 'init_fig() first'
         self.add_subset(syntax=syntax)
         for objid in self.dset[syntax]:
             if self.dset[syntax][objid] is not None:
                 if 'arnettcls' not in self.dset[syntax][objid].__dict__:
-                    if self.verbose: print ('Warning: no arnettcls for %s'%objid)
+                    if self.verbose:
+                        print(f'Warning: no arnettcls for {objid}')
                     continue
                 texp = self.dset[syntax][objid].texp
                 x, y, y1, y2, w = self.dset[syntax][objid].arnettcls.predict(x_pred=x_pred, 
@@ -502,27 +446,32 @@ class snelist(object):
                     x -= texp[1]
                 self.ax.plot( x,y,**kwargs )
         
-    def showtail(self, syntax=None, x_pred=None, step = 1, 
-                   quant=[0.16, 0.50, 0.84], **kwargs):
+    def showtail(self, syntax=None, x_pred=None, step = 1, quant = None, **kwargs):
+        if quant is None:
+            quant = [0.16, 0.50, 0.84]
         assert 'ax' in self.__dict__, 'init_fig() first'
         self.add_subset(syntax=syntax)
         for objid in self.dset[syntax]:
             if self.dset[syntax][objid] is not None:
                 if 'tailcls' not in self.dset[syntax][objid].__dict__:
-                    if self.verbose: print ('Warning: no tailcls for %s'%objid)
+                    if self.verbose:
+                        print(f'Warning: no tailcls for {objid}')
                     continue
                 texp = self.dset[syntax][objid].texp
                 x, y, y1, y2, w = self.dset[syntax][objid].tailcls.predict(x_pred=x_pred, 
                                         step=step, clobber=False, returnv=True, quant=quant)
                 self.ax.plot( x,y,**kwargs )
                 
-    def showvelocity(self, syntax=None, quant=[0.16, 0.50, 0.84], **kwargs):
+    def showvelocity(self, syntax=None, quant = None, **kwargs):
+        if quant is None:
+            quant = [0.16, 0.50, 0.84]
         assert 'ax' in self.__dict__, 'init_fig() first'
         self.add_subset(syntax=syntax)
         for objid in self.dset[syntax]:
             if self.dset[syntax][objid] is not None:
                 if 'specls' not in self.dset[syntax][objid].__dict__:
-                    if self.verbose: print ('Warning: no specls for %s'%objid)
+                    if self.verbose:
+                        print(f'Warning: no specls for {objid}')
                     continue
                 x,y=[],[]
                 for phase in self.dset[syntax][objid].specls:
@@ -544,27 +493,18 @@ class snobject(object):
                 
         # ----- read default parameters ----- #        
         defkwargs = read_kwargs(snobject_pars, 'snobject')
-        
+
         # ----- read meta ----- #
         self.kwargs = read_kwargs(kwargs, 'snobject')
         for _key in defkwargs: self.kwargs.setdefault(_key, defkwargs[_key])        
-        
+
         # set meta infos
         self.objid  = objid
         self.ra     = ra
         self.dec    = dec
-        if z is not None:
-            self.z  = z # rest frame phase 
-        else:
-            self.z  = 0       # phase
-        if mkwebv is not None:
-            self.mkwebv = mkwebv
-        else:
-            self.mkwebv = 0  # ignore milky ebv
-        if hostebv is not None:
-            self.hostebv = hostebv
-        else:           
-            self.hostebv = 0        # ignore host ebv
+        self.z = z if z is not None else 0
+        self.mkwebv = mkwebv if mkwebv is not None else 0
+        self.hostebv = hostebv if hostebv is not None else 0
         self.sntype = sntype
         self.dm     = dm
         if len(self.kwargs['set_tpeak_method']) == 0: assert jdpeak is not None
@@ -574,8 +514,8 @@ class snobject(object):
         else:
             self.t0 = 0       # if None, try to get it via GP since it was needed for fits/pl/arnett...
         self.texp   = None    # explosion epoch        
-        self.fpeak  = dict()  # peak flux in uJy for different bands       
-        
+        self.fpeak = {}
+
         # plots
         self.fig = fig
         self.ax  = ax  # flux
@@ -585,27 +525,27 @@ class snobject(object):
         self.ax4 = ax4 # luminosity
             
     def test_run(self, **kwargs):
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         #self.init_fig()
         #self.config_ztfquery()
         #self.parse_coo(verbose=True, deg=True)
         #self.mjd_now(jd=False)
         if len(kwargs['lctype']) == 0 or 'ztffp' in kwargs['lctype']:
             self.get_fp_ztf()
-            if not 'lc' in self.__dict__:
+            if 'lc' not in self.__dict__:
                 self.query_fp_ztf()
                 sys.exit('manual input ztf forced photometry file...')
-            elif not 'ztffp' in list(self.lc['source']):
+            elif 'ztffp' not in list(self.lc['source']):
                 print (  self.lc['source']  )
                 input('...')
                 self.query_fp_ztf()
-                sys.exit('manual input ztf forced photometry file...')                 
+                sys.exit('manual input ztf forced photometry file...')
         if len(kwargs['lctype']) == 0 or 'atlasfp' in kwargs['lctype']:
             self.get_fp_atlas(binDays=kwargs['tdbin'])
             if 'lc' not in self.__dict__:
                 self.query_fp_atlas()
                 self.get_fp_atlas(binDays=kwargs['tdbin'])
-            elif not 'atlasfp' in list(self.lc['source']):
+            elif 'atlasfp' not in list(self.lc['source']):
                 self.query_fp_atlas()
                 self.get_fp_atlas(binDays=kwargs['tdbin'])
 
@@ -613,16 +553,16 @@ class snobject(object):
         #    self.query_spectra(source='marshal')
         #self.query_spectra(source='fritz')        
         self.get_local_spectra()
-        
+
         # after all lightcurve injection
         #if len(kwargs['set_texp_method'])==0: self.set_texp_midway()
-        
+
         #self.clip_lc()
         #self.run_gp()
         #self.run_fit('multiband_early')
         #self.run_fit('multiband_main')
         self.run_fit('specline')
-        
+
         #self.calc_colors()
         #self.lyman_bol()
         #self.run_fit('bol_main')        
@@ -651,47 +591,47 @@ class snobject(object):
         sys.exit()
         
     def run(self, **kwargs):
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])         
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         t_start = time.time()
-        
+
         ''' parse local data via objid '''
         if len(kwargs['lctype']) == 0 or 'ztffp' in kwargs['lctype']:
             self.get_fp_ztf()
-            if not 'lc' in self.__dict__:
+            if 'lc' not in self.__dict__:
                 self.query_fp_ztf()
                 sys.exit('manual input ztf forced photometry file...')
-            elif not 'ztffp' in list(self.lc['source']):
+            elif 'ztffp' not in list(self.lc['source']):
                 print (  self.lc['source']  )
                 input('...')
                 self.query_fp_ztf()
-                sys.exit('manual input ztf forced photometry file...')                 
+                sys.exit('manual input ztf forced photometry file...')
         if len(kwargs['lctype']) == 0 or 'atlasfp' in kwargs['lctype']:
             self.get_fp_atlas(binDays=kwargs['tdbin'])
             if 'lc' not in self.__dict__:
                 self.query_fp_atlas()
                 self.get_fp_atlas(binDays=kwargs['tdbin'])
-            elif not 'atlasfp' in list(self.lc['source']):
+            elif 'atlasfp' not in list(self.lc['source']):
                 self.query_fp_atlas()
                 self.get_fp_atlas(binDays=kwargs['tdbin'])
-        
+
         #self.get_fp_ztf()  # obtain forced phot lc       
         self.clip_lc()  # remove lc outliers        
-        
-        ''' other infos '''        
+
+        ''' other infos '''
         self.check_lc() # check lc quality
         self.on_sntype() # check sn type        
         if kwargs['verbose']:
             print("Prepare data in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-            
-        ''' intepolation'''       
+
+        ''' intepolation'''
         self.run_gp()     # Gaussian process
         if kwargs['verbose']:
             print("Run GP in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-            
+
         self.set_texp_midway() # try to set texp
-        
+
         self.run_fit()   # sn-like analytic functions
         if kwargs['verbose']:
             print("Run Fitting in = {:.2f} s".format(time.time() - t_start))
@@ -702,35 +642,35 @@ class snobject(object):
         if kwargs['verbose']:
             print("Run early power law fit in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-                    
+
         ''' g-r '''
         self.calc_colors()  # g-r colour epochs
         if kwargs['verbose']:
             print("calc colour in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-        
+
         self.est_host_c10()   # use g-r compared to tpl for host ebv
         if kwargs['verbose']:
             print("est host ebv in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-            
+
         if 1 in kwargs['bolopt']:
             self.lyman_bol()  # calculate luminosity from g,r with Lyman bol correction
             if kwargs['verbose']:
                 print("calc lyman bol in = {:.2f} s".format(time.time() - t_start))
                 t_start = time.time()
-                
+
         if 2 in kwargs['bolopt']:
             self.bb_colors()  # calculate luminosity from BB
             if kwargs['verbose']:
                 print("calc colours for BB in = {:.2f} s".format(time.time() - t_start))
                 t_start = time.time()
-                
+
             self.bb_bol()
             if kwargs['verbose']:
                 print("calc colours for BB in = {:.2f} s".format(time.time() - t_start))
                 t_start = time.time()
-            
+
         self.shock_fit()
         if kwargs['verbose']:
             print("fit shock model in = {:.2f} s".format(time.time() - t_start))
@@ -740,7 +680,7 @@ class snobject(object):
         if kwargs['verbose']:
             print("fit arnett model in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-            
+
         self.tail_fit()   # fit lums at tail to gamma leakage model
         if kwargs['verbose']:
             print("fit tail model in = {:.2f} s".format(time.time() - t_start))
@@ -750,18 +690,18 @@ class snobject(object):
         if kwargs['verbose']:
             print("fit joint model in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-            
+
         ''' go to spectral part '''
         self.get_local_spectra()  # obtain local spectra
         if kwargs['verbose']:
             print("get local spectra in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-            
+
         self.meas_specline()  # measure specific lines, fit photos v to break arnett degenaracy
         if kwargs['verbose']:
             print("fit spec modelline in = {:.2f} s".format(time.time() - t_start))
             t_start = time.time()
-            
+
         self.plot()   # plot everything
         if kwargs['verbose']:
             print("plot in = {:.2f} s".format(time.time() - t_start))
@@ -784,19 +724,19 @@ class snobject(object):
         try:
             float(self.ra)
             degunits = True
-            if verbose: print ('%s use unit deg'%self.ra)
-        except:
-            if verbose: print ('%s use unit hourangle'%self.ra)
+            if verbose:
+                print(f'{self.ra} use unit deg')
+        except Exception:
+            if verbose:
+                print(f'{self.ra} use unit hourangle')
         if degunits:
-            c = coordinates.SkyCoord('%s %s'%(self.ra, self.dec), unit=(u.deg, u.deg))
+            c = coordinates.SkyCoord(f'{self.ra} {self.dec}', unit=(u.deg, u.deg))
         else:
-            c = coordinates.SkyCoord('%s %s'%(self.ra, self.dec), unit=(u.hourangle, u.deg))            
-        if deg: return c.ra.deg, c.dec.deg
-        else:   return c.to_string('hmsdms').split()
+            c = coordinates.SkyCoord(f'{self.ra} {self.dec}', unit=(u.hourangle, u.deg))
+        return (c.ra.deg, c.dec.deg) if deg else c.to_string('hmsdms').split()
         
     def mjd_now(self, jd=False):
-        if jd: return Time.now().jd
-        else:  return Time.now().mjd
+        return Time.now().jd if jd else Time.now().mjd
 
     def add_lc(self, df, source=None, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
@@ -804,10 +744,7 @@ class snobject(object):
         ck2 = 'flux' in df.keys() and 'eflux' in df.keys() and 'jdobs' in df.keys() and 'filter' in df.keys()
         assert ck1 or ck2, 'rename columns to mag/emag/jdobs/filter or flux/eflux/jdobs/filter'
         df['source'] = source
-        if not 'lc' in self.__dict__:
-            self.lc = df
-        else:
-            self.lc = self.lc.append(df, ignore_index=True).drop_duplicates()
+        self.lc = self.lc.append(df, ignore_index=True).drop_duplicates() if 'lc' in self.__dict__ else df
 
     def _add_flux(self, df, zp, sigma):        
         if 'limmag' in df.keys() and not math.isnan(df['limmag'].to_list()[0]):            
@@ -827,28 +764,28 @@ class snobject(object):
         zp = 48.6 for ergs/s/cm2/Hz to AB mag
         e.g. mab = -2.5 * log10(fv[Jy]/3631) = -2.5 * log10(fv[mJy]) + 2.5*log10(3631*1e6)
         '''                       
-        assert 'lc' in self.__dict__        
-        assert 'mag' in self.lc.keys(), 'input mag'        
+        assert 'lc' in self.__dict__
+        assert 'mag' in self.lc.keys(), 'input mag'
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
 
         if source is None:
-            self.lc = self._add_flux(self.lc, zp, kwargs['snrt'])               
-        else:            
+            self.lc = self._add_flux(self.lc, zp, kwargs['snrt'])
+        else:
             df1 = self.lc.query('source==@source')
             df2 = self.lc.query('source!=@source')
             __arr = []
             if len(df1) > 0:
-                df1 = self._add_flux(df1, zp, kwargs['snrt'])                
-                for i in df1.index: __arr.append( df1.loc[i].values )
+                df1 = self._add_flux(df1, zp, kwargs['snrt'])
+                __arr.extend(df1.loc[i].values for i in df1.index)
                 columns = df1.columns
             if len(df2) > 0:
-                df2 = self._add_flux(df2, zp, kwargs['snrt'])                
-                for i in df2.index: __arr.append( df2.loc[i].values )
+                df2 = self._add_flux(df2, zp, kwargs['snrt'])
+                __arr.extend(df2.loc[i].values for i in df2.index)
                 columns = df2.columns
-            if len(__arr) > 0:
+            if __arr:
                 self.lc = pd.DataFrame(__arr, columns=columns)
             else:
-                print ('Error: no data found for source=%s'%source)
+                print(f'Error: no data found for source={source}')
 
     def _add_mag(self, df, zp, sigma):
         if 'eflux' in df.keys():
@@ -860,39 +797,35 @@ class snobject(object):
         return df
     
     def add_mag(self, zp=23.9, source=None, **kwargs):
-        assert 'lc' in self.__dict__       
+        assert 'lc' in self.__dict__
         assert 'flux' in self.lc.keys(), 'input flux'
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        
+
         if source is None:
-            self.lc = self._add_mag(self.lc, zp, kwargs['snrt'])               
-        else:            
+            self.lc = self._add_mag(self.lc, zp, kwargs['snrt'])
+        else:    
             df1 = self.lc.query('source==@source')
-            df2 = self.lc.query('source!=@source')            
-            df1 = self._add_mag(df1, zp, kwargs['snrt']) 
+            df2 = self.lc.query('source!=@source')
+            df1 = self._add_mag(df1, zp, kwargs['snrt'])
             df2 = self._add_mag(df2, zp, kwargs['snrt'])
-            __arr = []            
-            for i in df1.index:            
-                __arr.append( df1.loc[i].values )
-            for i in df2.index:            
-                __arr.append( df2.loc[i].values )                
+            __arr = [df1.loc[i].values for i in df1.index]
+            __arr.extend(df2.loc[i].values for i in df2.index)
             self.lc = pd.DataFrame(__arr, columns=self.lc.columns)  
 
     def get_external_phot(self, filename, source, **kwargs):
         
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])             
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         if not os.path.exists(filename):
-            print ('Error: %s not found'%f)
+            print(f'Error: {f} not found')
             return None
-        _ = []
-        for nn,ll in enumerate(open(filename).readlines()):
-            if ll[0]=='#' or len(ll)==0:_.append(nn)
+        _ = [nn for nn, ll in enumerate(open(filename).readlines()) if ll[0] == '#' or len(ll) == 0]
+
         df = pd.read_csv(filename,skiprows=_,delim_whitespace=True)
-        
+
         self.add_lc(df, source=source, **kwargs)
-        if 'mag' in df.keys() and not 'flux' in df.keys():
+        if 'mag' in df.keys() and 'flux' not in df.keys():
             self.add_mag(zp=23.9, **kwargs)
-        if 'flux' in df.keys() and not 'mag' in df.keys():
+        if 'flux' in df.keys() and 'mag' not in df.keys():
             self.add_flux(zp=23.9, **kwargs)
     
     def bin_fp_atlas(self, binDays=3, resultsPath=None, outPath=None, **kwargs):
@@ -900,11 +833,11 @@ class snobject(object):
         cmd = 'python %s/plot_atlas_fp.py stack %.2f %s '%(srcpath, binDays, resultsPath)
         #if kwargs['jdmin'] is not None and kwargs['jdmax'] is not None:            
         #    cmd += '%f %f ' % (kwargs['jdmin']-2400000.5,kwargs['jdmax']-2400000.5)
-        cmd += '--o %s'%(outPath)
+        cmd += f'--o {outPath}'
         if kwargs['verbose']: print (cmd)
         pid = subprocess.Popen(shlex.split(cmd),stdout=subprocess.PIPE,\
                                stderr=subprocess.PIPE)
-        output,error = pid.communicate()        
+        output,error = pid.communicate()
         if kwargs['verbose']: print (output)
         if error: print (error)
         
@@ -913,32 +846,31 @@ class snobject(object):
         or binned ATLAS forced phot LCs
         '''
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        targetdir = '%s/ForcePhot_atlas/'%LOCALSOURCE
-        wdir = '%s/%s/'%(targetdir, self.objid)
-        f_unbin = '%s/forcedphotometry_%s_lc.csv'%(wdir, self.objid)        
-        if binDays is None:            
+        targetdir = f'{LOCALSOURCE}/ForcePhot_atlas/'
+        wdir = f'{targetdir}/{self.objid}/'
+        f_unbin = f'{wdir}/forcedphotometry_{self.objid}_lc.csv'
+        if binDays is None:        
             if not os.path.exists(f_unbin):
-                print ('Error: %s not found'%f_unbin)
+                print(f'Error: {f_unbin} not found')
                 return None
             self._get_fp_atlas(f_unbin, **kwargs)
-        else:            
-            binDays = float(binDays)            
+        else:        
+            binDays = float(binDays)
             f = '%s/forcedphotometry_%s_lc_atlas_fp_stacked_%.2f_days.txt'%\
                 (wdir, self.objid, binDays)
             if not os.path.exists(f) or clobber:
                 if not os.path.exists(f_unbin):
-                    print ('Error: %s not found'%f_unbin)
+                    print(f'Error: {f_unbin} not found')
                     return None
                 self.bin_fp_atlas(binDays=binDays, resultsPath=f_unbin, outPath=wdir, **kwargs)
             self._get_fp_atlas(f, binned=True, **kwargs)
             
     def _get_fp_atlas(self, f, binned=False, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        sigma = kwargs['snrt']        
-        if binned: skiprows=[0,1,2,3,4,5]
-        else: skiprows=None
+        sigma = kwargs['snrt']
+        skiprows = [0,1,2,3,4,5] if binned else None
         df = pd.read_csv(f,skiprows=skiprows,sep = ',',).drop_duplicates().reset_index(drop=True)
-        df.rename(columns={'uJy':'flux','duJy':'eflux','F':'filter',}, inplace=True)           
+        df.rename(columns={'uJy':'flux','duJy':'eflux','F':'filter',}, inplace=True)
         df['jdobs'] = df['MJD'] + 2400000.5
         df['source'] = 'atlasfp'
         self.add_lc(df, source='atlasfp', **kwargs)
@@ -989,18 +921,17 @@ class snobject(object):
         ''' get local ZTF forced phot LCs
         ''' 
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        targetdir = '%s/ForcePhot/'%LOCALSOURCE
+        targetdir = f'{LOCALSOURCE}/ForcePhot/'
         sigma = kwargs['snrt']
-        f = '%s/%s/forcedphotometry_%s_lc.csv'%(targetdir, self.objid, self.objid)
+        f = f'{targetdir}/{self.objid}/forcedphotometry_{self.objid}_lc.csv'
         if not os.path.exists(f):
-            print ('Error: %s not found'%f)
-            return None        
-        _ = []
-        for nn,ll in enumerate(open(f).readlines()):
-            if ll[0]=='#' or len(ll)==0:_.append(nn)
+            print(f'Error: {f} not found')
+            return None
+        _ = [nn for nn, ll in enumerate(open(f).readlines()) if ll[0] == '#' or len(ll) == 0]
+
         df = pd.read_csv(f,skiprows=_,delim_whitespace=True)
         for k in df.keys(): df = df.rename(columns={k: k[:-1]})
-        
+
         # update df
         df = df.query('~(forcediffimflux == "NaN")').reset_index(drop=True)
         df.rename(columns={'forcediffimflux':'Fpsf',
@@ -1028,8 +959,8 @@ class snobject(object):
         filters[filt=='ZTF_i']='i'
         df['filterid'] = filterid
         df['filter'] = filters
-        df['chi2_red'] = np.array([np.float(x) for x in df['chi2_red'].values])    
-        df['fcqfid'] = df['field']*10000 + df['ccdid']*100 + df['qid']*10 + df['filterid']              
+        df['chi2_red'] = np.array([np.float(x) for x in df['chi2_red'].values])
+        df['fcqfid'] = df['field']*10000 + df['ccdid']*100 + df['qid']*10 + df['filterid']
         df = df.query('seeing < @seeing_cut')
         self.add_lc(df, source='ztffp', **kwargs)
         self.add_mag(zp=23.9, **kwargs)
@@ -1051,14 +982,14 @@ class snobject(object):
         # query period
         try:
             mjdstart = float(kwargs['mjdstart'])
-        except:
+        except Exception:
             assert self.t0 > 2400000, 'Error: specify mjdstart or t0 (in JD) first'
             mjdstart = float(self.t0) - 2400000.5 + float(kwargs['dstart'])
             if kwargs['verbose']: print ('mjdstart as %f days prior to the peak which is %.2f'%
                                          (float(kwargs['dstart']), self.t0-2400000.5))
         try:
             mjdend = float(kwargs['mjdend'])
-        except:
+        except Exception:
             if len(kwargs['dend']) == 0:
                 mjdend = self.mjd_now(jd=False)
                 if kwargs['verbose']: print ('mjdend as current mjd %.2f'%mjdend)
@@ -1066,11 +997,12 @@ class snobject(object):
                 assert self.t0 > 2400000, 'Error: specify mjdend or t0 (in JD) first'
                 mjdend = float(self.t0) - 2400000.5 + float(kwargs['dend'])
                 if kwargs['verbose']: print ('mjdend as %f days after the peak which is %.2f'%
-                                             (float(kwargs['dend']), self.t0-2400000.5))                
-        targetdir = '%s/ForcePhot_atlas/'%LOCALSOURCE
-        f = '%s/%s/forcedphotometry_%s_lc.csv'%(targetdir, self.objid, self.objid)
+                                             (float(kwargs['dend']), self.t0-2400000.5))
+        targetdir = f'{LOCALSOURCE}/ForcePhot_atlas/'
+        f = f'{targetdir}/{self.objid}/forcedphotometry_{self.objid}_lc.csv'
         if os.path.exists(f) and not kwargs['clobber']:
-            if kwargs['verbose']: print ('file exists: %s'%f)
+            if kwargs['verbose']:
+                print(f'file exists: {f}')
             return
         if os.environ.get('ATLASFORCED_SECRET_KEY'):
             token = os.environ.get('ATLASFORCED_SECRET_KEY')
@@ -1091,7 +1023,7 @@ class snobject(object):
                     print(f'ERROR {resp.status_code}')
                     print(resp.text)
                 return
-            
+
         headers = {'Authorization': f'Token {token}', 'Accept': 'application/json'}
         task_url = None
         while not task_url:
@@ -1100,7 +1032,7 @@ class snobject(object):
                 # s.auth = ('USERNAME', 'PASSWORD')
                 resp = s.post(f"{BASEURL}/queue/", headers=headers, data={
                     'ra': radeg, 'dec': decdeg, 'mjd_min': mjdstart, 'mjd_max': mjdend, 'send_email': False})
-                
+
                 if resp.status_code == 201:  # successfully queued
                     task_url = resp.json()['url']
                     if kwargs['verbose']: print(f'The task URL is {task_url}')
@@ -1122,7 +1054,7 @@ class snobject(object):
                         print(f'ERROR {resp.status_code}')
                         print(resp.text)
                     return
-        
+
         result_url = None
         taskstarted_printed = False
         while not result_url:
@@ -1158,7 +1090,7 @@ class snobject(object):
         # s.delete(task_url, headers=headers).json()
 
         dfresult = pd.read_csv(StringIO(textdata.replace("###", "")), delim_whitespace=True)
-        filepath = Path(f)  
+        filepath = Path(f)
         filepath.parent.mkdir(parents=True, exist_ok=True)
         dfresult.to_csv(f)
 
@@ -1169,7 +1101,7 @@ class snobject(object):
         if len(keypairs) == 0: return
         assert 'ztf' in keypairs.keys()
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        
+
         # coordinates
         radeg, decdeg = self.parse_coo(verbose=kwargs['verbose'], deg=True)
 
@@ -1180,7 +1112,7 @@ class snobject(object):
             assert self.t0 > 2400000, 'Error: specify mjdstart or t0 (in JD) first'
             jdstart = float(self.t0) + float(kwargs['dstart'])
             if kwargs['verbose']: print ('jdstart as %f days prior to the peak which is %.2f'%
-                                         (float(kwargs['dstart']), self.t0))                
+                                         (float(kwargs['dstart']), self.t0))
         try:
             jdend = float(kwargs['mjdend']) + 2400000.5
         except:
@@ -1191,13 +1123,14 @@ class snobject(object):
                 assert self.t0 > 2400000, 'Error: specify mjdend or t0 (in JD) first'
                 jdend = float(self.t0) + float(kwargs['dend'])
                 if kwargs['verbose']: print ('jdend as %f days after the peak which is %.2f'%
-                                             (float(kwargs['dend']), self.t0))                
-        targetdir = '%s/ForcePhot/'%LOCALSOURCE
-        f = '%s/%s/forcedphotometry_%s_lc.csv'%(targetdir, self.objid, self.objid)        
+                                             (float(kwargs['dend']), self.t0))
+        targetdir = f'{LOCALSOURCE}/ForcePhot/'
+        f = f'{targetdir}/{self.objid}/forcedphotometry_{self.objid}_lc.csv'
         if os.path.exists(f) and not kwargs['clobber']:
-            if kwargs['verbose']: print ('file exists: %s'%f)
+            if kwargs['verbose']:
+                print(f'file exists: {f}')
             return
-        
+
         if get_email:
             line = 'wget --http-user=ztffps --http-passwd=dontgocrazy!'+\
                 ' -q -O log.txt '+ \
@@ -1209,7 +1142,7 @@ class snobject(object):
                    (self.objid, radeg, decdeg, jdstart, jdend, f))
             time.sleep(10)
             return
-        
+
         # URL used to place a request        
         SendReqURL = 'https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi'
 
@@ -1224,7 +1157,7 @@ class snobject(object):
         SendJDEnd = jdend
         Email = keypairs['ztf']['email']
         UserPass = keypairs['ztf']['pwd']
-        
+
         # Send request and return unformatted HTML output of get() method
         Request = requests.get( SendReqURL , auth=( IUN, IPW ),
                     params={'ra': SendRA, 'dec': SendDec, 'jdstart': SendJDStart, 'jdend': SendJDEnd,
@@ -1262,7 +1195,7 @@ class snobject(object):
 
         # Open loop to periodically check the Forced Photometry job status page
         while(TrueIfPending):
-   
+
             # Query service for jobs sent in past 30 days
             OutputStatus = requests.get(StatusURL, auth=(IUN, IPW),
                     params={'email': Email, 'userpass': UserPass, 'option': 'All recent jobs', 'action': 'Query Database'})
@@ -1303,7 +1236,7 @@ class snobject(object):
                             slp=False
             # Pace the script so it doesn't spam the service
             if( slp ): time.sleep(30)
-            
+
         # If Job Status table values are not null, set the path for file to be downloaded to the path recorded in Job Status Table
         if OutputEnded != '':
             if OutputLC != '':
@@ -1312,10 +1245,10 @@ class snobject(object):
                 # Catch errors in processing and alert user
                 print("Job is done but no lightcurve was produced, quitting")
                 quit()
-                
+
         # Set link to download lightcurve from
         ForcedPhotometryReqURL = f'https://ztfweb.ipac.caltech.edu{ReqPath}'
-        
+
         # Set local path and filename for lightcurve (currently same as what is assigned by the service)
         LocalFilename = ForcedPhotometryReqURL.split('/')[-1]
 
@@ -1346,8 +1279,8 @@ class snobject(object):
             tb = tb.query("source==@source")
         fcqfs = np.unique(tb[key].values)
         colors = ['limegreen', 'cyan', 'skyblue', 'purple',
-                  'r', 'm', 'pink', 'gold', 'orange', 'y', 'grey']    
-        baseline = dict()
+                  'r', 'm', 'pink', 'gold', 'orange', 'y', 'grey']
+        baseline = {}
         for n, fcqfid in enumerate(fcqfs):            
             ix = tb[key].values==fcqfid            
             thistime = (tb['jdobs'][ix] - 2458000)
@@ -1366,7 +1299,7 @@ class snobject(object):
                 if ax is not None:
                     ax.errorbar(xx, yy, yye, marker='o', markersize=12,
                                 ls='', fillstyle='none', color=colors[n])                
-                    ax.axhline(y0, color=colors[n])               
+                    ax.axhline(y0, color=colors[n])
         if ax is not None:
             ax.axvline(xp-2458000, color='k', ls='-')            
             ax.axvline(xp+xmin-2458000, color='r', ls='--')
@@ -1376,20 +1309,19 @@ class snobject(object):
             ax.set_ylabel('f')
             ax.legend(loc = 'best', fontsize=10, frameon=False)
             if ax_ylim is not None: ax.set_ylim(ax_ylim)
-            if ax_xlim is not None: ax.set_xlim(ax_xlim)                        
+            if ax_xlim is not None: ax.set_xlim(ax_xlim)
         return baseline
 
     def get_external_spectra(self, filename, epoch, tel='', **kwargs):
         
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         if not os.path.exists(filename):
-            print ('Error: %s not found'%f)
+            print(f'Error: {f} not found')
             return None
-        _ = []
-        for nn,ll in enumerate(open(filename).readlines()):
-            if ll[0]=='#' or len(ll)==0:_.append(nn)
+        _ = [nn for nn, ll in enumerate(open(filename).readlines()) if ll[0] == '#' or len(ll) == 0]
+
         df = pd.read_csv(filename,skiprows=_,delim_whitespace=True)
-        assert 'wave' in df.keys() and 'flux' in df.keys()        
+        assert 'wave' in df.keys() and 'flux' in df.keys()
         if 'spec' not in self.__dict__:
             self.spec = handle_spectra(self.z, self.mkwebv, t0=self.t0, **kwargs)
         self.spec.add_spectrum(get_numpy(df['wave']),
@@ -1475,26 +1407,22 @@ class snobject(object):
 
     def run_gp(self, source=None, **kwargs):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
-        
+
         lc = self.lc
-        gpfs = kwargs['gp_bands']        
+        gpfs = kwargs['gp_bands']
         lc = lc.query('filter in @gpfs')
         if source is not None: lc = lc.query('source==@source')       
-        
+
         if self.t0 > 0: # cut lc first
             pmin,pmax = min(kwargs['gp_fitr']), max(kwargs['gp_fitr'])
-            lc = lc.query('jdobs<=@self.t0+@pmax and jdobs>=@self.t0+@pmin')        
+            lc = lc.query('jdobs<=@self.t0+@pmax and jdobs>=@self.t0+@pmin')
         self.gpcls = fit_gp(np.array(lc['jdobs']), np.array(lc['flux']),
-                    np.array(lc['eflux']), filters=np.array(lc['filter']))        
-        self.gpcls.train(kernel=kwargs['kernel'], fix_scale=kwargs['fix_scale'],
-              gp_mean=kwargs['gp_mean'], opt_routine=kwargs['gp_routine'],
-              nwalkers=kwargs['nwalkers'], nsteps=kwargs['nsteps'],
-              nsteps_burnin=kwargs['nsteps_burnin'], clobber=kwargs['gp_redo'],
-              mcmc_h5_file='gp_%s_%s_%s'%(self.objid,kwargs['gp_routine'],kwargs['gp_mean']),
-              verbose=kwargs['verbose'], datadir='%s/cache/'%LOCALSOURCE)
+                    np.array(lc['eflux']), filters=np.array(lc['filter']))
+        self.gpcls.train(kernel=kwargs['kernel'], fix_scale=kwargs['fix_scale'], gp_mean=kwargs['gp_mean'], opt_routine=kwargs['gp_routine'], nwalkers=kwargs['nwalkers'], nsteps=kwargs['nsteps'], nsteps_burnin=kwargs['nsteps_burnin'], clobber=kwargs['gp_redo'], mcmc_h5_file=f"gp_{self.objid}_{kwargs['gp_routine']}_{kwargs['gp_mean']}", verbose=kwargs['verbose'], datadir=f'{LOCALSOURCE}/cache/')
+
         self.gpcls.predict()
         self.gpcls.set_peak()
-        
+
         # update t0 and fpeak
         if len(kwargs['set_tpeak_method'])==0 and (self.t0 ==0 or len(self.fpeak)==0):
             self.set_peak_gp(kwargs['set_tpeak_filter'])
@@ -1512,8 +1440,8 @@ class snobject(object):
             engine(self, which, enginename, sourcename=source, **kwargs)
             
     def set_peak_gp(self, filt):
-        if not filt in self.gpcls.tpeak:
-            print ('%s not available by GP'%filt)
+        if filt not in self.gpcls.tpeak:
+            print(f'{filt} not available by GP')
             return
         self.t0 = self.gpcls.tpeak[filt]
         self.fpeak = self.gpcls.fpeak
@@ -1533,9 +1461,9 @@ class snobject(object):
         assert 'fitcls' in self.__dict__
         assert 'multiband_main' in self.fitcls
         for model in self.fitcls['multiband_main']:
-            if model_name is not None and model != model_name: continue            
-            assert filt in self.fitcls['multiband_main'][model].tpeak,\
-                '%s not available by multiband_main.%s'%(filt, model)            
+            if model_name is not None and model != model_name: continue
+            assert filt in self.fitcls['multiband_main'][model].tpeak, f'{filt} not available by multiband_main.{model}'
+
             self.t0 = self.fitcls['multiband_main'][model].tpeak[filt]
             self.fpeak = self.fitcls['multiband_main'][model].fpeak
             
@@ -1543,9 +1471,9 @@ class snobject(object):
         assert 'fitcls' in self.__dict__
         assert 'multiband_early' in self.fitcls
         for model in self.fitcls['multiband_early']:
-            if model_name is not None and model != model_name: continue            
-            assert filt in self.fitcls['multiband_early'][model].filters,\
-                '%s not available by multiband_early.%s'%(filt, model)
+            if model_name is not None and model != model_name: continue
+            assert filt in self.fitcls['multiband_early'][model].filters, f'{filt} not available by multiband_early.{model}'
+
             t1,t0,t2 = self.fitcls['multiband_early'][model].get_par(filt=filt, parname='texp')
             self.texp = [t1,t0,t2]            
 
@@ -1618,7 +1546,7 @@ class snobject(object):
     
     def _mag_at(self, filt, phase, interpolation=None,
                 corr_mkw=False, corr_host=False, **kwargs):
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         flux, eflux = self._flux_at(filt, phase, interpolation=interpolation, **kwargs)
         if flux is None: return None, None
         ebv = 0
@@ -1627,9 +1555,8 @@ class snobject(object):
         m, me, limmag = self.flux_to_mag([flux], dflux=[eflux], sigma=kwargs['snrt'], zp=23.9)
         if m < 99:
             return m[0] - ebv * Rf[filt], me[0]
-        else:
-            m = self.flux_to_mag([flux], dflux=None, sigma=kwargs['snrt'], zp=23.9)
-            return m[0] - ebv * Rf[filt], None
+        m = self.flux_to_mag([flux], dflux=None, sigma=kwargs['snrt'], zp=23.9)
+        return m[0] - ebv * Rf[filt], None
 
     def _mag_at_list(self, filt, phaselist, interpolation=None,
                     corr_mkw=False, corr_host=False, **kwargs):
@@ -1689,20 +1616,18 @@ class snobject(object):
         filt1, filt2 = kwargs['hostebv_bands']
         c10_temp = self.read_c10()
         sntype = self.sntype.replace('SN ','').replace('AT ','').strip()
-        if not (filt1, filt2) in c10_temp:
-            print ('Error: %s-%s not defined in c10 template file, check!!'%
-                   (filt1, filt2))
+        if (filt1, filt2) not in c10_temp:
+            print(f'Error: {filt1}-{filt2} not defined in c10 template file, check!!')
             return
-        if not sntype in c10_temp[(filt1, filt2)]:
-            print ('Error: %s not defined for %s-%s in c10 template file, check!!'%
-                   (self.sntype, filt1, filt2))
+        if sntype not in c10_temp[(filt1, filt2)]:
+            print(f'Error: {self.sntype} not defined for {filt1}-{filt2} in c10 template file, check!!')
+
             return
-        if '%s-%s'%(filt1,filt2) not in toebv:
-            print ('Error: E(%s-%s) to E(B-V) factor is not defined, check!!'%
-                   (filt1, filt2))
+        if f'{filt1}-{filt2}' not in toebv:
+            print(f'Error: E({filt1}-{filt2}) to E(B-V) factor is not defined, check!!')
             return
         c10, c10e = c10_temp[(filt1, filt2)][sntype].split(',')
-        c10, c10e = float(c10), float(c10e)        
+        c10, c10e = float(c10), float(c10e)
         _c10, _c10e = self._color_at(filt1, filt2, 10,
                                      interpolation=interpolation, corr_mkw=True)
         #if _c10 < c10-c10e:  ehost = 0
@@ -1710,63 +1635,61 @@ class snobject(object):
         #else:
         #    randomc = c10-c10e+np.random.random(1)[0]*c10e*2
         #    ehost = _c10 - randomc
-        if _c10 < c10:  ehost = 0
-        else: ehost = _c10 - c10        
+        ehost = 0 if _c10 < c10 else _c10 - c10
         # from E(X-Y) to E(B-V)
-        self.hostebv = ehost/toebv['%s-%s'%(filt1,filt2)]
+        self.hostebv = ehost / toebv[f'{filt1}-{filt2}']
 
     def calc_colors(self, **kwargs):
         ''' define colors
         '''
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         assert self.t0 > 2400000, 'set t0 first'
-          
-        filt1, filt2 = kwargs['color_bands']        
-        self.colors = dict()
+
+        filt1, filt2 = kwargs['color_bands']
+        self.colors = {}
         if 1 in kwargs['color_interp']:
             # bin and match g and r
-            self.lc = self.bin_df(self.lc, deltah = kwargs['tdbin'] )            
-            self.match_colors(**kwargs)            
-            _lc = self.lc_match.query('mag_%s<99 and mag_%s<99' % (filt1, filt2))
+            self.lc = self.bin_df(self.lc, deltah = kwargs['tdbin'] )
+            self.match_colors(**kwargs)
+            _lc = self.lc_match.query(f'mag_{filt1}<99 and mag_{filt2}<99')
             if len(_lc) > 0:
-                self.colors[1] = [_lc['jdobs_%s'%filt1], _lc['mag_%s'%filt1], _lc['mag_%s'%filt2],
-                                  _lc['emag_%s'%filt1], _lc['emag_%s'%filt2]]
-        
+                self.colors[1] = [_lc[f'jdobs_{filt1}'], _lc[f'mag_{filt1}'], _lc[f'mag_{filt2}'], _lc[f'emag_{filt1}'], _lc[f'emag_{filt2}']]
+
+
         # or with GP/fit intepolation
         jd2,m2,mm2,me2,mme2 = [],[],[],[],[]
         jd3,m3,mm3,me3,mme3 = [],[],[],[],[]
-        for _filt, _filt1 in zip([filt1, filt2], [filt2, filt1]):            
-            _lc = self.lc.query('filter==@_filt and mag<99')            
-            if 'fitcls' in self.__dict__ and 2 in kwargs['color_interp']: # analytic sn lc fit
-                if 'multiband_main' in self.fitcls:                    
-                    for model in self.fitcls['multiband_main']:
-                        __lc = _lc # donot disturb GP
-                        if 'xpredict' in self.fitcls['multiband_main'][model].__dict__:
-                            p1,p2 = self.fitcls['multiband_main'][model].xpredict
-                            __lc = _lc.query('jdobs>@self.t0+@p1 and jdobs<@self.t0+@p2')
-                        p_fit = (__lc['jdobs']-self.t0) / (1+self.z)
-                        xx,yy,yy1,yy2,ff = self.fitcls['multiband_main'][model].predict(x_pred=p_fit,
-                                                                returnv=True, quant=kwargs['quantile'])
-                        __ = np.where(ff==_filt1)
-                        xx = xx[__]
-                        yy = yy[__]
-                        yy1 = yy1[__]
-                        yy2 = yy2[__]
-                        mm, mme, lm = self.flux_to_mag(yy, dflux=abs(yy1-yy2)/2, sigma=kwargs['snrt'], zp=23.9)
-                        __ = np.where(mm<99)
-                        if _filt == filt1:  
-                            jd2 = np.append(jd2, get_numpy(__lc['jdobs'])[__])
-                            m2 = np.append(m2, get_numpy(__lc['mag'])[__])
-                            mm2 = np.append(mm2, mm[__])
-                            me2 = np.append(me2, get_numpy(__lc['emag'])[__])
-                            mme2 = np.append(mme2, mme[__])
-                        else: 
-                            jd2 = np.append(jd2, get_numpy(__lc['jdobs'])[__])
-                            mm2 = np.append(mm2, get_numpy(__lc['mag'])[__])
-                            m2 = np.append(m2, mm[__])
-                            mme2 = np.append(mme2, get_numpy(__lc['emag'])[__])
-                            me2 = np.append(me2, mme[__])
-                        break                    
+        for _filt, _filt1 in zip([filt1, filt2], [filt2, filt1]):        
+            _lc = self.lc.query('filter==@_filt and mag<99')
+            if 'fitcls' in self.__dict__ and 2 in kwargs['color_interp'] and 'multiband_main' in self.fitcls:
+                for model in self.fitcls['multiband_main']:
+                    __lc = _lc # donot disturb GP
+                    if 'xpredict' in self.fitcls['multiband_main'][model].__dict__:
+                        p1,p2 = self.fitcls['multiband_main'][model].xpredict
+                        __lc = _lc.query('jdobs>@self.t0+@p1 and jdobs<@self.t0+@p2')
+                    p_fit = (__lc['jdobs']-self.t0) / (1+self.z)
+                    xx,yy,yy1,yy2,ff = self.fitcls['multiband_main'][model].predict(x_pred=p_fit,
+                                                            returnv=True, quant=kwargs['quantile'])
+                    __ = np.where(ff==_filt1)
+                    xx = xx[__]
+                    yy = yy[__]
+                    yy1 = yy1[__]
+                    yy2 = yy2[__]
+                    mm, mme, lm = self.flux_to_mag(yy, dflux=abs(yy1-yy2)/2, sigma=kwargs['snrt'], zp=23.9)
+                    __ = np.where(mm<99)
+                    if _filt == filt1:  
+                        jd2 = np.append(jd2, get_numpy(__lc['jdobs'])[__])
+                        m2 = np.append(m2, get_numpy(__lc['mag'])[__])
+                        mm2 = np.append(mm2, mm[__])
+                        me2 = np.append(me2, get_numpy(__lc['emag'])[__])
+                        mme2 = np.append(mme2, mme[__])
+                    else: 
+                        jd2 = np.append(jd2, get_numpy(__lc['jdobs'])[__])
+                        mm2 = np.append(mm2, get_numpy(__lc['mag'])[__])
+                        m2 = np.append(m2, mm[__])
+                        mme2 = np.append(mme2, get_numpy(__lc['emag'])[__])
+                        me2 = np.append(me2, mme[__])
+                    break
             if 'gpcls' in self.__dict__ and 3 in kwargs['color_interp']: # GP intepolation
                 __lc = _lc
                 p_fit = __lc['jdobs']
@@ -1797,26 +1720,28 @@ class snobject(object):
         calculate bolometric LC with Lyman bolometric correction
         ''' 
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        if not 'colors' in self.__dict__:
+        if 'colors' not in self.__dict__:
             if kwargs['verbose']: print ('calc colors first')
             return
         if self.sntype is None:
             if kwargs['verbose']: print ('define sn type first')
-            return        
+            return
         filt1, filt2 = kwargs['color_bands']
         sntype = self.sntype.replace('SN ','').replace('AT ','').strip()
-        self.mbol = dict()
+        self.mbol = {}
         ebv = self.mkwebv + self.hostebv
         for _ in self.colors:
             jd, m1, m2, m1e, m2e = self.colors[_]
-            bc, __ = BC_Lyman(m1-m2, colortype='%s-%s'%(filt1,filt2), phase='normal', sntype=sntype)
+            bc, __ = BC_Lyman(m1 - m2, colortype=f'{filt1}-{filt2}', phase='normal', sntype=sntype)
+
             if bc is None:
-                print ('Error: check lyman BC for sntype %s, color %s-%s for normal phase'%(sntype, filt1, filt2))
+                print(f'Error: check lyman BC for sntype {sntype}, color {filt1}-{filt2} for normal phase')
+
                 return
-            mbol, embol = bc + m1 -self.dm, np.sqrt(m1e**2 + self.dm_error(filt1)**2)            
-            Lbol = Mbol_to_Lbol(mbol)                        
+            mbol, embol = bc + m1 -self.dm, np.sqrt(m1e**2 + self.dm_error(filt1)**2)
+            Lbol = Mbol_to_Lbol(mbol)
             eLbol = abs(Mbol_to_Lbol(mbol+embol)-Lbol)
-            _ck=np.isfinite(Lbol)            
+            _ck=np.isfinite(Lbol)
             self.mbol[_] = (jd[_ck], Lbol[_ck], eLbol[_ck])
 
     def bb_colors(self, **kwargs):
@@ -1824,51 +1749,49 @@ class snobject(object):
         !!! haven't included any ebv value
         '''
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])       
-        
+
         filters = kwargs['bb_bands']
         assert len(filters) >= 3, 'at least 3 bands needed for blackbody'
-        
-        self.cbb = dict()
-        self.cbb[1] = dict()                
+
+        self.cbb = {1: {}}
         if 1 in kwargs['bb_interp']:
             # bin and match g and r
             self.lc = self.bin_df(self.lc, deltah = kwargs['tdbin'] )
             self.match_colors(**kwargs)        
-            
+
             _cond = ''
             for n, filt in enumerate(filters):
-                assert len(self.lc_match.query('mag_%s<99' % filt)) > 0, \
-                    '%s band not available, set filters correctly!' % filt
-                _cond += 'mag_%s<99' %filt
-                if n < len(filters)-1: _cond += ' and '                        
+                assert len(self.lc_match.query(f'mag_{filt}<99')) > 0, f'{filt} band not available, set filters correctly!'
+
+                _cond += f'mag_{filt}<99'
+                if n < len(filters)-1: _cond += ' and '
             _lc = self.lc_match.query(_cond)
             if len(_lc) > 0:
-                self.cbb[1]['t'] = _lc['jdobs_%s'%filters[0]]
-                for n, filt in enumerate(filters):
-                    self.cbb[1][filt] = ( _lc['mag_%s'%filt], _lc['emag_%s'%filt] )
-                    
+                self.cbb[1]['t'] = _lc[f'jdobs_{filters[0]}']
+                for filt in filters:
+                    self.cbb[1][filt] = _lc[f'mag_{filt}'], _lc[f'emag_{filt}']
+
         # or with GP/fit intepolation
         _jds = self.lc.query('mag<99')['jdobs']
-        self.cbb[2] = dict()        
-        self.cbb[3] = dict()
+        self.cbb[2] = {}
+        self.cbb[3] = {}
         for _filt in filters:
-            if 'fitcls' in self.__dict__ and 2 in kwargs['bb_interp']: # analytic sn lc fit
-                if 'multiband_main' in self.fitcls:
-                    p_fit = (_jds-self.t0) / (1+self.z)
-                    for model in self.fitcls['multiband_main']:                    
-                        xx,yy,yy1,yy2,ff = self.fitcls['multiband_main'][model].predict(x_pred=p_fit,
-                                                                returnv=True, quant=kwargs['quantile'])
-                        __ = np.where(ff==_filt)
-                        xx = xx[__]
-                        yy = yy[__]
-                        yy1 = yy1[__]
-                        yy2 = yy2[__]
-                        mm = self.flux_to_mag(yy, dflux=None, sigma=kwargs['snrt'], zp=23.9)
-                        _mm1 = self.flux_to_mag(yy1, dflux=None, sigma=kwargs['snrt'], zp=23.9)
-                        _mm2 = self.flux_to_mag(yy2, dflux=None, sigma=kwargs['snrt'], zp=23.9)
-                        mme = (abs(mm-_mm1) + abs(mm-_mm2))/2                
-                        self.cbb[2][_filt] = (mm,mme)
-                        break
+            if 'fitcls' in self.__dict__ and 2 in kwargs['bb_interp'] and 'multiband_main' in self.fitcls:
+                p_fit = (_jds-self.t0) / (1+self.z)
+                for model in self.fitcls['multiband_main']:                    
+                    xx,yy,yy1,yy2,ff = self.fitcls['multiband_main'][model].predict(x_pred=p_fit,
+                                                            returnv=True, quant=kwargs['quantile'])
+                    __ = np.where(ff==_filt)
+                    xx = xx[__]
+                    yy = yy[__]
+                    yy1 = yy1[__]
+                    yy2 = yy2[__]
+                    mm = self.flux_to_mag(yy, dflux=None, sigma=kwargs['snrt'], zp=23.9)
+                    _mm1 = self.flux_to_mag(yy1, dflux=None, sigma=kwargs['snrt'], zp=23.9)
+                    _mm2 = self.flux_to_mag(yy2, dflux=None, sigma=kwargs['snrt'], zp=23.9)
+                    mme = (abs(mm-_mm1) + abs(mm-_mm2))/2                
+                    self.cbb[2][_filt] = (mm,mme)
+                    break
             if 'gpcls' in self.__dict__ and 3 in kwargs['bb_interp']: # GP intepolation
                 p_fit = _jds
                 xx,yy,yye,ff = self.gpcls.predict(x_pred=p_fit, returnv=True,)
@@ -1888,11 +1811,11 @@ class snobject(object):
         calculate bolometric LC with diluted blackbody
         '''
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        if not 'cbb' in self.__dict__:
+        if 'cbb' not in self.__dict__:
             if kwargs['verbose']: print ('calc BB colors first')
-            return        
+            return
         filters = kwargs['bb_bands']
-        self.mbolbb = dict()
+        self.mbolbb = {}
         ebv = self.mkwebv + self.hostebv
         SN_distance = 10**((self.dm-25)/5)*3.086e24 # in cm
         for _ in self.cbb:
@@ -1924,15 +1847,15 @@ class snobject(object):
                     ws.append(wlref)
                     bs.append(bandwidths)                                
                 fluxes, efluxes, ws, bs = np.array(fluxes), np.array(efluxes), np.array(ws), np.array(bs)
-                
+
                 # Set flux to zero at red and blue extrema matching wlref1
                 #flux1 = np.insert(fluxes,0,0)
                 #flux1 = np.append(flux1,0)
-                
+
                 # if any band cannot provide fluxes, just skip them
                 __ = np.isnan(fluxes)
                 if len(fluxes[__]) > 0: continue
-                
+
                 BBparams, covar = curve_fit( bbody, ws, fluxes/1e40, p0=(10,2),
                         sigma=efluxes/1e40, absolute_sigma=True, maxfev=kwargs['maxfev'])
                 _T = BBparams[0]
@@ -1949,11 +1872,11 @@ class snobject(object):
                 #    with flux set to zero outside of observed bands
                 _L = integrate.trapz(fluxes[np.argsort(ws)],ws[np.argsort(ws)])
                 Ll.append(_L)
-                
+
                 # Use flux errors and bandwidths to get luminosity error
                 _Le = np.sqrt(np.sum((bs*efluxes)**2))
                 eLl.append(_Le)
-                
+
                 # Calculate luminosity using alternative method of Stefan-Boltzmann, and T and R from fit
                 _Lbb = 4*np.pi*(_R*1e15)**2*5.67e-5*(_T*1e3)**4
                 _Lbbe = _Lbb*np.sqrt((2*_Re/_R)**2+(4*_Te/_T)**2)
@@ -1962,12 +1885,13 @@ class snobject(object):
             self.mbolbb[_] = ( jdl, Ll, eLl, Tl, eTl, Rl, eRl, L1l, eL1l )
                 
     def match_colors(self, **kwargs):
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])            
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         self.combine_multi_obs(**kwargs)
         _lc = self.lc_match
         filters = np.unique(_lc['filter'])
         _keys = []
-        for f in sorted(filters):  _keys = np.append(_keys, ['%s_%s'%(_,f) for _ in _lc.columns])
+        for f in sorted(filters):
+            _keys = np.append(_keys, [f'{_}_{f}' for _ in _lc.columns])
         __arr = []
         for _jd in np.unique(_lc['jdbin']):
             _lc0 = _lc.query('jdbin==@_jd')
@@ -1979,34 +1903,32 @@ class snobject(object):
                 else:
                     __arr0 = np.append( __arr0, _lc0f.values[0] )
             __arr.append (__arr0.tolist())
-        _df = pd.DataFrame(__arr, columns=_keys) 
+        _df = pd.DataFrame(__arr, columns=_keys)
         for _ in _df.keys(): 
             try: _df[_] = pd.to_numeric(_df[_])
             except: pass
         self.lc_match = _df
         
     def combine_multi_obs(self, **kwargs):
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])        
-        if not 'jdbin' in self.lc:
-            _lc = self.bin_df(self.lc, deltah = kwargs['tdbin'])
-        else:
-            _lc = self.lc
-        if True: _lc = _lc.query('mag<99')
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
+        _lc = self.lc if 'jdbin' in self.lc else self.bin_df(self.lc, deltah=kwargs['tdbin'])
+
+        _lc = _lc.query('mag<99')
         __arr = []
         for _jd in np.unique(_lc['jdbin']):
             _lc0 = _lc.query('jdbin==@_jd')
             unique_f, counts = np.unique(_lc0['filter'],return_counts=True)
             single_f, double_f = list(unique_f[ (counts==1)]), \
-                list(unique_f[ (counts>1)]) 
+                list(unique_f[ (counts>1)])
             for f in single_f:
                 _lc0f = _lc0.query('filter==@f')
                 __arr.append( _lc0f.values[0].tolist() )
-            
-            if not len(double_f)==0:   
+
+            if double_f:   
                 for f in double_f:
                     _lc0f = _lc0.query('filter==@f')
                     __arr.append( self.merge_df_cols(_lc0f) )
-        _df = pd.DataFrame(__arr, columns=self.lc.columns) 
+        _df = pd.DataFrame(__arr, columns=self.lc.columns)
         for _ in _df.keys(): 
             try: _df[_] = pd.to_numeric(_df[_])
             except: pass
@@ -2045,12 +1967,12 @@ class snobject(object):
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         # remove negative flux epoch
         self.lc = self.lc.query('flux>0')
-        
+
         # remove outliers
         if kwargs['clipsigma'] is not None:
             clipsigma = float(kwargs['clipsigma'])
-            __arr = None            
-            for f in np.unique(self.lc['filter']):                
+            __arr = None
+            for _ in np.unique(self.lc['filter']):
                 _lc = self.lc.query('filter==@f')
                 outlier_mask = sigma_clip(
                     data=_lc['flux'],
@@ -2061,42 +1983,36 @@ class snobject(object):
                     stdfunc='std',
                 ).mask
                 _lc = self.clip_df(_lc, outlier_mask)
-                if __arr is None: __arr = _lc
-                else: __arr = __arr.append( _lc, ignore_index=True)                
+                __arr = _lc if __arr is None else __arr.append( _lc, ignore_index=True)
             self.lc = __arr                    
 
     def _nepochs(self, **kwargs):
         # how many epochs of photometry in either band.
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         dets = self.lc.query('mag<99')
-        ndets = dict()
         if kwargs['plot_bands'] is not None: plot_bands = kwargs['plot_bands']
         else: plot_bands = np.unique(self.lc['filter'])
-        for filt in plot_bands:
-            ndets[filt] = len(dets.query('filter==@filt'))
-        return ndets
+        return {filt: len(dets.query('filter==@filt')) for filt in plot_bands}
     
     def _ncolors(self, **kwargs):
         # how many color epochs (sampled within $\pm3$ days)
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        ncolors = dict()
+        ncolors = {}
         if kwargs['plot_bands'] is not None: plot_bands = kwargs['plot_bands']
         else: plot_bands = np.unique(self.lc['filter'])
         for filt in plot_bands:
             for filt1 in plot_bands:
                 if filt == filt1: continue
                 if len(dets.query('filter==@filt'))==0 or len(dets.query('filter==@filt1'))==0:continue
-                nc = 0
-                for _jd in dets.query('filter==@filt')['jdobs']:
-                    if min(abs(dets.query('filter==@filt1')['jdobs'] - _jd)) <= kwargs['tdbin']:
-                        nc += 1
-                ncolors['%s %s'%(filt, filt1)] = nc
+                nc = sum(min(abs(dets.query('filter==@filt1')['jdobs'] - _jd)) <= kwargs['tdbin'] for _jd in dets.query('filter==@filt')['jdobs'])
+
+                ncolors[f'{filt} {filt1}'] = nc
         return ncolors
 
     def _peak_accuracy(self, within=3, **kwargs):
         # Photometry available both before and after peak so that a peak can be determined?
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        peakphot = dict()        
+        peakphot = {}
         t0 = self.t0
         if kwargs['plot_bands'] is not None: plot_bands = kwargs['plot_bands']
         else: plot_bands = np.unique(self.lc['filter'])
@@ -2128,54 +2044,53 @@ class snobject(object):
         if self.ax is None:
             print ('Error: no ax defined, skipped flux plots')
             return
-        if not 'lc' in self.__dict__:
+        if 'lc' not in self.__dict__:
             print ('Error: no lc defined, parse lc data first')
             return
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])       
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         fscale=float(kwargs['flux_scale'])
-        if source is not None: lc = self.lc.query('source==@source')
-        else:  lc = self.lc
+        lc = self.lc.query('source==@source') if source is not None else self.lc
         if kwargs['plot_bands'] is not None: plot_bands = kwargs['plot_bands']
-        else: plot_bands = np.unique(lc['filter']) 
+        else: plot_bands = np.unique(lc['filter'])
         for filt in plot_bands:
             ''' for each filter '''        
-            
+
             # normalize flux item in ax
             if source is None:
                 __lc = lc.query('filter==@filt')
             else:
                 __lc = lc.query('filter==@filt and source==@source')
             # peak flux
-            fm, efm = self._flux_at(filt, 0, interpolation=None, **kwargs)            
+            fm, efm = self._flux_at(filt, 0, interpolation=None, **kwargs)
             if fm is None: fm = __lc['flux'].max()
             self.ax.errorbar(__lc['jdobs']-x0, __lc['flux']/fm*fscale+ys[filt],
                              yerr=__lc['eflux']/fm*fscale, alpha=kwargs['alphabest'], **PROP1f[filt])
-            
+
             # analytic sn lc fit  
             if 'fitcls' in self.__dict__:
                 if 'multiband_early' in self.fitcls:
                     for model in self.fitcls['multiband_early']:
                         _model = self.fitcls['multiband_early'][model]
-                        
+
                         # fit range
                         pmin,pmax = kwargs['multiband_early_xrangep']
                         p_fit = np.arange(pmin, pmax, .1)
-                        
+
                         # samples
                         x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
                                                     plotnsamples=kwargs['plot_nsamples'])
                         for xx, yy in zip(x[ np.where(f == filt) ], y[ np.where(f == filt) ]):
                             self.ax.plot(xx-x0, yy+ys[filt],
                                          alpha=kwargs['alphasample'], **PROP4[filt])
-                            
+
                 if 'multiband_main' in self.fitcls:
                     for model in self.fitcls['multiband_main']:
                         _model = self.fitcls['multiband_main'][model]
-                        
+
                         # fit range
                         pmin,pmax = kwargs['multiband_main_xrangep']
                         p_fit = np.arange(pmin, pmax, .1)
-                            
+
                         # samples
                         x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
                                                     plotnsamples=kwargs['plot_nsamples'])
@@ -2184,25 +2099,24 @@ class snobject(object):
                                          alpha=kwargs['alphasample'], **PROP2[filt])
 
             # Gaussian process
-            if 'gpcls' in self.__dict__:
-                if filt in self.gpcls.f_pred:                                        
-                    __ = np.where(self.gpcls.f_pred==filt)
-                    xx = self.gpcls.x_pred[__]
-                    yy = self.gpcls.y_pred[__]
-                    yye = self.gpcls.y_prede[__]
-                    
-                    if kwargs['gp_plotr'] is not None:
-                        pmin,pmax = min(kwargs['gp_plotr']), max(kwargs['gp_plotr'])                    
-                        __ = np.logical_and(xx>self.t0+pmin, xx<self.t0+pmax)                    
-                        xx = xx[__]
-                        yy = yy[__]
-                        yye = yye[__] 
-                   
-                    self.ax.plot(xx-x0, yy/fm*fscale+ys[filt],
-                                 alpha=kwargs['alphabest'], **PROP3[filt])                    
-                    self.ax.fill_between(xx-x0, (yy-yye) /fm*fscale+ys[filt],
-                            (yy+yye) /fm*fscale+ys[filt], alpha=kwargs['alphasample'], **PROP3[filt])
-                    
+            if 'gpcls' in self.__dict__ and filt in self.gpcls.f_pred:
+                __ = np.where(self.gpcls.f_pred==filt)
+                xx = self.gpcls.x_pred[__]
+                yy = self.gpcls.y_pred[__]
+                yye = self.gpcls.y_prede[__]
+
+                if kwargs['gp_plotr'] is not None:
+                    pmin,pmax = min(kwargs['gp_plotr']), max(kwargs['gp_plotr'])                    
+                    __ = np.logical_and(xx>self.t0+pmin, xx<self.t0+pmax)                    
+                    xx = xx[__]
+                    yy = yy[__]
+                    yye = yye[__] 
+
+                self.ax.plot(xx-x0, yy/fm*fscale+ys[filt],
+                             alpha=kwargs['alphabest'], **PROP3[filt])
+                self.ax.fill_between(xx-x0, (yy-yye) /fm*fscale+ys[filt],
+                        (yy+yye) /fm*fscale+ys[filt], alpha=kwargs['alphasample'], **PROP3[filt])
+
         #  subplot settings            
         if kwargs['ax_xlim'] is not None:
             x1,x2 = min(kwargs['ax_xlim']), max(kwargs['ax_xlim'])
@@ -2211,12 +2125,12 @@ class snobject(object):
             self.ax.set_ylim(kwargs['ax_ylim'])
         if show_title:
             self.ax.set_title('%s\n%s z=%.2f'%
-                                  (self.objid,self.sntype,self.z),fontsize=12)                        
+                                  (self.objid,self.sntype,self.z),fontsize=12)
         if self.texp is not None:
             self.ax.axvline(self.texp[1]*(1+self.z)+self.t0-x0, ls='--', label='texp', color='k')
             self.ax.axvline(self.texp[0]*(1+self.z)+self.t0-x0, ls=':', color='k')
-            self.ax.axvline(self.texp[2]*(1+self.z)+self.t0-x0, ls=':', color='k')               
-        self.ax.set_xlabel('JD - %s (d)'%x0,fontsize=12)
+            self.ax.axvline(self.texp[2]*(1+self.z)+self.t0-x0, ls=':', color='k')
+        self.ax.set_xlabel(f'JD - {x0} (d)', fontsize=12)
         if ylabel_2right:
             ax=self.ax.twinx()
             ax.set_ylabel('Flux + $\mathrm{offset}$',fontsize=12)
@@ -2230,11 +2144,11 @@ class snobject(object):
         if self.ax1 is None:
             print ('Error: no ax1 defined, skipped spectra plots')
             return
-        if not 'spec' in self.__dict__:
+        if 'spec' not in self.__dict__:
             print ('Error: no spec defined, parse spectral data first')
             return
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        
+
         for _ in self.spec.data:
             spec   = self.spec.data[_]['data']
             phase  = float(self.spec.data[_]['phase'])
@@ -2242,47 +2156,45 @@ class snobject(object):
             #    continue 
             source = '_'.join(_.split())
             ys     = self.spec.data[_]['ys']
-            
-            wave, flux = spec._norm_spectrum(region=region, stype='flat', **kwargs)             
+
+            wave, flux = spec._norm_spectrum(region=region, stype='flat', **kwargs)
             self.ax1.step(wave, flux + ys, **PROP10['data'])
             if region is not None:
-                self.ax1.text(max(region), ys, '%s' % source, color='k')
+                self.ax1.text(max(region), ys, f'{source}', color='k')
             else:
-                self.ax1.text(max(wave), ys, '%s' % source, color='k')
-                
+                self.ax1.text(max(wave), ys, f'{source}', color='k')
+
             # peaks
-            if 'specpeaks' in self.__dict__:
-                if source in self.specpeaks:
-                    findp = self.specpeaks[source]                    
-                    if 1 in findp:
-                        for _w in findp[1]:
-                            __ = np.argmin(abs(wave-_w))
-                            self.ax1.plot(_w, flux[__] + ys, color='orange', marker='|', markersize=20)
-                    if -1 in findp:
-                        for _w in findp[-1]:
-                            __ = np.argmin(abs(wave-_w))
-                            self.ax1.plot(_w, flux[__] + ys, color='cyan', marker='|', markersize=20)
-                            
-            # fits            
-            if 'fitcls' in self.__dict__:
-                if 'specline' in self.fitcls:                    
-                    for sourcename in self.fitcls['specline']:
-                        if not source in sourcename: continue
-                        print (source, sourcename, ys)
-                        for model in self.fitcls['specline'][sourcename]:                            
-                            _model = self.fitcls['specline'][sourcename][model]
-                            if _model is None: continue
-                            x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
-                                                        plotnsamples=kwargs['plot_nsamples'])
-                            for xx, yy in zip(x,y):                                
-                                self.ax1.plot(xx, yy+ys, **PROP10['bindata'])
+            if 'specpeaks' in self.__dict__ and source in self.specpeaks:
+                findp = self.specpeaks[source]
+                if 1 in findp:
+                    for _w in findp[1]:
+                        __ = np.argmin(abs(wave-_w))
+                        self.ax1.plot(_w, flux[__] + ys, color='orange', marker='|', markersize=20)
+                if -1 in findp:
+                    for _w in findp[-1]:
+                        __ = np.argmin(abs(wave-_w))
+                        self.ax1.plot(_w, flux[__] + ys, color='cyan', marker='|', markersize=20)
+
+            # fits
+            if 'fitcls' in self.__dict__ and 'specline' in self.fitcls:
+                for sourcename in self.fitcls['specline']:
+                    if source not in sourcename: continue
+                    print (source, sourcename, ys)
+                    for model in self.fitcls['specline'][sourcename]:                            
+                        _model = self.fitcls['specline'][sourcename][model]
+                        if _model is None: continue
+                        x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
+                                                    plotnsamples=kwargs['plot_nsamples'])
+                        for xx, yy in zip(x,y):                                
+                            self.ax1.plot(xx, yy+ys, **PROP10['bindata'])
         if cw is not None: self.ax1.axvline(cw, color='k', ls='--')
-        
+
         #  subplot settings        
         if region is not None:                           
             _ticks = np.arange(min(self.region),max(self.region)+100,100)
         else:
-            _ticks = np.arange(3000, 9000, 1000)        
+            _ticks = np.arange(3000, 9000, 1000)
         self.ax1.set_xticks( _ticks )
         self.ax1.set_xticklabels(['%.1f'%_ for _ in _ticks], rotation=30)
         if cw is not None:
@@ -2292,15 +2204,15 @@ class snobject(object):
             ax1.set_xticks(_ticks)
             ax1.set_xticklabels(_tickl, rotation=30)
             ax1.set_xlabel('velocity ($10^{3}~km~s^{-1}$)', fontsize=12)
-        self.ax1.set_xlabel('Rest Wavelength ($\AA$)', fontsize=12)        
+        self.ax1.set_xlabel('Rest Wavelength ($\AA$)', fontsize=12)
         self.ax1.set_yticks([])
         self.ax1.tick_params("both", direction='in',
                              right=True, labelright=True, left=False, labelleft=False)
         if region is not None:
-            self.ax1.set_xlim([min(self.region),max(self.region)])            
+            self.ax1.set_xlim([min(self.region),max(self.region)])
         if show_title:
             self.ax1.set_title('%s\n%s z=%.2f'%
-                               (self.objid,self.sntype,self.z),fontsize=12)                    
+                               (self.objid,self.sntype,self.z),fontsize=12)
         if show_legend: self.ax1.legend(fontsize=10, frameon=False)
         
     def _ax2(self, show_title=False, show_legend=False, ylabel_2right=False,
@@ -2308,10 +2220,10 @@ class snobject(object):
         if self.ax2 is None:
             print ('Error: no ax2 defined, skipped mag plots')
             return
-        if not 'lc' in self.__dict__:
+        if 'lc' not in self.__dict__:
             print ('Error: no lc defined, parse lc data first')
             return
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])       
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         ebv = 0
         if corr_mkw: ebv += self.mkwebv
         if corr_host: ebv += self.hostebv
@@ -2319,7 +2231,7 @@ class snobject(object):
         else: plot_bands = np.unique(self.lc['filter'])
         for filt in plot_bands:
             ''' for each filter '''        
-            
+
             # mag item in ax
             # set t to rest frame phase relative to peak 
             if source is None:
@@ -2337,18 +2249,18 @@ class snobject(object):
             if len(__lc) > 0:
                 self.ax2.plot((__lc['jdobs']-self.t0)/(1+self.z), __lc['limmag']-self.dm-Rf[filt]*ebv,
                               alpha=kwargs['alphasample'], **PROP1l[filt])
-                
+
             # analytic sn lc fit            
             if 'fitcls' in self.__dict__:
                 if 'multiband_early' in self.fitcls:
                     for model in self.fitcls['multiband_early']:
                         _model = self.fitcls['multiband_early'][model]
-                        
+
                         # fit range
                         pmin,pmax = kwargs['multiband_early_xrangep']
                         if self.texp is not None: pmin = max(min(self.texp), pmin)
                         p_fit = np.arange(pmin, pmax, .1)
-                        
+
                         # samples
                         x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
                                                     plotnsamples=kwargs['plot_nsamples'])
@@ -2356,16 +2268,16 @@ class snobject(object):
                             m = self.flux_to_mag(yy, dflux=None, sigma=kwargs['snrt'], zp=23.9)
                             self.ax2.plot((xx-self.t0)/(1+self.z), m-self.dm-Rf[filt]*ebv,
                                           alpha=kwargs['alphasample'], **PROP2[filt])
-                
+
                 if 'multiband_main' in self.fitcls:
                     for model in self.fitcls['multiband_main']:
                         _model = self.fitcls['multiband_main'][model]
-                        
+
                         # fit range
                         pmin,pmax = kwargs['multiband_main_xrangep']
                         if self.texp is not None: pmin = max(min(self.texp), pmin)
                         p_fit = np.arange(pmin, pmax, .1)
-                            
+
                         # samples
                         x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
                                                     plotnsamples=kwargs['plot_nsamples'])
@@ -2373,42 +2285,36 @@ class snobject(object):
                             m = self.flux_to_mag(yy, dflux=None, sigma=kwargs['snrt'], zp=23.9)
                             self.ax2.plot((xx-self.t0)/(1+self.z), m-self.dm-Rf[filt]*ebv,
                                          alpha=kwargs['alphasample'], **PROP2[filt])
-                                                        
+
             # Gaussian process
-            if 'gpcls' in self.__dict__:
-                if filt in self.gpcls.f_pred:                                        
-                    __ = np.where(self.gpcls.f_pred==filt)
-                    xx = self.gpcls.x_pred[__]
-                    yy = self.gpcls.y_pred[__]
-                    yye = self.gpcls.y_prede[__]
-                    
-                    if kwargs['gp_plotr'] is not None:
-                        pmin,pmax = min(kwargs['gp_plotr']), max(kwargs['gp_plotr'])
-                        if self.texp is not None: pmin = max(min(self.texp), pmin)
-                        __ = np.logical_and(xx>self.t0+pmin, xx<self.t0+pmax)                    
-                        xx = xx[__]
-                        yy = yy[__]
-                        yye = yye[__]                     
-                    m,me,limmag = self.flux_to_mag(yy, dflux=yye, sigma=kwargs['snrt'], zp=23.9)
-                    __=np.where(m<99)
-                    self.ax2.plot((xx[__]-self.t0)/(1+self.z), m[__]-self.dm-Rf[filt]*ebv,
-                                 alpha=kwargs['alphabest'], **PROP3[filt])                    
-                    #self.ax2.fill_between((xx-self.t0)/(1+self.z), m-self.dm-Rf[filt]*ebv-me,
-                    #            m-self.dm-Rf[filt]*ebv+me, alpha=kwargs['alphasample'], **PROP3[filt])
-                    #self.ax2.errorbar((xx[__]-self.t0)/(1+self.z), m[__]-self.dm-Rf[filt]*ebv,
-                    #            yerr=me[__], alpha=kwargs['alphabest'], **PROP3[filt])
-                    
+            if 'gpcls' in self.__dict__ and filt in self.gpcls.f_pred:
+                __ = np.where(self.gpcls.f_pred==filt)
+                xx = self.gpcls.x_pred[__]
+                yy = self.gpcls.y_pred[__]
+                yye = self.gpcls.y_prede[__]
+
+                if kwargs['gp_plotr'] is not None:
+                    pmin,pmax = min(kwargs['gp_plotr']), max(kwargs['gp_plotr'])
+                    if self.texp is not None: pmin = max(min(self.texp), pmin)
+                    __ = np.logical_and(xx>self.t0+pmin, xx<self.t0+pmax)                    
+                    xx = xx[__]
+                    yy = yy[__]
+                    yye = yye[__]
+                m,me,limmag = self.flux_to_mag(yy, dflux=yye, sigma=kwargs['snrt'], zp=23.9)
+                __=np.where(m<99)
+                self.ax2.plot((xx[__]-self.t0)/(1+self.z), m[__]-self.dm-Rf[filt]*ebv,
+                             alpha=kwargs['alphabest'], **PROP3[filt])
         #  subplot settings        
         if kwargs['ax_xlim'] is not None:
             x1,x2 = min(kwargs['ax_xlim']), max(kwargs['ax_xlim'])
-            self.ax2.set_xlim([x1/(1+self.z), x2/(1+self.z)])                     
+            self.ax2.set_xlim([x1/(1+self.z), x2/(1+self.z)])
         if kwargs['ax2_ylim'] is not None:
             self.ax2.set_ylim(kwargs['ax2_ylim'])
         else:
             self.ax2.invert_yaxis()
         if show_title:
             self.ax2.set_title('%s\n%s z=%.2f'%
-                               (self.objid,self.sntype,self.z),fontsize=12)                        
+                               (self.objid,self.sntype,self.z),fontsize=12)
         if self.texp is not None:
             self.ax2.axvline(self.texp[1]/(1+self.z), ls='--', label='texp', color='k')
             self.ax2.axvline(self.texp[0]/(1+self.z), ls=':', color='k')
@@ -2427,32 +2333,32 @@ class snobject(object):
         if self.ax3 is None:
             print ('Error: no ax3 defined, skipped color plots')
             return
-        if not 'colors' in self.__dict__:
+        if 'colors' not in self.__dict__:
             print ('Error: no colors defined, do self.calc_colors() first')
             return
-        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])       
+        for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
         ebv = 0
         if corr_mkw: ebv += self.mkwebv
-        if corr_host: ebv += self.hostebv                                    
+        if corr_host: ebv += self.hostebv
         for _ in self.colors:
             xx = (self.colors[_][0]-self.t0)/(1+self.z)
             yy = self.colors[_][1]-self.colors[_][2]
-            yye = np.sqrt(self.colors[_][3]**2 + self.colors[_][4]**2)            
+            yye = np.sqrt(self.colors[_][3]**2 + self.colors[_][4]**2)
             yy += ebv * (Rf['r'] - Rf['g'])
-            self.ax3.errorbar(xx, yy, yerr=yye, **PROP5['gr%s'%_])
+            self.ax3.errorbar(xx, yy, yerr=yye, **PROP5[f'gr{_}'])
             if _==1: # set limits
                 self.ax3.set_ylim([min(self.colors[1][1]-self.colors[1][2])-.1,
                                    max(self.colors[1][1]-self.colors[1][2])+.1])
-                
+
         #  subplot settings        
         if kwargs['ax_xlim'] is not None:
             x1,x2 = min(kwargs['ax_xlim']), max(kwargs['ax_xlim'])
-            self.ax3.set_xlim([x1/(1+self.z), x2/(1+self.z)])                     
+            self.ax3.set_xlim([x1/(1+self.z), x2/(1+self.z)])
         if kwargs['ax3_ylim'] is not None:
-            self.ax3.set_ylim(kwargs['ax3_ylim'])        
+            self.ax3.set_ylim(kwargs['ax3_ylim'])
         if show_title:
             self.ax3.set_title('%s\n%s z=%.2f'%
-                               (self.objid,self.sntype,self.z),fontsize=12)                        
+                               (self.objid,self.sntype,self.z),fontsize=12)
         if self.texp is not None :
             self.ax3.axvline(self.texp[1]/(1+self.z), ls='--', label='texp', color='k')
             self.ax3.axvline(self.texp[0]/(1+self.z), ls=':', color='k')
@@ -2461,10 +2367,10 @@ class snobject(object):
         f1, f2 = kwargs['color_bands']
         if ylabel_2right:
             ax33=self.ax3.twinx()
-            ax33.set_ylabel('%s-%s (mag)'%(f1,f2),fontsize=12)
+            ax33.set_ylabel(f'{f1}-{f2} (mag)', fontsize=12)
             ax33.set_yticks([])
         else:
-            self.ax3.set_ylabel('%s-%s (mag)'%(f1,f2),fontsize=12)
+            self.ax3.set_ylabel(f'{f1}-{f2} (mag)', fontsize=12)
         if show_legend: self.ax3.legend(fontsize=10, frameon=False)
 
     def _ax4(self, show_title=False, show_legend=False, ylabel_2right=False,
@@ -2473,68 +2379,68 @@ class snobject(object):
             print ('Error: no ax4 defined, skipped luminosity plots')
             return
         for _key in self.kwargs: kwargs.setdefault(_key, self.kwargs[_key])
-        if 'mbol' in self.__dict__:            
-            for _ in self.mbol:                    
+        if 'mbol' in self.__dict__:        
+            for _ in self.mbol:            
                 xx = (get_numpy(self.mbol[_][0])-self.t0)/(1+self.z)
                 yy = get_numpy(self.mbol[_][1])
-                yye = get_numpy(self.mbol[_][2]) 
-                self.ax4.errorbar(xx,yy,yerr=yye,**PROP6['lyman_data_%s'%_])
-                    
+                yye = get_numpy(self.mbol[_][2])
+                self.ax4.errorbar(xx, yy, yerr=yye, **PROP6[f'lyman_data_{_}'])
+
         if 'mbolbb' in self.__dict__:                
             for _ in self.mbolbb:                    
                 xx = (get_numpy(self.mbolbb[_][0])-self.t0)/(1+self.z)
                 yy = get_numpy(self.mbolbb[_][1])
                 yye = get_numpy(self.mbolbb[_][2]) 
                 self.ax4.errorbar(xx,yy,yerr=yye,**PROP6['bb_data_%s'%_])
-                
+
                 #yy = get_numpy(self.mbolbb[_][7])
                 #yye = get_numpy(self.mbolbb[_][8]) 
                 #self.ax4.errorbar(xx,yy,yerr=yye,**PROP6['bb_data_%sf'%_])
-                
+
         # fits
         if 'fitcls' in self.__dict__:
             if 'bol_main' in self.fitcls:
                 for source in self.fitcls['bol_main']:                    
                     for model in self.fitcls['bol_main'][source]:
                         _model = self.fitcls['bol_main'][source][model]
-                        
+
                         # fit range
                         pmin,pmax = kwargs['bol_main_xrangep']
                         p_fit = np.arange(pmin, pmax, .1)
-                        
+
                         # samples                       
                         x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
                                                     plotnsamples=kwargs['plot_nsamples'])
                         for xx, yy in zip(x, y):                            
                             self.ax4.plot((xx-self.t0)/(1+self.z), yy,
                                           alpha=kwargs['alphasample'], **PROP6['fit'])
-                            
+
             if 'bol_tail' in self.fitcls:
                 for source in self.fitcls['bol_tail']:                    
                     for model in self.fitcls['bol_tail'][source]:
                         _model = self.fitcls['bol_tail'][source][model]
-                        
+
                         # fit range
                         pmin,pmax = kwargs['bol_tail_xrangep']
                         p_fit = np.arange(pmin, pmax, .1)
-                        
+
                         # samples                       
                         x,y,f=_model.predict_random(limit=kwargs['plot_mcmct'],
                                                     plotnsamples=kwargs['plot_nsamples'])
                         for xx, yy in zip(x, y):                            
                             self.ax4.plot((xx-self.t0)/(1+self.z), yy,
                                           alpha=kwargs['alphasample'], **PROP7['fit'])
-                            
+
         #  subplot settings
         if logscale: self.ax4.set_yscale('log')
         if kwargs['ax_xlim'] is not None:
             x1,x2 = min(kwargs['ax_xlim']), max(kwargs['ax_xlim'])
-            self.ax4.set_xlim([x1/(1+self.z), x2/(1+self.z)])                     
+            self.ax4.set_xlim([x1/(1+self.z), x2/(1+self.z)])
         if kwargs['ax4_ylim'] is not None:
-            self.ax4.set_ylim(kwargs['ax4_ylim']) 
+            self.ax4.set_ylim(kwargs['ax4_ylim'])
         if show_title:
             self.ax4.set_title('%s\n%s z=%.2f'%
-                               (self.objid,self.sntype,self.z),fontsize=12)                        
+                               (self.objid,self.sntype,self.z),fontsize=12)
         if self.texp is not None :
             self.ax4.axvline(self.texp[1]/(1+self.z), ls='--', label='texp', color='k')
             self.ax4.axvline(self.texp[0]/(1+self.z), ls=':', color='k')
@@ -2546,7 +2452,7 @@ class snobject(object):
             ax44.set_ylabel('L$_{bol}$ (erg $s^{-1}$)',fontsize=12)
             ax44.set_yticks([])
         else:
-            self.ax4.set_ylabel('L$_{bol}$ (erg $s^{-1}$)',fontsize=12) 
+            self.ax4.set_ylabel('L$_{bol}$ (erg $s^{-1}$)',fontsize=12)
         if show_legend: self.ax4.legend(fontsize=10, frameon=False)        
                 
     def show_corner(self, ax, index=0, gp=False,
