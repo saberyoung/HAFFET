@@ -1,0 +1,1302 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.sneGui.MainMenu &#8212; HAFFET 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Fitting – Fitting packages" href="../fitters.html" />
+    <link rel="prev" title="snegui – GUI" href="../snegui.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snegui-mainmenu">
+<h1>sdapy.sneGui.MainMenu<a class="headerlink" href="#sdapy-snegui-mainmenu" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sdapy.sneGui.MainMenu">
+<em class="property">class </em><code class="sig-prename descclassname">sdapy.sneGui.</code><code class="sig-name descname">MainMenu</code><span class="sig-paren">(</span><em class="sig-param">parent</em>, <em class="sig-param">width</em>, <em class="sig-param">height</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.sneGui.MainMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code>(self, ms[, func])</p></td>
+<td><p>Call function once after given time.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">after_cancel</span></code>(self, id)</p></td>
+<td><p>Cancel scheduling of function identified with ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">after_idle</span></code>(self, func, \*args)</p></td>
+<td><p>Call FUNC once if the Tcl main loop has no event to process.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchor</span></code>(self[, anchor])</p></td>
+<td><p>The anchor value controls how to place the grid within the master when no row/column has any weight.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_popup1</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bbox</span></code>(self[, column, row, col2, row2])</p></td>
+<td><p>Return a tuple of integer coordinates for the bounding box of this widget controlled by the geometry manager grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bell</span></code>(self[, displayof])</p></td>
+<td><p>Ring a display’s bell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bind</span></code>(self[, sequence, func, add])</p></td>
+<td><p>Bind to this widget at event SEQUENCE a call to function FUNC.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bind_all</span></code>(self[, sequence, func, add])</p></td>
+<td><p>Bind to all widgets at an event SEQUENCE a call to function FUNC.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bind_class</span></code>(self, className[, sequence, …])</p></td>
+<td><p>Bind to widgets with bindtag CLASSNAME at event SEQUENCE a call of function FUNC.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bindtags</span></code>(self[, tagList])</p></td>
+<td><p>Set or get the list of bindtags for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cget</span></code>(self, key)</p></td>
+<td><p>Return the resource value for a KEY given as string.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clipboard_append</span></code>(self, string, \*\*kw)</p></td>
+<td><p>Append STRING to the Tk clipboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clipboard_clear</span></code>(self, \*\*kw)</p></td>
+<td><p>Clear the data in the Tk clipboard.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clipboard_get</span></code>(self, \*\*kw)</p></td>
+<td><p>Retrieve data from the clipboard on window’s display.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">columnconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure column INDEX of a grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code>(self[, cnf])</p></td>
+<td><p>Configure resources of a widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">configure</span></code>(self[, cnf])</p></td>
+<td><p>Configure resources of a widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_popup1</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">deletecommand</span></code>(self, name)</p></td>
+<td><p>Internal function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">destroy</span></code>(self)</p></td>
+<td><p>Destroy this and all descendants widgets.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dist_popup</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_add</span></code>(self, virtual, \*sequences)</p></td>
+<td><p>Bind a virtual event VIRTUAL (of the form &lt;&lt;Name&gt;&gt;) to an event SEQUENCE such that the virtual event is triggered whenever SEQUENCE occurs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_delete</span></code>(self, virtual, \*sequences)</p></td>
+<td><p>Unbind a virtual event VIRTUAL from SEQUENCE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_generate</span></code>(self, sequence, \*\*kw)</p></td>
+<td><p>Generate an event SEQUENCE.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_info</span></code>(self[, virtual])</p></td>
+<td><p>Return a list of all virtual events or the information about the SEQUENCE bound to the virtual event VIRTUAL.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluxfit_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus</span></code>(self)</p></td>
+<td><p>Direct input focus to this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_displayof</span></code>(self)</p></td>
+<td><p>Return the widget which has currently the focus on the display where this widget is located.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_force</span></code>(self)</p></td>
+<td><p>Direct input focus to this widget even if the application does not have the focus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_get</span></code>(self)</p></td>
+<td><p>Return the widget which has currently the focus in the application.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_lastfor</span></code>(self)</p></td>
+<td><p>Return the widget which would have the focus if top level for this widget gets the focus from the window manager.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_set</span></code>(self)</p></td>
+<td><p>Direct input focus to this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forget</span></code>(self)</p></td>
+<td><p>Unmap this widget and do not use it for the packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getboolean</span></code>(self, s)</p></td>
+<td><p>Return a boolean value for Tcl boolean values true and false given as parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getvar</span></code>(self[, name])</p></td>
+<td><p>Return value of Tcl variable NAME.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_current</span></code>(self)</p></td>
+<td><p>Return widget which has currently the grab in this application or None.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_release</span></code>(self)</p></td>
+<td><p>Release grab for this widget if currently set.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_set</span></code>(self)</p></td>
+<td><p>Set grab for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_set_global</span></code>(self)</p></td>
+<td><p>Set global grab for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_status</span></code>(self)</p></td>
+<td><p>Return None, “local” or “global” if this widget has no, a local or a global grab.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code>(self[, cnf])</p></td>
+<td><p>Position a widget in the parent widget in a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_anchor</span></code>(self[, anchor])</p></td>
+<td><p>The anchor value controls how to place the grid within the master when no row/column has any weight.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_bbox</span></code>(self[, column, row, col2, row2])</p></td>
+<td><p>Return a tuple of integer coordinates for the bounding box of this widget controlled by the geometry manager grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_columnconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure column INDEX of a grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_configure</span></code>(self[, cnf])</p></td>
+<td><p>Position a widget in the parent widget in a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_forget</span></code>(self)</p></td>
+<td><p>Unmap this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_info</span></code>(self)</p></td>
+<td><p>Return information about the options for positioning this widget in a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_location</span></code>(self, x, y)</p></td>
+<td><p>Return a tuple of column and row which identify the cell at which the pixel at position X and Y inside the master widget is located.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_propagate</span></code>(self[, flag])</p></td>
+<td><p>Set or get the status for propagation of geometry information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_remove</span></code>(self)</p></td>
+<td><p>Unmap this widget but remember the grid options.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_rowconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure row INDEX of a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_size</span></code>(self)</p></td>
+<td><p>Return a tuple of the number of column and rows in the grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_slaves</span></code>(self[, row, column])</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_names</span></code>(self)</p></td>
+<td><p>Return a list of all existing image names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_types</span></code>(self)</p></td>
+<td><p>Return a list of all available image types (e.g.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code>(self)</p></td>
+<td><p>Return information about the packing options for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">initUI</span></code>(self)</p></td>
+<td><p>INIT Frames: divide Parent Menu</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code>(self)</p></td>
+<td><p>Return a list of all resource names of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lift</span></code>(self[, aboveThis])</p></td>
+<td><p>Raise this widget in the stacking order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">loadall</span></code>(self[, debug])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code>(self, x, y)</p></td>
+<td><p>Return a tuple of column and row which identify the cell at which the pixel at position X and Y inside the master widget is located.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower</span></code>(self[, belowThis])</p></td>
+<td><p>Lower this widget in the stacking order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mainloop</span></code>(self[, n])</p></td>
+<td><p>Call the mainloop of Tk.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mbolfit_popup</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_from</span></code>(self, e)</p></td>
+<td><p>Remember previous coordinates for scrolling with the mouse</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to</span></code>(self, e)</p></td>
+<td><p>Drag (move) canvas to the new position</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_marker</span></code>(self, e[, markersize])</p></td>
+<td><p>left:</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_pan</span></code>(self, e)</p></td>
+<td><p>left:</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_zoom</span></code>(self, e)</p></td>
+<td><p>left:</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nametowidget</span></code>(self, name)</p></td>
+<td><p>Return the Tkinter instance of a widget identified by its Tcl name NAME.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_add</span></code>(self, pattern, value[, priority])</p></td>
+<td><p>Set a VALUE (second parameter) for an option PATTERN (first parameter).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_clear</span></code>(self)</p></td>
+<td><p>Clear the option database.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_get</span></code>(self, name, className)</p></td>
+<td><p>Return the value for an option NAME for this widget with CLASSNAME.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_readfile</span></code>(self, fileName[, priority])</p></td>
+<td><p>Read file FILENAME into the option database.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack</span></code>(self[, cnf])</p></td>
+<td><p>Pack a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_configure</span></code>(self[, cnf])</p></td>
+<td><p>Pack a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_forget</span></code>(self)</p></td>
+<td><p>Unmap this widget and do not use it for the packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_info</span></code>(self)</p></td>
+<td><p>Return information about the packing options for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_propagate</span></code>(self[, flag])</p></td>
+<td><p>Set or get the status for propagation of geometry information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_slaves</span></code>(self)</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place</span></code>(self[, cnf])</p></td>
+<td><p>Place a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_configure</span></code>(self[, cnf])</p></td>
+<td><p>Place a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_forget</span></code>(self)</p></td>
+<td><p>Unmap this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_info</span></code>(self)</p></td>
+<td><p>Return information about the placing options for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_slaves</span></code>(self)</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagate</span></code>(self[, flag])</p></td>
+<td><p>Set or get the status for propagation of geometry information.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">quit</span></code>(self)</p></td>
+<td><p>Quit the Tcl interpreter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code>(self, func[, subst, needcleanup])</p></td>
+<td><p>Return a newly created Tcl function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rowconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure row INDEX of a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sed_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_clear</span></code>(self, \*\*kw)</p></td>
+<td><p>Clear the current X selection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_get</span></code>(self, \*\*kw)</p></td>
+<td><p>Return the contents of the current X selection.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_handle</span></code>(self, command, \*\*kw)</p></td>
+<td><p>Specify a function COMMAND to call if the X selection owned by this widget is queried by another application.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_own</span></code>(self, \*\*kw)</p></td>
+<td><p>Become owner of X selection.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_own_get</span></code>(self, \*\*kw)</p></td>
+<td><p>Return owner of X selection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send</span></code>(self, interp, cmd, \*args)</p></td>
+<td><p>Send Tcl command CMD to different interpreter INTERP to be executed.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_title</span></code>(self, ax, title[, x, y])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setvar</span></code>(self[, name, value])</p></td>
+<td><p>Set Tcl variable NAME to VALUE.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code>(self)</p></td>
+<td><p>Return a tuple of the number of column and rows in the grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">slaves</span></code>(self)</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_bisque</span></code>(self)</p></td>
+<td><p>Change the color scheme to light brown as used in Tk 3.6 and before.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_focusFollowsMouse</span></code>(self)</p></td>
+<td><p>The widget under mouse will get automatically focus.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_focusNext</span></code>(self)</p></td>
+<td><p>Return the next widget in the focus order which follows widget which has currently the focus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_focusPrev</span></code>(self)</p></td>
+<td><p>Return previous widget in the focus order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_setPalette</span></code>(self, \*args, \*\*kw)</p></td>
+<td><p>Set a new color scheme for all widget elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_strictMotif</span></code>(self[, boolean])</p></td>
+<td><p>Set Tcl internal variable, whether the look and feel should adhere to Motif.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tkraise</span></code>(self[, aboveThis])</p></td>
+<td><p>Raise this widget in the stacking order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unbind</span></code>(self, sequence[, funcid])</p></td>
+<td><p>Unbind for this widget for event SEQUENCE  the function identified with FUNCID.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unbind_all</span></code>(self, sequence)</p></td>
+<td><p>Unbind for all widgets for event SEQUENCE all functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unbind_class</span></code>(self, className, sequence)</p></td>
+<td><p>Unbind for all widgets with bindtag CLASSNAME for event SEQUENCE all functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code>(self)</p></td>
+<td><p>Enter event loop until all pending events have been processed by Tcl.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_idletasks</span></code>(self)</p></td>
+<td><p>Enter event loop until all idle callbacks have been called.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait_variable</span></code>(self[, name])</p></td>
+<td><p>Wait until the variable is modified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait_visibility</span></code>(self[, window])</p></td>
+<td><p>Wait until the visibility of a WIDGET changes (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait_window</span></code>(self[, window])</p></td>
+<td><p>Wait until a WIDGET is destroyed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">waitvar</span></code>(self[, name])</p></td>
+<td><p>Wait until the variable is modified.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_atom</span></code>(self, name[, displayof])</p></td>
+<td><p>Return integer which represents atom NAME.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_atomname</span></code>(self, id[, displayof])</p></td>
+<td><p>Return name of atom with identifier ID.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_cells</span></code>(self)</p></td>
+<td><p>Return number of cells in the colormap for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_children</span></code>(self)</p></td>
+<td><p>Return a list of all widgets which are children of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_class</span></code>(self)</p></td>
+<td><p>Return window class name of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_colormapfull</span></code>(self)</p></td>
+<td><p>Return true if at the last color request the colormap was full.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_containing</span></code>(self, rootX, rootY[, displayof])</p></td>
+<td><p>Return the widget which is at the root coordinates ROOTX, ROOTY.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_depth</span></code>(self)</p></td>
+<td><p>Return the number of bits per pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_exists</span></code>(self)</p></td>
+<td><p>Return true if this widget exists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_fpixels</span></code>(self, number)</p></td>
+<td><p>Return the number of pixels for the given distance NUMBER (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_geometry</span></code>(self)</p></td>
+<td><p>Return geometry string for this widget in the form “widthxheight+X+Y”.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_height</span></code>(self)</p></td>
+<td><p>Return height of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_id</span></code>(self)</p></td>
+<td><p>Return identifier ID for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_interps</span></code>(self[, displayof])</p></td>
+<td><p>Return the name of all Tcl interpreters for this display.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_ismapped</span></code>(self)</p></td>
+<td><p>Return true if this widget is mapped.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_manager</span></code>(self)</p></td>
+<td><p>Return the window manager name for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_name</span></code>(self)</p></td>
+<td><p>Return the name of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_parent</span></code>(self)</p></td>
+<td><p>Return the name of the parent of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pathname</span></code>(self, id[, displayof])</p></td>
+<td><p>Return the pathname of the widget given by ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pixels</span></code>(self, number)</p></td>
+<td><p>Rounded integer value of winfo_fpixels.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pointerx</span></code>(self)</p></td>
+<td><p>Return the x coordinate of the pointer on the root window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pointerxy</span></code>(self)</p></td>
+<td><p>Return a tuple of x and y coordinates of the pointer on the root window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pointery</span></code>(self)</p></td>
+<td><p>Return the y coordinate of the pointer on the root window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_reqheight</span></code>(self)</p></td>
+<td><p>Return requested height of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_reqwidth</span></code>(self)</p></td>
+<td><p>Return requested width of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_rgb</span></code>(self, color)</p></td>
+<td><p>Return tuple of decimal values for red, green, blue for COLOR in this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_rootx</span></code>(self)</p></td>
+<td><p>Return x coordinate of upper left corner of this widget on the root window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_rooty</span></code>(self)</p></td>
+<td><p>Return y coordinate of upper left corner of this widget on the root window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screen</span></code>(self)</p></td>
+<td><p>Return the screen name of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screencells</span></code>(self)</p></td>
+<td><p>Return the number of the cells in the colormap of the screen of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screendepth</span></code>(self)</p></td>
+<td><p>Return the number of bits per pixel of the root window of the screen of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenheight</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the height of the screen of this widget in pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenmmheight</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the height of the screen of this widget in mm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenmmwidth</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the width of the screen of this widget in mm.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenvisual</span></code>(self)</p></td>
+<td><p>Return one of the strings directcolor, grayscale, pseudocolor, staticcolor, staticgray, or truecolor for the default colormodel of this screen.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenwidth</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the width of the screen of this widget in pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_server</span></code>(self)</p></td>
+<td><p>Return information of the X-Server of the screen of this widget in the form “XmajorRminor vendor vendorVersion”.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_toplevel</span></code>(self)</p></td>
+<td><p>Return the toplevel widget of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_viewable</span></code>(self)</p></td>
+<td><p>Return true if the widget and all its higher ancestors are mapped.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_visual</span></code>(self)</p></td>
+<td><p>Return one of the strings directcolor, grayscale, pseudocolor, staticcolor, staticgray, or truecolor for the colormodel of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_visualid</span></code>(self)</p></td>
+<td><p>Return the X identifier for the visual for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_visualsavailable</span></code>(self[, includeids])</p></td>
+<td><p>Return a list of all visuals available for the screen of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrootheight</span></code>(self)</p></td>
+<td><p>Return the height of the virtual root window associated with this widget in pixels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrootwidth</span></code>(self)</p></td>
+<td><p>Return the width of the virtual root window associated with this widget in pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrootx</span></code>(self)</p></td>
+<td><p>Return the x offset of the virtual root relative to the root window of the screen of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrooty</span></code>(self)</p></td>
+<td><p>Return the y offset of the virtual root relative to the root window of the screen of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_width</span></code>(self)</p></td>
+<td><p>Return the width of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_x</span></code>(self)</p></td>
+<td><p>Return the x coordinate of the upper left corner of this widget in the parent.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_y</span></code>(self)</p></td>
+<td><p>Return the y coordinate of the upper left corner of this widget in the parent.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 68%" />
+<col style="width: 32%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Message</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>SearchObj</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>add_subplot</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>addobj</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>baselinetop_popup</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>checkdata</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>delobj</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>getdouble</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>getint</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>matchstr</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>motion</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>runplots</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>runtasks</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>save_figure</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>saveall</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>set_limits</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>setobjid</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>show_bazinmodel</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>show_mbolmodel</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>show_plmodel</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>spectrafit_popup</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>zoom</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sdapy.sneGui.MainMenu.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">parent</em>, <em class="sig-param">width</em>, <em class="sig-param">height</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.sneGui.MainMenu.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a frame widget with the parent MASTER.</p>
+<p>Valid resource names: background, bd, bg, borderwidth, class,
+colormap, container, cursor, height, highlightbackground,
+highlightcolor, highlightthickness, relief, takefocus, visual, width.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Message</span></code>(self, message[, disable, restart])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">SearchObj</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sdapy.sneGui.MainMenu.__init__" title="sdapy.sneGui.MainMenu.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, parent, width, height)</p></td>
+<td><p>Construct a frame widget with the parent MASTER.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_subplot</span></code>(self, position[, zoomable, cursor])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">addobj</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">after</span></code>(self, ms[, func])</p></td>
+<td><p>Call function once after given time.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">after_cancel</span></code>(self, id)</p></td>
+<td><p>Cancel scheduling of function identified with ID.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">after_idle</span></code>(self, func, \*args)</p></td>
+<td><p>Call FUNC once if the Tcl main loop has no event to process.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">anchor</span></code>(self[, anchor])</p></td>
+<td><p>The anchor value controls how to place the grid within the master when no row/column has any weight.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">baselinetop_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_popup1</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bbox</span></code>(self[, column, row, col2, row2])</p></td>
+<td><p>Return a tuple of integer coordinates for the bounding box of this widget controlled by the geometry manager grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bell</span></code>(self[, displayof])</p></td>
+<td><p>Ring a display’s bell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bind</span></code>(self[, sequence, func, add])</p></td>
+<td><p>Bind to this widget at event SEQUENCE a call to function FUNC.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bind_all</span></code>(self[, sequence, func, add])</p></td>
+<td><p>Bind to all widgets at an event SEQUENCE a call to function FUNC.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bind_class</span></code>(self, className[, sequence, …])</p></td>
+<td><p>Bind to widgets with bindtag CLASSNAME at event SEQUENCE a call of function FUNC.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">bindtags</span></code>(self[, tagList])</p></td>
+<td><p>Set or get the list of bindtags for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cget</span></code>(self, key)</p></td>
+<td><p>Return the resource value for a KEY given as string.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">checkdata</span></code>(self[, objid, checkitems])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clipboard_append</span></code>(self, string, \*\*kw)</p></td>
+<td><p>Append STRING to the Tk clipboard.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clipboard_clear</span></code>(self, \*\*kw)</p></td>
+<td><p>Clear the data in the Tk clipboard.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">clipboard_get</span></code>(self, \*\*kw)</p></td>
+<td><p>Retrieve data from the clipboard on window’s display.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">columnconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure column INDEX of a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code>(self[, cnf])</p></td>
+<td><p>Configure resources of a widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">configure</span></code>(self[, cnf])</p></td>
+<td><p>Configure resources of a widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">data_popup1</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">deletecommand</span></code>(self, name)</p></td>
+<td><p>Internal function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">delobj</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">destroy</span></code>(self)</p></td>
+<td><p>Destroy this and all descendants widgets.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">dist_popup</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_add</span></code>(self, virtual, \*sequences)</p></td>
+<td><p>Bind a virtual event VIRTUAL (of the form &lt;&lt;Name&gt;&gt;) to an event SEQUENCE such that the virtual event is triggered whenever SEQUENCE occurs.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_delete</span></code>(self, virtual, \*sequences)</p></td>
+<td><p>Unbind a virtual event VIRTUAL from SEQUENCE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_generate</span></code>(self, sequence, \*\*kw)</p></td>
+<td><p>Generate an event SEQUENCE.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">event_info</span></code>(self[, virtual])</p></td>
+<td><p>Return a list of all virtual events or the information about the SEQUENCE bound to the virtual event VIRTUAL.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fluxfit_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus</span></code>(self)</p></td>
+<td><p>Direct input focus to this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_displayof</span></code>(self)</p></td>
+<td><p>Return the widget which has currently the focus on the display where this widget is located.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_force</span></code>(self)</p></td>
+<td><p>Direct input focus to this widget even if the application does not have the focus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_get</span></code>(self)</p></td>
+<td><p>Return the widget which has currently the focus in the application.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_lastfor</span></code>(self)</p></td>
+<td><p>Return the widget which would have the focus if top level for this widget gets the focus from the window manager.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">focus_set</span></code>(self)</p></td>
+<td><p>Direct input focus to this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">forget</span></code>(self)</p></td>
+<td><p>Unmap this widget and do not use it for the packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getboolean</span></code>(self, s)</p></td>
+<td><p>Return a boolean value for Tcl boolean values true and false given as parameter.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getdouble</span></code>(self, s)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getint</span></code>(self, s)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">getvar</span></code>(self[, name])</p></td>
+<td><p>Return value of Tcl variable NAME.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_current</span></code>(self)</p></td>
+<td><p>Return widget which has currently the grab in this application or None.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_release</span></code>(self)</p></td>
+<td><p>Release grab for this widget if currently set.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_set</span></code>(self)</p></td>
+<td><p>Set grab for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_set_global</span></code>(self)</p></td>
+<td><p>Set global grab for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grab_status</span></code>(self)</p></td>
+<td><p>Return None, “local” or “global” if this widget has no, a local or a global grab.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid</span></code>(self[, cnf])</p></td>
+<td><p>Position a widget in the parent widget in a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_anchor</span></code>(self[, anchor])</p></td>
+<td><p>The anchor value controls how to place the grid within the master when no row/column has any weight.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_bbox</span></code>(self[, column, row, col2, row2])</p></td>
+<td><p>Return a tuple of integer coordinates for the bounding box of this widget controlled by the geometry manager grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_columnconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure column INDEX of a grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_configure</span></code>(self[, cnf])</p></td>
+<td><p>Position a widget in the parent widget in a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_forget</span></code>(self)</p></td>
+<td><p>Unmap this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_info</span></code>(self)</p></td>
+<td><p>Return information about the options for positioning this widget in a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_location</span></code>(self, x, y)</p></td>
+<td><p>Return a tuple of column and row which identify the cell at which the pixel at position X and Y inside the master widget is located.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_propagate</span></code>(self[, flag])</p></td>
+<td><p>Set or get the status for propagation of geometry information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_remove</span></code>(self)</p></td>
+<td><p>Unmap this widget but remember the grid options.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_rowconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure row INDEX of a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_size</span></code>(self)</p></td>
+<td><p>Return a tuple of the number of column and rows in the grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">grid_slaves</span></code>(self[, row, column])</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_names</span></code>(self)</p></td>
+<td><p>Return a list of all existing image names.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_types</span></code>(self)</p></td>
+<td><p>Return a list of all available image types (e.g.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">info</span></code>(self)</p></td>
+<td><p>Return information about the packing options for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">initUI</span></code>(self)</p></td>
+<td><p>INIT Frames: divide Parent Menu</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code>(self)</p></td>
+<td><p>Return a list of all resource names of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lift</span></code>(self[, aboveThis])</p></td>
+<td><p>Raise this widget in the stacking order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">loadall</span></code>(self[, debug])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">location</span></code>(self, x, y)</p></td>
+<td><p>Return a tuple of column and row which identify the cell at which the pixel at position X and Y inside the master widget is located.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lower</span></code>(self[, belowThis])</p></td>
+<td><p>Lower this widget in the stacking order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mainloop</span></code>(self[, n])</p></td>
+<td><p>Call the mainloop of Tk.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">matchstr</span></code>(self, _str[, verbose])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">mbolfit_popup</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">motion</span></code>(self, e)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_from</span></code>(self, e)</p></td>
+<td><p>Remember previous coordinates for scrolling with the mouse</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to</span></code>(self, e)</p></td>
+<td><p>Drag (move) canvas to the new position</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_marker</span></code>(self, e[, markersize])</p></td>
+<td><p>left:</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_pan</span></code>(self, e)</p></td>
+<td><p>left:</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_zoom</span></code>(self, e)</p></td>
+<td><p>left:</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">nametowidget</span></code>(self, name)</p></td>
+<td><p>Return the Tkinter instance of a widget identified by its Tcl name NAME.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_add</span></code>(self, pattern, value[, priority])</p></td>
+<td><p>Set a VALUE (second parameter) for an option PATTERN (first parameter).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_clear</span></code>(self)</p></td>
+<td><p>Clear the option database.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_get</span></code>(self, name, className)</p></td>
+<td><p>Return the value for an option NAME for this widget with CLASSNAME.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">option_readfile</span></code>(self, fileName[, priority])</p></td>
+<td><p>Read file FILENAME into the option database.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack</span></code>(self[, cnf])</p></td>
+<td><p>Pack a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_configure</span></code>(self[, cnf])</p></td>
+<td><p>Pack a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_forget</span></code>(self)</p></td>
+<td><p>Unmap this widget and do not use it for the packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_info</span></code>(self)</p></td>
+<td><p>Return information about the packing options for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_propagate</span></code>(self[, flag])</p></td>
+<td><p>Set or get the status for propagation of geometry information.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pack_slaves</span></code>(self)</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place</span></code>(self[, cnf])</p></td>
+<td><p>Place a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_configure</span></code>(self[, cnf])</p></td>
+<td><p>Place a widget in the parent widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_forget</span></code>(self)</p></td>
+<td><p>Unmap this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_info</span></code>(self)</p></td>
+<td><p>Return information about the placing options for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">place_slaves</span></code>(self)</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">propagate</span></code>(self[, flag])</p></td>
+<td><p>Set or get the status for propagation of geometry information.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">quit</span></code>(self)</p></td>
+<td><p>Quit the Tcl interpreter.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register</span></code>(self, func[, subst, needcleanup])</p></td>
+<td><p>Return a newly created Tcl function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rowconfigure</span></code>(self, index[, cnf])</p></td>
+<td><p>Configure row INDEX of a grid.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">runplots</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">runtasks</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_figure</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">saveall</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_clear</span></code>(self, \*\*kw)</p></td>
+<td><p>Clear the current X selection.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_get</span></code>(self, \*\*kw)</p></td>
+<td><p>Return the contents of the current X selection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_handle</span></code>(self, command, \*\*kw)</p></td>
+<td><p>Specify a function COMMAND to call if the X selection owned by this widget is queried by another application.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_own</span></code>(self, \*\*kw)</p></td>
+<td><p>Become owner of X selection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">selection_own_get</span></code>(self, \*\*kw)</p></td>
+<td><p>Return owner of X selection.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">send</span></code>(self, interp, cmd, \*args)</p></td>
+<td><p>Send Tcl command CMD to different interpreter INTERP to be executed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_limits</span></code>(self, ax[, x0, xx, y0, yy])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_title</span></code>(self, ax, title[, x, y])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setobjid</span></code>(self, obj)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">setvar</span></code>(self[, name, value])</p></td>
+<td><p>Set Tcl variable NAME to VALUE.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_bazinmodel</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_mbolmodel</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code>(self)</p></td>
+<td><p>Return a tuple of the number of column and rows in the grid.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">slaves</span></code>(self)</p></td>
+<td><p>Return a list of all slaves of this widget in its packing order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectrafit_popup</span></code>(self, objid)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_bisque</span></code>(self)</p></td>
+<td><p>Change the color scheme to light brown as used in Tk 3.6 and before.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_focusFollowsMouse</span></code>(self)</p></td>
+<td><p>The widget under mouse will get automatically focus.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_focusNext</span></code>(self)</p></td>
+<td><p>Return the next widget in the focus order which follows widget which has currently the focus.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_focusPrev</span></code>(self)</p></td>
+<td><p>Return previous widget in the focus order.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_setPalette</span></code>(self, \*args, \*\*kw)</p></td>
+<td><p>Set a new color scheme for all widget elements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tk_strictMotif</span></code>(self[, boolean])</p></td>
+<td><p>Set Tcl internal variable, whether the look and feel should adhere to Motif.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">tkraise</span></code>(self[, aboveThis])</p></td>
+<td><p>Raise this widget in the stacking order.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unbind</span></code>(self, sequence[, funcid])</p></td>
+<td><p>Unbind for this widget for event SEQUENCE  the function identified with FUNCID.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unbind_all</span></code>(self, sequence)</p></td>
+<td><p>Unbind for all widgets for event SEQUENCE all functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">unbind_class</span></code>(self, className, sequence)</p></td>
+<td><p>Unbind for all widgets with bindtag CLASSNAME for event SEQUENCE all functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code>(self)</p></td>
+<td><p>Enter event loop until all pending events have been processed by Tcl.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_idletasks</span></code>(self)</p></td>
+<td><p>Enter event loop until all idle callbacks have been called.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait_variable</span></code>(self[, name])</p></td>
+<td><p>Wait until the variable is modified.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait_visibility</span></code>(self[, window])</p></td>
+<td><p>Wait until the visibility of a WIDGET changes (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait_window</span></code>(self[, window])</p></td>
+<td><p>Wait until a WIDGET is destroyed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">waitvar</span></code>(self[, name])</p></td>
+<td><p>Wait until the variable is modified.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_atom</span></code>(self, name[, displayof])</p></td>
+<td><p>Return integer which represents atom NAME.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_atomname</span></code>(self, id[, displayof])</p></td>
+<td><p>Return name of atom with identifier ID.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_cells</span></code>(self)</p></td>
+<td><p>Return number of cells in the colormap for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_children</span></code>(self)</p></td>
+<td><p>Return a list of all widgets which are children of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_class</span></code>(self)</p></td>
+<td><p>Return window class name of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_colormapfull</span></code>(self)</p></td>
+<td><p>Return true if at the last color request the colormap was full.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_containing</span></code>(self, rootX, rootY[, displayof])</p></td>
+<td><p>Return the widget which is at the root coordinates ROOTX, ROOTY.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_depth</span></code>(self)</p></td>
+<td><p>Return the number of bits per pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_exists</span></code>(self)</p></td>
+<td><p>Return true if this widget exists.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_fpixels</span></code>(self, number)</p></td>
+<td><p>Return the number of pixels for the given distance NUMBER (e.g.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_geometry</span></code>(self)</p></td>
+<td><p>Return geometry string for this widget in the form “widthxheight+X+Y”.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_height</span></code>(self)</p></td>
+<td><p>Return height of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_id</span></code>(self)</p></td>
+<td><p>Return identifier ID for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_interps</span></code>(self[, displayof])</p></td>
+<td><p>Return the name of all Tcl interpreters for this display.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_ismapped</span></code>(self)</p></td>
+<td><p>Return true if this widget is mapped.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_manager</span></code>(self)</p></td>
+<td><p>Return the window manager name for this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_name</span></code>(self)</p></td>
+<td><p>Return the name of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_parent</span></code>(self)</p></td>
+<td><p>Return the name of the parent of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pathname</span></code>(self, id[, displayof])</p></td>
+<td><p>Return the pathname of the widget given by ID.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pixels</span></code>(self, number)</p></td>
+<td><p>Rounded integer value of winfo_fpixels.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pointerx</span></code>(self)</p></td>
+<td><p>Return the x coordinate of the pointer on the root window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pointerxy</span></code>(self)</p></td>
+<td><p>Return a tuple of x and y coordinates of the pointer on the root window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_pointery</span></code>(self)</p></td>
+<td><p>Return the y coordinate of the pointer on the root window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_reqheight</span></code>(self)</p></td>
+<td><p>Return requested height of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_reqwidth</span></code>(self)</p></td>
+<td><p>Return requested width of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_rgb</span></code>(self, color)</p></td>
+<td><p>Return tuple of decimal values for red, green, blue for COLOR in this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_rootx</span></code>(self)</p></td>
+<td><p>Return x coordinate of upper left corner of this widget on the root window.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_rooty</span></code>(self)</p></td>
+<td><p>Return y coordinate of upper left corner of this widget on the root window.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screen</span></code>(self)</p></td>
+<td><p>Return the screen name of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screencells</span></code>(self)</p></td>
+<td><p>Return the number of the cells in the colormap of the screen of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screendepth</span></code>(self)</p></td>
+<td><p>Return the number of bits per pixel of the root window of the screen of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenheight</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the height of the screen of this widget in pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenmmheight</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the height of the screen of this widget in mm.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenmmwidth</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the width of the screen of this widget in mm.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenvisual</span></code>(self)</p></td>
+<td><p>Return one of the strings directcolor, grayscale, pseudocolor, staticcolor, staticgray, or truecolor for the default colormodel of this screen.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_screenwidth</span></code>(self)</p></td>
+<td><p>Return the number of pixels of the width of the screen of this widget in pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_server</span></code>(self)</p></td>
+<td><p>Return information of the X-Server of the screen of this widget in the form “XmajorRminor vendor vendorVersion”.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_toplevel</span></code>(self)</p></td>
+<td><p>Return the toplevel widget of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_viewable</span></code>(self)</p></td>
+<td><p>Return true if the widget and all its higher ancestors are mapped.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_visual</span></code>(self)</p></td>
+<td><p>Return one of the strings directcolor, grayscale, pseudocolor, staticcolor, staticgray, or truecolor for the colormodel of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_visualid</span></code>(self)</p></td>
+<td><p>Return the X identifier for the visual for this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_visualsavailable</span></code>(self[, includeids])</p></td>
+<td><p>Return a list of all visuals available for the screen of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrootheight</span></code>(self)</p></td>
+<td><p>Return the height of the virtual root window associated with this widget in pixels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrootwidth</span></code>(self)</p></td>
+<td><p>Return the width of the virtual root window associated with this widget in pixel.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrootx</span></code>(self)</p></td>
+<td><p>Return the x offset of the virtual root relative to the root window of the screen of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_vrooty</span></code>(self)</p></td>
+<td><p>Return the y offset of the virtual root relative to the root window of the screen of this widget.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_width</span></code>(self)</p></td>
+<td><p>Return the width of this widget.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_x</span></code>(self)</p></td>
+<td><p>Return the x coordinate of the upper left corner of this widget in the parent.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">winfo_y</span></code>(self)</p></td>
+<td><p>Return the y coordinate of the upper left corner of this widget in the parent.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">zoom</span></code>(self, e)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snerun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snerun</span></code> – main programmer</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snegui.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snegui</span></code> – GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fitters.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Fitting</span></code> – Fitting packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gp.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Gaussian</span> <span class="pre">Process</span></code> – Gaussian Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Models</span></code> – Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../engines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Engines</span></code> – Data preparation for model fitters</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snegui.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snegui</span></code> – GUI</a><ul>
+      <li>Previous: <a href="../snegui.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snegui</span></code> – GUI</a></li>
+      <li>Next: <a href="../fitters.html" title="next chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Fitting</span></code> – Fitting packages</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.sneGui.MainMenu.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

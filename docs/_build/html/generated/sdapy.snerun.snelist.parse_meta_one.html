@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snelist.parse_meta_one &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snelist.parse_params" href="sdapy.snerun.snelist.parse_params.html" />
+    <link rel="prev" title="sdapy.snerun.snelist.parse_meta_all" href="sdapy.snerun.snelist.parse_meta_all.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snelist-parse-meta-one">
+<h1>sdapy.snerun.snelist.parse_meta_one<a class="headerlink" href="#sdapy-snerun-snelist-parse-meta-one" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snelist.parse_meta_one">
+<code class="sig-prename descclassname">snelist.</code><code class="sig-name descname">parse_meta_one</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">idkey</em>, <em class="sig-param">objid</em>, <em class="sig-param">key</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snelist.parse_meta_one" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtain value with object ID and a meta key</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>idkey</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>object ID column name, e.g. ZTF name or IAU name</p>
+</dd>
+<dt><strong>objid</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>object ID string</p>
+</dd>
+<dt><strong>key</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>a column key of self.meta</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl>
+<dt><strong>meta</strong><span class="classifier"><cite>pandas.dataframe</cite></span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snelist.parse_meta.html#sdapy.snerun.snelist.parse_meta" title="sdapy.snerun.snelist.parse_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snelist.parse_meta</span></code></a>, <a class="reference internal" href="sdapy.snerun.snelist.parse_meta_all.html#sdapy.snerun.snelist.parse_meta_all" title="sdapy.snerun.snelist.parse_meta_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snelist.parse_meta_all</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdapy</span> <span class="kn">import</span> <span class="n">snerun</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">snerun</span><span class="o">.</span><span class="n">snelist</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">parse_meta</span><span class="p">(</span><span class="n">withnew</span><span class="o">=</span><span class="s1">&#39;skip&#39;</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s1">&#39;BTS&#39;</span><span class="p">,</span> <span class="n">metafile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;type in [&quot;Ib&quot;,&quot;Ic&quot;]&#39;</span><span class="p">)</span>
+<span class="go">meta 154 objs</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">parse_meta_one</span><span class="p">(</span><span class="s1">&#39;objid&#39;</span><span class="p">,</span> <span class="s1">&#39;ZTF21abmlldj&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">)</span>
+<span class="go">&#39;0.0944&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a><ul>
+  <li><a href="sdapy.snerun.snelist.html">sdapy.snerun.snelist</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snelist.parse_meta_all.html" title="previous chapter">sdapy.snerun.snelist.parse_meta_all</a></li>
+      <li>Next: <a href="sdapy.snerun.snelist.parse_params.html" title="next chapter">sdapy.snerun.snelist.parse_params</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snelist.parse_meta_one.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

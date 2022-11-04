@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snobject._ax &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snobject._ax1" href="sdapy.snerun.snobject._ax1.html" />
+    <link rel="prev" title="sdapy.snerun.snobject._rate_at" href="sdapy.snerun.snobject._rate_at.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snobject-ax">
+<h1>sdapy.snerun.snobject._ax<a class="headerlink" href="#sdapy-snerun-snobject-ax" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snobject._ax">
+<code class="sig-prename descclassname">snobject.</code><code class="sig-name descname">_ax</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">show_title=True</em>, <em class="sig-param">show_legend=True</em>, <em class="sig-param">ylabel_2right=False</em>, <em class="sig-param">show_data=True</em>, <em class="sig-param">show_fits=True</em>, <em class="sig-param">show_gp=True</em>, <em class="sig-param">show_fit_error=True</em>, <em class="sig-param">show_texp=True</em>, <em class="sig-param">interpolation=None</em>, <em class="sig-param">index=0</em>, <em class="sig-param">color=None</em>, <em class="sig-param">marker=None</em>, <em class="sig-param">markersize=None</em>, <em class="sig-param">label=None</em>, <em class="sig-param">ls=None</em>, <em class="sig-param">fillstyle=None</em>, <em class="sig-param">yshift=None</em>, <em class="sig-param">fontsize=None</em>, <em class="sig-param">snr_thre=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject._ax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flux LC plot.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>jd_x0</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>x axis zeropoint for mag/flux LCs</p>
+</dd>
+<dt><strong>ax_xstyle</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>x axis for flux (_ax) LCs: [rp] rest frame since peak [jd] Junlian date since jd_x0</p>
+</dd>
+<dt><strong>ax_ystyle</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>y axis for flux (_ax) LCs: [original] flux, or [norm] normalized flux</p>
+</dd>
+<dt><strong>ax_xlim</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>x limit</p>
+</dd>
+<dt><strong>ax_ylim</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>y limit</p>
+</dd>
+<dt><strong>plot_sources</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>which source LCs to show</p>
+</dd>
+<dt><strong>plot_bands</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>which filters to show</p>
+</dd>
+<dt><strong>flux_scale</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>normalize flux peak</p>
+</dd>
+<dt><strong>show_title</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show title</p>
+</dd>
+<dt><strong>show_legend</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show legend</p>
+</dd>
+<dt><strong>ylabel_2right</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if put y label to right</p>
+</dd>
+<dt><strong>show_data</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show data points</p>
+</dd>
+<dt><strong>show_fit_error</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if False, only show best fit, otherwise, show errors or random samplings</p>
+</dd>
+<dt><strong>show_fits</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show model fittings</p>
+</dd>
+<dt><strong>show_gp</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show GP modellings</p>
+</dd>
+<dt><strong>show_texp</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show explosion epochs</p>
+</dd>
+<dt><strong>alphabest</strong><span class="classifier"><cite>float</cite> between 0 and 1</span></dt><dd><p>matplotlib alpha for best fit fitting</p>
+</dd>
+<dt><strong>alphasample</strong><span class="classifier"><cite>float</cite> between 0 and 1</span></dt><dd><p>matplotlib alpha for random samplings or errors</p>
+</dd>
+<dt><strong>plot_mcmct</strong><span class="classifier"><cite>float</cite> between 0 and 1</span></dt><dd><p>a threshold that select good mc samples for plotting, rangiing from 0 to 1, e.g. 0.5 means selecting samplings from the top 50 percent of all samplings relying on the likelihoods</p>
+</dd>
+<dt><strong>plot_nsamples</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>how many random MC samples to be plotted</p>
+</dd>
+<dt><strong>multiband_early_xrangep</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>range to reproduce the multiband_early models</p>
+</dd>
+<dt><strong>gp_xrangep</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>range to reproduce the GP interpolations</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>Enable progress report</p>
+</dd>
+<dt><strong>**if ax_ystyle=norm, snobject._flux_at would be used to guess the peak fluxes</strong>:**</dt><dd></dd>
+<dt><strong>tdbin</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for binning</p>
+</dd>
+<dt><strong>interpolation</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>estimate flux with data epoch less than than <strong>tdbin</strong>, or interpolation from GP/fits</p>
+</dd>
+<dt><strong>index</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>if multiple models available, which of them to be used</p>
+</dd>
+<dt><strong>quantile</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>use 50 percentile as mean, and 1 sigma (68%% -&gt; 16%% - 84%%) as errors</p>
+</dd>
+<dt><strong>clobber</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>Redo analysis</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snobject.summarize_plot.html#sdapy.snerun.snobject.summarize_plot" title="sdapy.snerun.snobject.summarize_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.summarize_plot</span></code></a>, <a class="reference internal" href="sdapy.snerun.snobject._flux_at.html#sdapy.snerun.snobject._flux_at" title="sdapy.snerun.snobject._flux_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject._flux_at</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Only working when <code class="docutils literal notranslate"><span class="pre">snobject.ax</span></code> is defined.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snobject._rate_at.html" title="previous chapter">sdapy.snerun.snobject._rate_at</a></li>
+      <li>Next: <a href="sdapy.snerun.snobject._ax1.html" title="next chapter">sdapy.snerun.snobject._ax1</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snobject._ax.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

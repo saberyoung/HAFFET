@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.gaussian_process.fit_gp &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.model_fitters.get_engine" href="sdapy.model_fitters.get_engine.html" />
+    <link rel="prev" title="sdapy.read_default.get_parameters" href="sdapy.read_default.get_parameters.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-gaussian-process-fit-gp">
+<h1>sdapy.gaussian_process.fit_gp<a class="headerlink" href="#sdapy-gaussian-process-fit-gp" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sdapy.gaussian_process.fit_gp">
+<em class="property">class </em><code class="sig-prename descclassname">sdapy.gaussian_process.</code><code class="sig-name descname">fit_gp</code><span class="sig-paren">(</span><em class="sig-param">x_data</em>, <em class="sig-param">y_data</em>, <em class="sig-param">yerr_data=1e-08</em>, <em class="sig-param">filters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.gaussian_process.fit_gp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits data with gaussian process.</p>
+<p>The package ‘george’ is used for the gaussian process fit.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x_data</strong><span class="classifier">array</span></dt><dd><p>Independent values.</p>
+</dd>
+<dt><strong>y_data</strong><span class="classifier">array</span></dt><dd><p>Dependent values.</p>
+</dd>
+<dt><strong>yerr_data</strong><span class="classifier">array, int</span></dt><dd><p>Dependent value errors.</p>
+</dd>
+<dt><strong>filters</strong><span class="classifier">array</span></dt><dd><p>If filters available, will convolve wavelengths to x_data to train gaussian process.</p>
+</dd>
+<dt><strong>kernel</strong><span class="classifier">str, default ‘matern52’</span></dt><dd><p>Kernel to be used with the gaussian process. 
+Possible choices are: ‘matern52’, ‘matern32’, ‘squaredexp’.</p>
+</dd>
+<dt><strong>fix_scale</strong><span class="classifier">bool</span></dt><dd><p>If fix default gaussian process param</p>
+</dd>
+<dt><strong>gp_mean: str, default ‘mean’</strong></dt><dd><p>Mean y_data function.
+Possible choices are: ‘mean’, ‘gaussian’, ‘bazin’, ‘villar’.</p>
+</dd>
+<dt><strong>opt_routine</strong><span class="classifier">str,</span></dt><dd><p>Which technic to be used to realize optimization.
+Possible choices are: ‘minimize’, ‘mcmc’, ‘leastsq’.</p>
+</dd>
+<dt><strong>nwalkers</strong><span class="classifier">int</span></dt><dd><p>if mcmc adopted, set walker number</p>
+</dd>
+<dt><strong>nsteps:  int</strong></dt><dd><p>if mcmc adopted, set step</p>
+</dd>
+<dt><strong>nsteps_burnin: int</strong></dt><dd><p>if mcmc adopted, set burnin step</p>
+</dd>
+<dt><strong>clobber: bool</strong></dt><dd><p>if gp already done, if redo it or not</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Returns the interpolated independent and dependent values with the 1-sigma standard deviation.</dt><dd></dd>
+<dt>Examples</dt><dd></dd>
+</dl>
+<blockquote>
+<div></div></blockquote>
+<dl class="simple">
+<dt>gp = fit_gp(jd, flux, fluxerr, central_wavelength)</dt><dd></dd>
+<dt>gp.train(gp_mean=’bazin’, opt_routine = ‘mcmc’)</dt><dd></dd>
+<dt>gp_jd, gp_flux, gp_flux_errors, gp_ws = gp.predict()</dt><dd></dd>
+<dt>gp.save_corner(saveplotas=’tmp.png’)</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(self[, x_pred, step, clobber, returnv])</p></td>
+<td><p>output GP products</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_corner</span></code>(self, figpath[, datadir, …])</p></td>
+<td><p>generate corner plots</p></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 67%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>parse_filters</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>parse_wavelength</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>set_peak</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>train</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sdapy.gaussian_process.fit_gp.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">x_data</em>, <em class="sig-param">y_data</em>, <em class="sig-param">yerr_data=1e-08</em>, <em class="sig-param">filters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.gaussian_process.fit_gp.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sdapy.gaussian_process.fit_gp.__init__" title="sdapy.gaussian_process.fit_gp.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, x_data, y_data[, yerr_data, …])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_filters</span></code>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_wavelength</span></code>(w)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(self[, x_pred, step, clobber, returnv])</p></td>
+<td><p>output GP products</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_corner</span></code>(self, figpath[, datadir, …])</p></td>
+<td><p>generate corner plots</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak</span></code>(self[, clobber])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>(self[, kernel, fix_scale, gp_mean, …])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+      <li>Previous: <a href="sdapy.read_default.get_parameters.html" title="previous chapter">sdapy.read_default.get_parameters</a></li>
+      <li>Next: <a href="sdapy.model_fitters.get_engine.html" title="next chapter">sdapy.model_fitters.get_engine</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.gaussian_process.fit_gp.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

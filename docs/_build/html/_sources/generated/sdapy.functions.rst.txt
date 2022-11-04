@@ -1,0 +1,47 @@
+sdapy.functions
+===============
+
+.. automodule:: sdapy.functions
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      BC_Lyman
+      Lbol_to_Mbol
+      Mbol_to_Lbol
+      calc_pew
+      calc_vel
+      calc_wav
+      dessart_vej_to_vm
+      detect_symbol_1
+      detect_symbol_2
+      filter_clean
+      get_numpy
+      get_samples_mc
+      get_samples_nstep
+      get_samples_scipy
+      is_coordinate
+      is_date
+      is_integer
+      is_number
+      is_seq
+      name_clean
+      penc_to_errors
+      redchisqg
+      remove_quote
+      replace_str_index
+      str_clean
+      type_clean
+   
+   
+
+   
+   
+   
+
+   
+   
+   

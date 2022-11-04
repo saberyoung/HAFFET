@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snobject._ax4 &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snobject._ax5" href="sdapy.snerun.snobject._ax5.html" />
+    <link rel="prev" title="sdapy.snerun.snobject._ax3" href="sdapy.snerun.snobject._ax3.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snobject-ax4">
+<h1>sdapy.snerun.snobject._ax4<a class="headerlink" href="#sdapy-snerun-snobject-ax4" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snobject._ax4">
+<code class="sig-prename descclassname">snobject.</code><code class="sig-name descname">_ax4</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">xpred=None</em>, <em class="sig-param">index=0</em>, <em class="sig-param">show_title=False</em>, <em class="sig-param">show_legend=False</em>, <em class="sig-param">ylabel_2right=False</em>, <em class="sig-param">show_data=True</em>, <em class="sig-param">show_fits=True</em>, <em class="sig-param">show_fit_error=True</em>, <em class="sig-param">show_texp=True</em>, <em class="sig-param">color=None</em>, <em class="sig-param">marker=None</em>, <em class="sig-param">markersize=None</em>, <em class="sig-param">label=None</em>, <em class="sig-param">ls=None</em>, <em class="sig-param">fillstyle=None</em>, <em class="sig-param">fontsize=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject._ax4" title="Permalink to this definition">¶</a></dt>
+<dd><p>luminosity LCs plot</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>make_bol</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>how to make bolometric lcs: [lyman] with BC defined by Lyman approach, [bb] blackbody fits on multiband spectra, or [spec] integration on blackbody of absolute calibrated spectra</p>
+</dd>
+<dt><strong>jd_x0</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>x axis zeropoint for mag/flux LCs</p>
+</dd>
+<dt><strong>ax4_xstyle</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>x axis for luminosity (_ax4) LCs: [rp] rest frame since peak [jd] Junlian date since jd_x0</p>
+</dd>
+<dt><strong>ax4_ystyle</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>y axis for luminosity (_ax4) LCs: [linear] or [log] scale</p>
+</dd>
+<dt><strong>ax4_xlim</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>x limit</p>
+</dd>
+<dt><strong>ax4_ylim</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>y limit</p>
+</dd>
+<dt><strong>show_title</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show title</p>
+</dd>
+<dt><strong>show_legend</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show legend</p>
+</dd>
+<dt><strong>ylabel_2right</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if put y label to right</p>
+</dd>
+<dt><strong>show_data</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show data points</p>
+</dd>
+<dt><strong>show_fit_error</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if False, only show best fit, otherwise, show errors or random samplings</p>
+</dd>
+<dt><strong>show_fits</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show model fittings</p>
+</dd>
+<dt><strong>show_texp</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if show explosion epochs</p>
+</dd>
+<dt><strong>alphabest</strong><span class="classifier"><cite>float</cite> between 0 and 1</span></dt><dd><p>matplotlib alpha for best fit fitting</p>
+</dd>
+<dt><strong>alphasample</strong><span class="classifier"><cite>float</cite> between 0 and 1</span></dt><dd><p>matplotlib alpha for random samplings or errors</p>
+</dd>
+<dt><strong>plot_mcmct</strong><span class="classifier"><cite>float</cite> between 0 and 1</span></dt><dd><p>a threshold that select good mc samples for plotting, rangiing from 0 to 1, 
+e.g. 0.5 means selecting samplings from the top 50 percent of all samplings relying on the likelihoods</p>
+</dd>
+<dt><strong>plot_nsamples</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>how many random MC samples to be plotted</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>Enable progress report</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snobject.calc_colors.html#sdapy.snerun.snobject.calc_colors" title="sdapy.snerun.snobject.calc_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.calc_colors</span></code></a>, <a class="reference internal" href="sdapy.snerun.snobject._mag_at_list.html#sdapy.snerun.snobject._mag_at_list" title="sdapy.snerun.snobject._mag_at_list"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject._mag_at_list</span></code></a>, <a class="reference internal" href="sdapy.snerun.snobject.lyman_bol.html#sdapy.snerun.snobject.lyman_bol" title="sdapy.snerun.snobject.lyman_bol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.lyman_bol</span></code></a>, <a class="reference internal" href="sdapy.snerun.snobject.bb_bol.html#sdapy.snerun.snobject.bb_bol" title="sdapy.snerun.snobject.bb_bol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.bb_bol</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If snobject.mbol not available and make_bol includes lyman,</p></li>
+</ul>
+<p>will run snobject.lyman_bol to calculate Lyman bolometric LCs first, 
+with parameters, e.g. (check snobject.lyman_bol for more):</p>
+<blockquote>
+<div><dl>
+<dt>lyman_bands<span class="classifier"><cite>list</cite></span></dt><dd><p>two bands of the colour</p>
+</dd>
+<dt>lyman_interp<span class="classifier"><cite>str</cite></span></dt><dd><p>estimate flux with data epoch less than than <strong>tdbin</strong>, or interpolation from GP/fits</p>
+</dd>
+<dt>lyman_bc_phase<span class="classifier"><cite>str</cite></span></dt><dd><p>which Lyman BC to be used: [normal] phase, [cool] phase</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>If snobject.mbolbb not available and make_bol includes bb, 
+will run snobject.bb_bol to calculate BB bolometric LCs (fitted with multiband photometry) first;
+and the same for spec: if snobject.mbolspec not available and make_bol includes spec, 
+will run snobject.bb_bol to calculate BB bolometric LCs (fited with spectra) first,
+with parameters, e.g. (check snobject.bb_bol for more):</p>
+<dl>
+<dt>sed_bands<span class="classifier"><cite>list</cite></span></dt><dd><p>multiple bands of the BB</p>
+</dd>
+<dt>sed_color_interp<span class="classifier"><cite>list</cite></span></dt><dd><p>how to make blackbody. 
+1: epochs with all filters within <em>color_thre</em> hours. 
+2: epochs with one filter, and the others from analytic fits.
+3. epochs with one filter, and the other from Gaussian process</p>
+</dd>
+<dt>sed_xrangep<span class="classifier"><cite>str</cite></span></dt><dd><p>after fitting, range to reproduce the SED</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snobject._ax3.html" title="previous chapter">sdapy.snerun.snobject._ax3</a></li>
+      <li>Next: <a href="sdapy.snerun.snobject._ax5.html" title="next chapter">sdapy.snerun.snobject._ax5</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snobject._ax4.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

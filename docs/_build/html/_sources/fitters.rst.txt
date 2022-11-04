@@ -1,0 +1,27 @@
+.. _fitters:
+   
+:mod:`Fitting and Gaussian Process` -- Fitting packages
+=================================================================================
+
+Gaussian Process
+--------------------
+.. currentmodule:: sdapy.gaussian_process
+.. autosummary::
+   :toctree: generated/
+
+   fit_gp
+
+
+Model Fitters
+--------------------
+.. currentmodule:: sdapy.model_fitters
+.. autosummary::
+   :toctree: generated/
+
+   fit_model
+   get_engine
+   get_model
+   get_pars
+
+
+More details about the fitting engines and models can be found at :ref:`Models <models>`

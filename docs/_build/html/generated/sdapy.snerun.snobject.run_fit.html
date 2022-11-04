@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snobject.run_fit &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snobject.run_gp" href="sdapy.snerun.snobject.run_gp.html" />
+    <link rel="prev" title="sdapy.snerun.snobject.run" href="sdapy.snerun.snobject.run.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snobject-run-fit">
+<h1>sdapy.snerun.snobject.run_fit<a class="headerlink" href="#sdapy-snerun-snobject-run-fit" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snobject.run_fit">
+<code class="sig-prename descclassname">snobject.</code><code class="sig-name descname">run_fit</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">enginetype</em>, <em class="sig-param">source=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject.run_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run model fittings on varies of data from different engines.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>enginetype</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>which engine to be used, e.g. <code class="docutils literal notranslate"><span class="pre">multiband_main</span></code>, <code class="docutils literal notranslate"><span class="pre">bol_main</span></code>, etc.
+Check all engines at <a class="reference external" href="https://github.com/saberyoung/HAFFET/tree/master/sdapy/engines">https://github.com/saberyoung/HAFFET/tree/master/sdapy/engines</a>,
+or one can define their own engine.</p>
+</dd>
+<dt><strong>source</strong><span class="classifier"><cite>str</cite></span></dt><dd><p><strong>optional</strong>, which source to be used for fitting, e.g. for <code class="docutils literal notranslate"><span class="pre">bol_main</span></code> engine, if there’re multiple
+bolometric LCs available, fit on which of them, or for <code class="docutils literal notranslate"><span class="pre">sed</span></code> engine, which epochs to be fitted, etc.</p>
+</dd>
+<dt><strong>fit_methods</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>which fitting model to be used, e.g. bazin, gauss, etc</p>
+</dd>
+<dt><strong>fit_redo</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if False by default, when cached file exists, read samples from cached sample file. for mcmc, 
+if given nsteps is larger than that of cached sample, continue fits to nsteps, otherwise return samples. 
+if True, when cached file exists, redo everything for new fitting samples</p>
+</dd>
+<dt><strong>for engine ``x`` :</strong></dt><dd></dd>
+<dt><strong>x_type</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>what data to fit</p>
+</dd>
+<dt><strong>x_xrange</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>x range to fit the data</p>
+</dd>
+<dt><strong>x_xrangep</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>x range to predict the data</p>
+</dd>
+<dt><strong>x_yrange</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>y range to fit the data</p>
+</dd>
+<dt><strong>x_bands</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>data from which bands for the fit</p>
+</dd>
+<dt><strong>x_routine: `str`</strong></dt><dd><p>Which technic to be used to realize optimization. Possible choices are: minimize, mcmc, leastsq</p>
+</dd>
+<dt><strong>if ``routine`` is **mcmc</strong> :**</dt><dd></dd>
+<dt><strong>ncores</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>how many cores to run multi-processing</p>
+</dd>
+<dt><strong>nwalkers</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of walkers</p>
+</dd>
+<dt><strong>nsteps</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of MC steps</p>
+</dd>
+<dt><strong>nsteps_burnin</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>number of MC burn in steps</p>
+</dd>
+<dt><strong>thin_by</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>If you only want to store and yield every thin_by samples in the chain, set thin_by to an integer greater than 1. When this is set, iterations * thin_by proposals will be made.</p>
+</dd>
+<dt><strong>emcee_burnin</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if use emcee to burnin chains</p>
+</dd>
+<dt><strong>use_emcee_backend</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if use emcee backend</p>
+</dd>
+<dt><strong>quantile</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>use 50 percentile as mean, and 1 sigma (68%% -&gt; 16%% - 84%%) as errors</p>
+</dd>
+<dt><strong>if ``routine`` is **minimize</strong> :**</dt><dd></dd>
+<dt><strong>maxfev</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>for scipy. The maximum number of calls to the function.</p>
+</dd>
+<dt><strong>scipysamples</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>generated sampling numbers for scipy approach</p>
+</dd>
+<dt><strong>quantile</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>use 50 percentile as mean, and 1 sigma (68%% -&gt; 16%% - 84%%) as errors</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<dl>
+<dt>kwargs<span class="classifier"><cite>Keyword Arguments</cite></span></dt><dd><p>see more parameters in <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt</a>,
+the <strong>snobject</strong> part.</p>
+</dd>
+</dl>
+<p><code class="docutils literal notranslate"><span class="pre">kwargs</span></code> are different for different engines:</p>
+<ul>
+<li><dl>
+<dt>for multi_main and multi_early engine:</dt><dd><dl>
+<dt>set_tpeak_method<span class="classifier"><cite>str</cite></span></dt><dd><p>set t0 with peak from [gp] Gaussian process or [fit] multiband_main/Bazin fits or [bol] bol_main/Arnett fits or leave blanckt as with input jdpeak</p>
+</dd>
+<dt>set_tpeak_filter<span class="classifier"><cite>str</cite></span></dt><dd><p>set t0 with peak of which band</p>
+</dd>
+<dt>set_texp_method<span class="classifier"><cite>str</cite></span></dt><dd><p>set texp with [fit] power law fits or [bolmain] bolometric LC fits or [bolearly] shock cooling fits or leave blanckt as with middle of last nondetection to the first detection</p>
+</dd>
+<dt>set_texp_filter<span class="classifier"><cite>str</cite></span></dt><dd><p>set texp with peak of which band</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</li>
+<li><p>for spectral engines :</p></li>
+</ul>
+<dl>
+<dt>spec_snr<span class="classifier"><cite>int</cite> </span></dt><dd><p>if no error from spectra, add noise level of snr</p>
+</dd>
+<dt>bin_method<span class="classifier"><cite>str</cite>      </span></dt><dd><p>method used to bin spectrum</p>
+</dd>
+<dt>bin_size<span class="classifier"><cite>int</cite>  </span></dt><dd><p>size used to bin spectrum, in AA</p>
+</dd>
+<dt>savgol_order<span class="classifier"><cite>int</cite> </span></dt><dd><p>polynomial order for savgol filter</p>
+</dd>
+<dt>continuum_method<span class="classifier"><cite>str</cite>       </span></dt><dd><p>The function type for continumm fitting, valid functions are “scalar”, “linear”, “quadratic”, “cubic”, “poly”, and “exponential”</p>
+</dd>
+<dt>continuum_degree<span class="classifier"><cite>int</cite>       </span></dt><dd><p>degree of polynomial when method=”poly”, for continuum fitting</p>
+</dd>
+<dt>pfactor<span class="classifier"><cite>int</cite>         </span></dt><dd><p>threshold used for peak detection</p>
+</dd>
+<dt>sn_line<span class="classifier"><cite>str</cite>           </span></dt><dd><p>which line to fit, e.g. ‘H~$lpha$’, ‘He~5876$AA$’, ‘O~7774$AA$’</p>
+</dd>
+<dt>specfit_phase<span class="classifier"><cite>list</cite> </span></dt><dd><p>phase range to decide which spectra should be fitted</p>
+</dd>
+<dt>v_p<span class="classifier"><cite>float</cite> </span></dt><dd><p>guessed velocity (unit: 1e3 km/s)</p>
+</dd>
+<dt>v_bounds<span class="classifier"><cite>list</cite> </span></dt><dd><p>guessed velocity range (unit: 1e3 km/s)</p>
+</dd>
+</dl>
+<ul>
+<li><dl>
+<dt>for sed engines:</dt><dd><p>sed_phaserange     : <cite>list</cite></p>
+<dl>
+<dt>sed_abscal_bands<span class="classifier"><cite>list</cite> </span></dt><dd><p>which photometry bands to be used to absolute calibrate the spectra</p>
+</dd>
+</dl>
+<p>sed_abscal_method  : <cite>str</cite></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>[cal]ibrate</p></li>
+<li><p>[mangle] the spetra</p></li>
+</ul>
+</div></blockquote>
+</dd>
+</dl>
+</li>
+</ul>
+<p class="rubric">Examples</p>
+<p>Define a <code class="docutils literal notranslate"><span class="pre">snobject</span></code> object</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">snerun</span><span class="o">.</span><span class="n">snobject</span><span class="p">(</span><span class="n">objid</span><span class="o">=</span><span class="s1">&#39;ZTF20aajcdad&#39;</span><span class="p">,</span> <span class="n">aliasid</span><span class="o">=</span><span class="s1">&#39;SN2020bcq&#39;</span><span class="p">,</span>
+<span class="gp">... </span>       <span class="n">z</span><span class="o">=</span><span class="mf">0.0186</span><span class="p">,</span> <span class="n">dm</span><span class="o">=</span><span class="mf">34.6</span><span class="p">,</span> <span class="n">mkwebv</span><span class="o">=</span><span class="mf">0.01387</span><span class="p">,</span> <span class="n">hostebv</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sntype</span><span class="o">=</span><span class="s1">&#39;Ib&#39;</span><span class="p">,</span> 
+<span class="gp">... </span>       <span class="n">ra</span><span class="o">=</span><span class="s1">&#39;13:26:29.65&#39;</span><span class="p">,</span> <span class="n">dec</span><span class="o">=</span><span class="s1">&#39;+36:00:31.1&#39;</span><span class="p">,</span> <span class="n">jdpeak</span><span class="o">=</span><span class="mf">2458888.02</span><span class="p">)</span>    
+</pre></div>
+</div>
+<p>Run <code class="docutils literal notranslate"><span class="pre">bz</span></code> model on <strong>g</strong>, <strong>r</strong>, and <strong>i</strong> band data prepared by the <code class="docutils literal notranslate"><span class="pre">multiband_main</span></code> engine, with <code class="docutils literal notranslate"><span class="pre">minimize</span></code> routine.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">run_fit</span><span class="p">(</span><span class="s1">&#39;multiband_main&#39;</span><span class="p">,</span> <span class="n">fit_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bz&#39;</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="n">multiband_main_bands</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;i&#39;</span><span class="p">],</span> <span class="n">multiband_main_routine</span><span class="o">=</span><span class="s1">&#39;minimize&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run <code class="docutils literal notranslate"><span class="pre">pl</span></code> model on <strong>g</strong>, <strong>r</strong>, and <strong>i</strong> band data prepared by the <code class="docutils literal notranslate"><span class="pre">multiband_early</span></code> engine, with <code class="docutils literal notranslate"><span class="pre">mcmc</span></code> routine.
+For the <code class="docutils literal notranslate"><span class="pre">mcmc</span></code>, run maximum 5000 steps for burnin process, and after burnin, continue 30000 steps as maximum for samplings.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">run_fit</span><span class="p">(</span><span class="s1">&#39;multiband_early&#39;</span><span class="p">,</span> <span class="n">fit_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pl&#39;</span><span class="p">],</span>
+<span class="gp">... </span>      <span class="n">multiband_early_bands</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="s1">&#39;i&#39;</span><span class="p">],</span> <span class="n">multiband_early_routine</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">nsteps_burnin</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">nsteps</span><span class="o">=</span><span class="mi">30000</span><span class="p">)</span> 
+</pre></div>
+</div>
+<p>Run <code class="docutils literal notranslate"><span class="pre">bb</span></code> model on SED data prepared by <code class="docutils literal notranslate"><span class="pre">snobject.bb_colors</span></code> and the <code class="docutils literal notranslate"><span class="pre">sed</span></code> engine, with <code class="docutils literal notranslate"><span class="pre">minimize</span></code> routine.
+<code class="docutils literal notranslate"><span class="pre">fit_redo</span></code> will remove the samplings obtained before.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">run_fit</span><span class="p">(</span><span class="s1">&#39;sed&#39;</span><span class="p">,</span> <span class="n">fit_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;bb&#39;</span><span class="p">],</span> <span class="n">sed_routine</span><span class="o">=</span><span class="s1">&#39;minimize&#39;</span><span class="p">,</span> <span class="n">fit_redo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run <code class="docutils literal notranslate"><span class="pre">arnett_fit_taum</span></code> model on bolometric LCs that were prepared by the <code class="docutils literal notranslate"><span class="pre">bol_main</span></code> engine, with <code class="docutils literal notranslate"><span class="pre">minimize</span></code> routine.
+The bolometric LCs for model fittings are selected from -18 to 40 rest frame days relative to peak epoch. 
+After generating a number of samplings, the LC realization would be from -18 to 80 days.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">run_fit</span><span class="p">(</span><span class="s1">&#39;bol_main&#39;</span><span class="p">,</span> <span class="n">fit_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;arnett_fit_taum&#39;</span><span class="p">],</span> <span class="n">fit_redo</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="gp">... </span>      <span class="n">bol_main_xrange</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">18</span><span class="p">,</span> <span class="mi">40</span><span class="p">],</span>  <span class="n">bol_main_xrangep</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">18</span><span class="p">,</span> <span class="mi">80</span><span class="p">],</span>  <span class="n">bol_main_routine</span><span class="o">=</span><span class="s1">&#39;minimize&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Run <code class="docutils literal notranslate"><span class="pre">gauss</span></code> model on spectral line minima prepared by the <code class="docutils literal notranslate"><span class="pre">specline</span></code> engine.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">run_fit</span><span class="p">(</span><span class="s1">&#39;specline&#39;</span><span class="p">,</span> <span class="n">fit_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;gauss&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Run <code class="docutils literal notranslate"><span class="pre">exp</span></code> model on spectral line minima prepared by the <code class="docutils literal notranslate"><span class="pre">specv_evolution</span></code> engine.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">run_fit</span><span class="p">(</span><span class="s1">&#39;specv_evolution&#39;</span><span class="p">,</span> <span class="n">fit_methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;exp&#39;</span><span class="p">])</span>        
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+  <li><a href="sdapy.snerun.snobject.html">sdapy.snerun.snobject</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snobject.run.html" title="previous chapter">sdapy.snerun.snobject.run</a></li>
+      <li>Next: <a href="sdapy.snerun.snobject.run_gp.html" title="next chapter">sdapy.snerun.snobject.run_gp</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snobject.run_fit.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

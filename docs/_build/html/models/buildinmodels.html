@@ -1,0 +1,305 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>&lt;no title&gt; &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <ul class="simple" id="buildinmodels">
+<li><p>Power law Models (<a class="reference internal" href="engines.html#engines1"><span class="std std-ref">multiband_early engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.risepl.powerlaw_post_baseline.html#sdapy.models.risepl.powerlaw_post_baseline" title="sdapy.models.risepl.powerlaw_post_baseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">powerlaw_post_baseline</span></code></a>(times[, t_0, …])</p></td>
+<td><p>power law function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.risepl.powerlaw_full.html#sdapy.models.risepl.powerlaw_full" title="sdapy.models.risepl.powerlaw_full"><code class="xref py py-obj docutils literal notranslate"><span class="pre">powerlaw_full</span></code></a>(times[, t_0, amplitude, …])</p></td>
+<td><p>power law fits (based on Miller et al, <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...902...47M/abstract">https://ui.adsabs.harvard.edu/abs/2020ApJ…902…47M/abstract</a>), constant (background) before explosion, and power law post explosion.</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Bazin Models (<a class="reference internal" href="engines.html#engines1"><span class="std std-ref">multiband_main engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.bazin.bazin.html#sdapy.models.bazin.bazin" title="sdapy.models.bazin.bazin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bazin</span></code></a>(time, A, t0, tfall, trise, C)</p></td>
+<td><p>bazin 2009 et al model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.bazin.bazin1.html#sdapy.models.bazin.bazin1" title="sdapy.models.bazin.bazin1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bazin1</span></code></a>(time, A, t0, tfall)</p></td>
+<td><p>bazin model part I</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.bazin.bazin2.html#sdapy.models.bazin.bazin2" title="sdapy.models.bazin.bazin2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bazin2</span></code></a>(time, A, t0, trise)</p></td>
+<td><p>bazin model part II</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Villar Models (<a class="reference internal" href="engines.html#engines1"><span class="std std-ref">multiband_main engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.villar.villar.html#sdapy.models.villar.villar" title="sdapy.models.villar.villar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">villar</span></code></a>(time, a, b, t0, t1, tfall, trise, c)</p></td>
+<td><p>Villar et al 2019 (<a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ab418c/pdf">https://iopscience.iop.org/article/10.3847/1538-4357/ab418c/pdf</a>), function 1</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Piro Models (<a class="reference internal" href="engines.html#engines2"><span class="std std-ref">bol_early engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.sbo.shock_fit.html#sdapy.models.sbo.shock_fit" title="sdapy.models.sbo.shock_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shock_fit</span></code></a>(time, Me, Re, Ee[, texp])</p></td>
+<td><p>shock cooling fit with Piro et al 2020 model (<a class="reference external" href="https://arxiv.org/pdf/2007.08543.pdf">https://arxiv.org/pdf/2007.08543.pdf</a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.sbo.shock_arnett_fit.html#sdapy.models.sbo.shock_arnett_fit" title="sdapy.models.sbo.shock_arnett_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shock_arnett_fit</span></code></a>(time, Me, Re, Ee, mni, taum)</p></td>
+<td><p>shock cooling + Arnett (mni, taum) fit</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.sbo.shock_arnett_mejek_fit.html#sdapy.models.sbo.shock_arnett_mejek_fit" title="sdapy.models.sbo.shock_arnett_mejek_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shock_arnett_mejek_fit</span></code></a>(time, Me, Re, Ee, …)</p></td>
+<td><p>shock cooling + Arnett (mni, mej, ek) fit</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Arnett Models (<a class="reference internal" href="engines.html#engines2"><span class="std std-ref">bol_main engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.Arnett_fit_taum.html#sdapy.models.arnett_tail.Arnett_fit_taum" title="sdapy.models.arnett_tail.Arnett_fit_taum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Arnett_fit_taum</span></code></a>(times, m_ni, taum[, texp])</p></td>
+<td><p>output Arnett bolometric luminosities</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.taum_to_MejEk.html#sdapy.models.arnett_tail.taum_to_MejEk" title="sdapy.models.arnett_tail.taum_to_MejEk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taum_to_MejEk</span></code></a>(tau_m[, taum_err, k_opt, sntype])</p></td>
+<td><p>from characteristic time, taum (unit: day) to the product of kinetic energy (unit: foe) and ejecta mass (unit: solar mass), i.e.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.taum_to_Mej_Ek.html#sdapy.models.arnett_tail.taum_to_Mej_Ek" title="sdapy.models.arnett_tail.taum_to_Mej_Ek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taum_to_Mej_Ek</span></code></a>(tau_m, v_ej[, taum_err, …])</p></td>
+<td><p>break the degenracy of kinetic energy and ejecta mass, with the help of velocity.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.taum_to_Mej_Ek_1.html#sdapy.models.arnett_tail.taum_to_Mej_Ek_1" title="sdapy.models.arnett_tail.taum_to_Mej_Ek_1"><code class="xref py py-obj docutils literal notranslate"><span class="pre">taum_to_Mej_Ek_1</span></code></a>(tau_m, v_ej[, taum_err, …])</p></td>
+<td><p>break the degenracy of kinetic energy and ejecta mass, with the help of velocity.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.Mej_Ek_to_taum.html#sdapy.models.arnett_tail.Mej_Ek_to_taum" title="sdapy.models.arnett_tail.Mej_Ek_to_taum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mej_Ek_to_taum</span></code></a>(Mej, Ek[, k_opt, sntype])</p></td>
+<td><p>from kinetic energy (unit: foe) and ejecta mass (unit: solar mass) to taum (unit: day)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.Mej_Ek_to_vej.html#sdapy.models.arnett_tail.Mej_Ek_to_vej" title="sdapy.models.arnett_tail.Mej_Ek_to_vej"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mej_Ek_to_vej</span></code></a>(mej, ek)</p></td>
+<td><p>from kinetic energy (unit: foe) and ejecta mass (unit: solar mass) to photospheric velocity (unit: 10**3 km/s)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mej_vej_to_Ek</span></code>(mej, vej)</p></td>
+<td><p>from ejecta mass (unit: solar mass) and photospheric velocity (unit: 10**3 km/s) to kinteic energy (unit: foe)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.Arnett_fit_Mej_Ek.html#sdapy.models.arnett_tail.Arnett_fit_Mej_Ek" title="sdapy.models.arnett_tail.Arnett_fit_Mej_Ek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Arnett_fit_Mej_Ek</span></code></a>(times, f_ni, Ek, Mej[, …])</p></td>
+<td><p>fit Arnett model with Ek (unit: foe), Mej (unit: solar mass),</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Tail Models (<a class="reference internal" href="engines.html#engines2"><span class="std std-ref">bol_tail engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.tail_fit_t0.html#sdapy.models.arnett_tail.tail_fit_t0" title="sdapy.models.arnett_tail.tail_fit_t0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tail_fit_t0</span></code></a>(t, mni, t0)</p></td>
+<td><p>fit radioactive tail with Wygoda 2019 Eq 10, 11 and 12 (<a class="reference external" href="https://arxiv.org/pdf/1711.00969.pdf">https://arxiv.org/pdf/1711.00969.pdf</a>)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.t0_to_Mej_Ek.html#sdapy.models.arnett_tail.t0_to_Mej_Ek" title="sdapy.models.arnett_tail.t0_to_Mej_Ek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">t0_to_Mej_Ek</span></code></a>(…)</p></td>
+<td><p>from tail characteristic time, t0 to kinetic energy and ejecta mass seperately t0 = sqrt(c*kgamma*Mej**2/Ekin) vej = sqrt(2*Ekin/Mej)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.Mej_Ek_to_t0.html#sdapy.models.arnett_tail.Mej_Ek_to_t0" title="sdapy.models.arnett_tail.Mej_Ek_to_t0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Mej_Ek_to_t0</span></code></a>(Mej, Ek[, k_gamma])</p></td>
+<td><p>from kinetic energy and ejecta mass to t0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.tail_fit_Mej_Ek.html#sdapy.models.arnett_tail.tail_fit_Mej_Ek" title="sdapy.models.arnett_tail.tail_fit_Mej_Ek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tail_fit_Mej_Ek</span></code></a>(times, f_ni, Ek, Mej[, k_gamma])</p></td>
+<td><p>fit tail model on Ek, Mej, with photospheric velocity, vm as free parameter as well</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Arnett+Tail Models (<a class="reference internal" href="engines.html#engines2"><span class="std std-ref">bol_full engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.joint_fit_taum_t0.html#sdapy.models.arnett_tail.joint_fit_taum_t0" title="sdapy.models.arnett_tail.joint_fit_taum_t0"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_fit_taum_t0</span></code></a>(times, mni, taum, t0, ts)</p></td>
+<td><p>for the full range, <em>Arnett_fit_taum</em> fit + <em>tail_fit_t0</em> fit, with ts as free parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.arnett_tail.joint_fit_Mej_Ek.html#sdapy.models.arnett_tail.joint_fit_Mej_Ek" title="sdapy.models.arnett_tail.joint_fit_Mej_Ek"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_fit_Mej_Ek</span></code></a>(times, mni, Mej, Ek, ts[, …])</p></td>
+<td><p>for the full range, <em>Arnett_fit_Mej_Ek</em> fit + <em>tail_fit_Mej_Ek</em> fit, with ts as free parameter</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Gaussian Models (<a class="reference internal" href="engines.html#engines3"><span class="std std-ref">specline engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.gauss.gauss.html#sdapy.models.gauss.gauss" title="sdapy.models.gauss.gauss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">gauss</span></code></a>(x, H, A, x0, sigma)</p></td>
+<td><p>gaussian function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../generated/sdapy.models.gauss.double_gauss.html#sdapy.models.gauss.double_gauss" title="sdapy.models.gauss.double_gauss"><code class="xref py py-obj docutils literal notranslate"><span class="pre">double_gauss</span></code></a>(x, H, A1, x01, sigma1, A2, x02, …)</p></td>
+<td><p>double gaussian function</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Voigt Models (<a class="reference internal" href="engines.html#engines3"><span class="std std-ref">specline engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.voigt.voigt.html#sdapy.models.voigt.voigt" title="sdapy.models.voigt.voigt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">voigt</span></code></a>(x, H, A, x0, sigma, gamma)</p></td>
+<td><p>voigt function</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>Exponential Models (<a class="reference internal" href="engines.html#engines3"><span class="std std-ref">specv_evolution engine</span></a>)</p></li>
+</ul>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="../generated/sdapy.models.exponential.exp.html#sdapy.models.exponential.exp" title="sdapy.models.exponential.exp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exp</span></code></a>(t, a, b, c)</p></td>
+<td><p>exponential function</p></td>
+</tr>
+</tbody>
+</table>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/models/buildinmodels.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

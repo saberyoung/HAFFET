@@ -1,0 +1,6 @@
+sdapy.snerun.snobject.est\_hostebv\_with\_c10
+=============================================
+
+.. currentmodule:: sdapy.snerun
+
+.. automethod:: snobject.est_hostebv_with_c10

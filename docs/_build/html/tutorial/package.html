@@ -1,0 +1,1003 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Python package, snerun &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="python-package-snerun">
+<span id="package"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">Python</span> <span class="pre">package,</span> <span class="pre">snerun</span></code><a class="headerlink" href="#python-package-snerun" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="exe.html#exe"><span class="std std-ref">Previous: The executable file</span></a></div>
+<div class="line"><a class="reference internal" href="../tutorial.html#getstart"><span class="std std-ref">Back: Getting started</span></a></div>
+</div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#package1"><span class="std std-ref">- snobject</span></a></div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#package11"><span class="std std-ref">Input data</span></a></div>
+<div class="line"><a class="reference internal" href="#package12"><span class="std std-ref">Gaussian Process and multiband fittings</span></a></div>
+<div class="line"><a class="reference internal" href="#package13"><span class="std std-ref">Colours, bolometric LCs and bolometric LC fittings</span></a></div>
+<div class="line"><a class="reference internal" href="#package14"><span class="std std-ref">Spectral line fittings and the photospheric velocities</span></a></div>
+</div>
+<div class="line"><a class="reference internal" href="#package2"><span class="std std-ref">- snelist</span></a></div>
+</div>
+<p><cite>HAFFET</cite> can be also used as a Python package:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from sdapy import snerun
+</pre></div>
+</div>
+<p>Here, we show examples to use <cite>sneobject</cite> and <cite>snelist</cite> classes below.</p>
+<div class="section" id="example-of-snobject">
+<span id="package1"></span><h2>Example of snobject<a class="headerlink" href="#example-of-snobject" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>They’re also avaliable in jupyter-notebook at <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/notebook/ZTF20aajcdad.ipynb">https://github.com/saberyoung/HAFFET/blob/master/notebook/ZTF20aajcdad.ipynb</a></p>
+</div>
+<p><cite>sneobject</cite> class is designed to deal with data and fittings for one object.
+So the first step is to initialize a <cite>snobject</cite> class with proper meta data of a SN:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from sdapy import snerun
+&gt;&gt;&gt; <span class="nv">sncls</span> <span class="o">=</span> snerun.snobject<span class="o">(</span><span class="nv">objid</span><span class="o">=</span><span class="s1">&#39;ZTF20aajcdad&#39;</span>, <span class="nv">aliasid</span><span class="o">=</span><span class="s1">&#39;SN2020bcq&#39;</span>,<span class="se">\</span>
+...      <span class="nv">z</span><span class="o">=</span><span class="m">0</span>.0186, <span class="nv">dm</span><span class="o">=</span><span class="m">34</span>.6, <span class="nv">mkwebv</span><span class="o">=</span><span class="m">0</span>.01387, <span class="nv">hostebv</span><span class="o">=</span><span class="m">0</span>, <span class="nv">sntype</span><span class="o">=</span><span class="s1">&#39;Ib&#39;</span>, <span class="se">\</span>
+...      <span class="nv">ra</span><span class="o">=</span><span class="s1">&#39;13:26:29.65&#39;</span>, <span class="nv">dec</span><span class="o">=</span><span class="s1">&#39;+36:00:31.1&#39;</span>, <span class="nv">jdpeak</span><span class="o">=</span><span class="m">2458888</span>.02<span class="o">)</span>
+</pre></div>
+</div>
+<p>This defines a <strong>sncls</strong> class for <cite>SN2020bcq</cite>.
+For <cite>sneobject</cite>, the Object ID (<cite>objid</cite>), redshift (<cite>z</cite>) and the distance module (<cite>dm</cite>) should be all given correctly, however for <cite>snelist</cite>, it would define <cite>sneobject</cite> for each object, and there, the Object ID (<cite>objid</cite>) is the only item required as the identifier of an object. The rest of parameters can be calculated or queried via build-in functions. Check <a class="reference internal" href="#package2"><span class="std std-ref">snelist</span></a> for more deatisl.</p>
+<p>There’re build functions to standardize meta, such as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># get coordinate in degress</span>
+&gt;&gt;&gt; sncls.parse_coo<span class="o">(</span><span class="nv">deg</span><span class="o">=</span>True<span class="o">)</span>
+<span class="o">(</span><span class="m">201</span>.62354166666665, <span class="m">36</span>.00863888888889<span class="o">)</span>
+
+<span class="c1"># get coordinate healpix index</span>
+&gt;&gt;&gt; sncls.parse_coo<span class="o">(</span><span class="nv">deg</span><span class="o">=</span>False, <span class="nv">hpx</span><span class="o">=</span>True, <span class="nv">nside</span><span class="o">=</span><span class="m">512</span><span class="o">)</span>
+<span class="m">649093</span>
+
+<span class="c1"># get current julian date</span>
+&gt;&gt;&gt; sncls.mjd_now<span class="o">(</span><span class="nv">jd</span><span class="o">=</span>True<span class="o">)</span>
+<span class="m">2459809</span>.1902771713
+</pre></div>
+</div>
+</div>
+<div class="section" id="input-data">
+<span id="package11"></span><h2>Input data<a class="headerlink" href="#input-data" title="Permalink to this headline">¶</a></h2>
+<p>Then we should assign observational data to the defined <strong>sncls</strong> class. User can either use their own private data or public data from online sources. In <cite>HAFFET</cite>, we use <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">pandas.DataFrame</a> to deal with csv tables, and asked essential columns, i.e. ‘jdobs’, and ‘mag’/’emag’ or ‘flux’/’eflux’.</p>
+<p>An easiest way to input photometric data is to manually add it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; from io import StringIO
+&gt;&gt;&gt; <span class="nv">df</span> <span class="o">=</span> pd.readcsv<span class="o">(</span>StringIO<span class="o">(</span><span class="s1">&#39;\</span>
+<span class="s1">...   filter jdobs    mag  emag\n \</span>
+<span class="s1">...   r      2459000  18   0.05\n \</span>
+<span class="s1">...   g      2459000  18.5 0.08\n \</span>
+<span class="s1">...   r      2459001  18.1 0.05\n \</span>
+<span class="s1">...   g      2459001  18.6 0.08&#39;</span><span class="o">)</span>, <span class="nv">delim_whitespace</span><span class="o">=</span>True<span class="o">)</span>
+
+<span class="c1"># define a source name</span>
+&gt;&gt;&gt; <span class="nb">source</span> <span class="o">=</span> <span class="s1">&#39;test&#39;</span>
+
+<span class="c1"># add lc</span>
+&gt;&gt;&gt; sncls.add_lc<span class="o">(</span>df, <span class="nv">source</span><span class="o">=</span><span class="nb">source</span><span class="o">)</span>
+
+<span class="c1"># add flux columns</span>
+&gt;&gt;&gt; sncls.add_flux<span class="o">(</span><span class="nv">zp</span><span class="o">=</span><span class="m">23</span>.9, <span class="nv">source</span><span class="o">=</span><span class="nb">source</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>There’re built-in functions that can help query public photometric and spectroscopic data from online sources. All the downloaded data are stored with a specific format in the defined data directory.
+Let’s query and load ATLAS forced photometry data for <cite>SN2020bcq</cite> as an example:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For public data access, a proper list of accounts or tokens should be set correctly in the auth.txt file (the one in the defined data directory)</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># set a proper ATLAS account</span>
+&gt;&gt;&gt; vi /xxx/yyy/haffet_data/auth.txt
+<span class="o">[</span>atlas<span class="o">]</span>     <span class="p">;</span>   ------------   ATLAS force photometry
+usr:     xxxx     <span class="c1"># str # username</span>
+pwd:     yyyy     <span class="c1"># str # password</span>
+
+<span class="c1"># OK, then we can start HAFFET</span>
+&gt;&gt;&gt; python
+&gt;&gt;&gt; from sdapy import snerun
+&gt;&gt;&gt; <span class="nv">sncls</span> <span class="o">=</span> snerun.snobject<span class="o">(</span><span class="nv">objid</span><span class="o">=</span><span class="s1">&#39;ZTF20aajcdad&#39;</span>, <span class="nv">aliasid</span><span class="o">=</span><span class="s1">&#39;SN2020bcq&#39;</span>,<span class="se">\</span>
+...      <span class="nv">z</span><span class="o">=</span><span class="m">0</span>.0186, <span class="nv">dm</span><span class="o">=</span><span class="m">34</span>.6, <span class="nv">mkwebv</span><span class="o">=</span><span class="m">0</span>.01387, <span class="nv">hostebv</span><span class="o">=</span><span class="m">0</span>, <span class="nv">sntype</span><span class="o">=</span><span class="s1">&#39;Ib&#39;</span>, <span class="se">\</span>
+...      <span class="nv">ra</span><span class="o">=</span><span class="s1">&#39;13:26:29.65&#39;</span>, <span class="nv">dec</span><span class="o">=</span><span class="s1">&#39;+36:00:31.1&#39;</span>, <span class="nv">jdpeak</span><span class="o">=</span><span class="m">2458888</span>.02<span class="o">)</span>
+
+<span class="c1"># And query data from ATLAS server</span>
+&gt;&gt;&gt; sncls.query_fp_atlas<span class="o">()</span>
+<span class="m">13</span>:26:29.65 use unit hourangle
+use current mjd
+Your token is xxxxxxxxxxxxxxxxxx
+Store this by running/adding to your .zshrc file:
+<span class="nb">export</span> <span class="nv">ATLASFORCED_SECRET_KEY</span><span class="o">=</span><span class="s2">&quot;xxxxxxxxxxxxxxxxxx&quot;</span>
+The task URL is https://fallingstar-data.com/forcedphot/queue/xxxx/
+Waiting <span class="k">for</span> job to start <span class="o">(</span>queued at <span class="m">2022</span>-04-12T12:03:29Z<span class="o">)</span>
+Waiting <span class="k">for</span> job to start <span class="o">(</span>queued at <span class="m">2022</span>-04-12T12:03:29Z<span class="o">)</span>
+Waiting <span class="k">for</span> job to start <span class="o">(</span>queued at <span class="m">2022</span>-04-12T12:03:29Z<span class="o">)</span>
+Task is running <span class="o">(</span>started at <span class="m">2022</span>-04-12T12:07:56Z<span class="o">)</span>
+Task is <span class="nb">complete</span> with results available at https://fallingstar-data.com/forcedphot/queue/xxxx/data.txt
+
+<span class="c1"># After for a while, the ATLAS data is stored in your defined data directory</span>
+<span class="c1"># let&#39;s put them into **sncls**, with a one day binning</span>
+&gt;&gt;&gt; sncls.get_fp_atlas<span class="o">(</span><span class="nv">binDays</span><span class="o">=</span><span class="m">1</span>, <span class="nv">clobber</span><span class="o">=</span>False<span class="o">)</span>
+
+<span class="c1"># they&#39;re there now in the sncls.lc</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.lc.query<span class="o">(</span><span class="s1">&#39;source == &quot;atlasfp&quot;&#39;</span><span class="o">)</span>.iloc<span class="o">[</span><span class="m">0</span><span class="o">])</span>
+MJD              <span class="m">58800</span>.6
+absmag               NaN
+date                 NaN
+eflux              <span class="m">22</span>.63
+emag                  <span class="m">99</span>
+filter                 o
+flux                  <span class="m">24</span>
+instrument           NaN
+isdiffpos            NaN
+issub                NaN
+jdobs         <span class="m">2</span>.4588e+06
+limmag           <span class="m">18</span>.7659
+mag                   <span class="m">99</span>
+n                      <span class="m">2</span>
+programid            NaN
+rb                   NaN
+refsys               NaN
+<span class="nb">source</span>           atlasfp
+Name: <span class="m">0</span>, dtype: object
+</pre></div>
+</div>
+<p>It’s quite similar for other photometric services as well, e.g. ZTF forced photometry:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># for instance the ZTF forced photometry</span>
+<span class="c1"># edit the correct account</span>
+&gt;&gt;&gt; vi /xxx/yyy/haffet_data/auth.txt
+<span class="o">[</span>ztf<span class="o">]</span>     <span class="p">;</span>   ------------     ZTF force photometry
+email:    xx,yy@zzz.com   <span class="c1"># str # email</span>
+pwd:      <span class="m">123456</span>          <span class="c1"># str # password</span>
+
+<span class="c1"># then the same, start HAFFET, query data, and input local data to defined class</span>
+&gt;&gt;&gt; python
+&gt;&gt;&gt; from sdapy import snerun
+&gt;&gt;&gt; <span class="nv">sncls</span> <span class="o">=</span> snerun.snobject<span class="o">(</span>...<span class="o">)</span>
+
+<span class="c1"># Note:</span>
+<span class="c1"># Here, set get_email to False, will download data to proper directory via an API, it&#39;s easy but will stuck you for a while</span>
+<span class="c1">#       set get_email to True, will send request to server, you&#39;ll receive an email later with the photometry file, and in the meanwhile, you can so other things</span>
+&gt;&gt;&gt; sncls.query_fp_ztf<span class="o">(</span><span class="nv">get_email</span><span class="o">=</span>True<span class="o">)</span>
+&gt;&gt;&gt; sncls.get_fp_ztf<span class="o">()</span>
+
+<span class="c1"># for Open Astronomy Catalog, they&#39;re fully public, so no authorization is needed</span>
+&gt;&gt;&gt; sncls.query_oac<span class="o">(</span><span class="nv">db</span><span class="o">=</span><span class="s1">&#39;AL&#39;</span>, <span class="nv">which</span><span class="o">=</span><span class="s1">&#39;photometry&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.get_oac<span class="o">(</span><span class="nv">which</span><span class="o">=</span><span class="s1">&#39;photometry&#39;</span><span class="o">)</span>
+
+<span class="c1"># for internal ZTF collaborators, set proper marshal/fritz accounts and then</span>
+&gt;&gt;&gt; sncls.query_alert_ztf<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;fritz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.get_alert_ztf<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;fritz&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>And it’s also similar for the spectra:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.query_spectra<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;fritz&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.get_local_spectra<span class="o">()</span>
+
+&gt;&gt;&gt; sncls.query_oac<span class="o">(</span><span class="nv">db</span><span class="o">=</span><span class="s1">&#39;AL&#39;</span>, <span class="nv">which</span><span class="o">=</span><span class="s1">&#39;spectra&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.get_oac<span class="o">(</span><span class="nv">which</span><span class="o">=</span><span class="s1">&#39;spectra&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>OK, now we can plot the LCs and spectra:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from matplotlib.pyplot as plt
+
+<span class="c1"># In HAFFET, by default:</span>
+<span class="c1">#    ax is the flux LC plot</span>
+<span class="c1">#    ax1 is the spectral plot</span>
+<span class="c1">#    ax2 is the magnitude LC plot</span>
+<span class="c1">#    ax3 is the bolometric LC plot</span>
+<span class="c1">#    ax4 is the colour plot</span>
+&gt;&gt;&gt; sncls.fig, sncls.ax <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+
+<span class="c1"># call ax plot, show only ztffp (ZTF forced photometry data)</span>
+&gt;&gt;&gt; sncls._ax<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;ztffp&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example1.png"><img alt="../_images/example1.png" src="../_images/example1.png" style="width: 400px;" /></a>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.ax1 <span class="o">=</span> ax
+&gt;&gt;&gt; sncls._ax1<span class="o">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example2.png"><img alt="../_images/example2.png" src="../_images/example2.png" style="width: 400px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One may need <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.show.html">plt.show()</a> to display all open figures, or use <a class="reference internal" href="../generated/sdapy.snerun.snobject.savefig.html#sdapy.snerun.snobject.savefig" title="sdapy.snerun.snobject.savefig"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sdapy.snerun.snobject.savefig()</span></code></a> to save the current fig to data directory and <a class="reference internal" href="../generated/sdapy.snerun.snobject.showfig.html#sdapy.snerun.snobject.showfig" title="sdapy.snerun.snobject.showfig"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sdapy.snerun.snobject.showfig()</span></code></a> to show it.</p>
+</div>
+<p>A build-in function is available to guess transient type based on multiple band LCs, via <a class="reference external" href="https://astrorapid.readthedocs.io/en/latest/index.html">astrorapid</a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.rapid<span class="o">(</span><span class="nv">ax</span><span class="o">=</span>ax<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example3.png"><img alt="../_images/example3.png" src="../_images/example3.png" style="width: 400px;" /></a>
+<p>And at some point, a ZTF transient might be covered by multiple CCDs, thus zeropoints of different fields might be different since they’re calibrated with different set of standards stars. <cite>HAFFET</cite> provide functions to compared their baselines so that flux zeropoints would be consistent:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig,ax<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; <span class="nv">baseline</span> <span class="o">=</span> sncls.calibrate_baseline<span class="o">(</span><span class="nv">ax</span><span class="o">=</span>ax, <span class="nv">key</span><span class="o">=</span><span class="s1">&#39;fcqfid&#39;</span>, <span class="nv">source</span><span class="o">=</span><span class="s1">&#39;ztffp&#39;</span>, <span class="nv">xmin</span><span class="o">=</span>-100, <span class="nv">xmax</span><span class="o">=</span>-20<span class="o">)</span>
+&gt;&gt;&gt; sncls.correct_baseline<span class="o">(</span>baseline, <span class="nv">key</span><span class="o">=</span><span class="s1">&#39;fcqfid&#39;</span>, <span class="nv">source</span><span class="o">=</span><span class="s1">&#39;ztffp&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example4.png"><img alt="../_images/example4.png" src="../_images/example4.png" style="width: 400px;" /></a>
+<p>Users might detailly explore more possible functions at the <a class="reference internal" href="../snobject.html#snobject"><span class="std std-ref">API</span></a> page, and now that’s go to the fitting part.</p>
+</div>
+<div class="section" id="gaussian-process-and-multiband-fittings">
+<span id="package12"></span><h2>Gaussian Process and multiband fittings<a class="headerlink" href="#gaussian-process-and-multiband-fittings" title="Permalink to this headline">¶</a></h2>
+<p>We can interpolate multiple band LCs via Gaussian Process (GP), and the analytic model fittings.</p>
+<p>First let’s try GP:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># GP with ZTF gri + ATLAS co with default settings</span>
+&gt;&gt;&gt; sncls.run_gp<span class="o">(</span><span class="nv">gp_bands</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span>, <span class="s1">&#39;g&#39;</span>, <span class="s1">&#39;i&#39;</span>, <span class="s1">&#39;c&#39;</span>, <span class="s1">&#39;o&#39;</span><span class="o">])</span>
+
+<span class="c1"># set t0 as the epoch with maximum brighness in r band</span>
+&gt;&gt;&gt; sncls.set_peak_gp<span class="o">(</span><span class="s1">&#39;r&#39;</span><span class="o">)</span> <span class="c1"># set t0 with GP in r band</span>
+
+<span class="c1"># then let&#39;s plot the GP interpolation</span>
+&gt;&gt;&gt; sncls.fig,<span class="o">(</span>sncls.ax, sncls.ax2<span class="o">)=</span>plt.subplots<span class="o">(</span><span class="m">2</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax<span class="o">(</span><span class="nv">plot_bands</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span>, <span class="s1">&#39;g&#39;</span>, <span class="s1">&#39;i&#39;</span>, <span class="s1">&#39;c&#39;</span>, <span class="s1">&#39;o&#39;</span><span class="o">]</span>, <span class="nv">show_title</span><span class="o">=</span>False<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax2<span class="o">(</span><span class="nv">plot_bands</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span>, <span class="s1">&#39;g&#39;</span>, <span class="s1">&#39;i&#39;</span>, <span class="s1">&#39;c&#39;</span>, <span class="s1">&#39;o&#39;</span><span class="o">])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example5.png"><img alt="../_images/example5.png" src="../_images/example5.png" style="width: 400px;" /></a>
+<p>With GP as the estimated mean, we can clip the LCs, removing those outlier datapoints:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.clip_lc<span class="o">(</span><span class="nv">clipsigma</span><span class="o">=</span><span class="m">5</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example13.png"><img alt="../_images/example13.png" src="../_images/example13.png" style="width: 400px;" /></a>
+<p>We can also use model fittings instead for interpolation purpose.
+There’re build-in functions that can be used to check all possible engines and models:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from sdapy.model_fitters import get_engine
+&gt;&gt;&gt; get_engine<span class="o">()</span>
+<span class="o">{</span><span class="s1">&#39;bol_full&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.bol_full.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;multiband_main&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.multiband_main.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;specv_evolution&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.specv_evolution.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, <span class="nv">modelname</span><span class="o">=</span>None, <span class="nv">quant</span><span class="o">=[</span><span class="m">0</span>.05, <span class="m">0</span>.5, <span class="m">0</span>.95<span class="o">]</span>, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;specline&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.specline.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;bol_main&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.bol_main.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;multiband_early&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.multiband_early.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;bol_tail&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.bol_tail.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;bol_early&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.bol_early.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;<span class="o">}</span>
+</pre></div>
+</div>
+<p>As shown, for multiple band LCs, there’re two engines available, i.e. <strong>mainband_early</strong> and <strong>multiband_main</strong>. Let’s start with the <strong>mainband_main</strong> models:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from sdapy.model_fitters import get_model
+&gt;&gt;&gt; get_model<span class="o">(</span><span class="nv">which_engine</span><span class="o">=</span><span class="s1">&#39;multiband_main&#39;</span>, <span class="nv">with_alias</span><span class="o">=</span>True<span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;multiband_main&#39;</span>: <span class="o">[</span><span class="s1">&#39;villar&#39;</span>,
+<span class="s1">&#39;villar&#39;</span>,
+<span class="s1">&#39;salt&#39;</span>,
+<span class="s1">&#39;salt2&#39;</span>,
+<span class="s1">&#39;salt2_fit&#39;</span>,
+<span class="s1">&#39;bazin1&#39;</span>,
+<span class="s1">&#39;bazin&#39;</span>,
+<span class="s1">&#39;bz&#39;</span>,
+<span class="s1">&#39;bz1&#39;</span>,
+<span class="s1">&#39;bazin2&#39;</span>,
+<span class="s1">&#39;bz2&#39;</span><span class="o">]}</span>
+</pre></div>
+</div>
+<p>We fit with <strong>bazin</strong> model as examples.
+Let’s find more details about the <strong>bazin</strong> model:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from sdapy.model_fitters import get_pars
+&gt;&gt;&gt; get_pars<span class="o">(</span><span class="s1">&#39;bazin&#39;</span>, <span class="nv">with_alias</span><span class="o">=</span>True<span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;func&#39;</span>: &lt;<span class="k">function</span> sdapy.models.bazin.functions.bazin<span class="o">(</span>time, A, t0, tfall, trise, C<span class="o">)</span>&gt;,
+<span class="s1">&#39;engine&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.multiband_main.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;enginename&#39;</span>: <span class="s1">&#39;multiband_main&#39;</span>,
+<span class="s1">&#39;parname&#39;</span>: <span class="o">[</span><span class="s1">&#39;$A$&#39;</span>,
+<span class="s1">&#39;$t_\\mathrm{0}$&#39;</span>,
+<span class="s1">&#39;$\\tau_\\mathrm{fall}$&#39;</span>,
+<span class="s1">&#39;$\\tau_{rise}$&#39;</span>,
+<span class="s1">&#39;$C$&#39;</span><span class="o">]</span>,
+<span class="s1">&#39;par&#39;</span>: <span class="o">[</span><span class="s1">&#39;a&#39;</span>, <span class="s1">&#39;dt&#39;</span>, <span class="s1">&#39;tfall&#39;</span>, <span class="s1">&#39;trise&#39;</span>, <span class="s1">&#39;c&#39;</span><span class="o">]</span>,
+<span class="s1">&#39;same_parameter&#39;</span>: <span class="o">[]</span>,
+<span class="s1">&#39;fit_error&#39;</span>: False,
+<span class="s1">&#39;bestv&#39;</span>: <span class="o">[</span><span class="m">100</span>.0, <span class="m">0</span>, <span class="m">20</span>, <span class="m">10</span>, <span class="m">60</span><span class="o">]</span>,
+<span class="s1">&#39;bounds&#39;</span>: <span class="o">([</span><span class="m">0</span>, -100, <span class="m">0</span>, <span class="m">0</span>, <span class="m">0</span><span class="o">]</span>, <span class="o">[</span><span class="m">10000</span>, <span class="m">100</span>, <span class="m">120</span>, <span class="m">60</span>, <span class="m">10000</span><span class="o">])}</span>
+</pre></div>
+</div>
+<p>This provides us the mean, engine function, parameter name, its latex format, and the prior and boundaries. Moreover, the <strong>same_parameter</strong> can decide whether perform fittings in different band seperately, or together with one or more common parameters. The <strong>fit_error</strong> parameter decide if include additional errors accounting for models into the likelihood.</p>
+<p>There’re different routines can be applied to optimize the hyperparameters.
+Below, we fit the <strong>bazin</strong> model with <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">scipy.minimize</a> (check more options at <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt</a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;multiband_main&#39;</span>,
+...      <span class="nv">fit_methods</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;bazin&#39;</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_bands</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;i&#39;</span>,<span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;r&#39;</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_xrange</span> <span class="o">=</span> <span class="o">[</span>-50, <span class="m">50</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_xrangep</span> <span class="o">=</span> <span class="o">[</span>-50, <span class="m">50</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_routine</span> <span class="o">=</span> <span class="s1">&#39;minimize&#39;</span>,
+...      <span class="nv">fit_redo</span> <span class="o">=</span> True<span class="o">)</span>
+</pre></div>
+</div>
+<p>With <strong>scipy.minimize</strong>, we obtain perr (the Optimal values for the parameters) and pcov (The estimated covariance of popt). We randomly select parameters from perr +/- sqrt(pcov) * sigma:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1,figsize<span class="o">=(</span><span class="m">8</span>,8<span class="o">))</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">engine</span><span class="o">=</span>None, <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;bazin&#39;</span>, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">filts</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span><span class="o">]</span>, <span class="nv">clobber</span><span class="o">=</span>False<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example8.png"><img alt="../_images/example8.png" src="../_images/example8.png" style="width: 400px;" /></a>
+<p>Another possible routine is monte carlo markov chain (<strong>mcmc</strong>).
+In <cite>HAFFET</cite>, we use results from <strong>scipy.minimize</strong> to set the priors, and run mcmc by using <a class="reference external" href="https://emcee.readthedocs.io/en/stable/">emcee</a>. The monte carlo optimization on <strong>bazin</strong> model can be run as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;multiband_main&#39;</span>,
+...      <span class="nv">fit_methods</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;bazin&#39;</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_bands</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;i&#39;</span>,<span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;r&#39;</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_xrange</span> <span class="o">=</span> <span class="o">[</span>-50, <span class="m">50</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_xrangep</span> <span class="o">=</span> <span class="o">[</span>-50, <span class="m">50</span><span class="o">]</span>,
+...      <span class="nv">multiband_main_routine</span> <span class="o">=</span> <span class="s1">&#39;mcmc&#39;</span>,
+...      <span class="nv">nwalkers</span> <span class="o">=</span> <span class="m">30</span>,
+...      <span class="nv">nsteps</span> <span class="o">=</span> <span class="m">20000</span>,
+...      <span class="nv">nsteps_burnin</span> <span class="o">=</span> <span class="m">2000</span>,
+...      <span class="nv">fit_redo</span> <span class="o">=</span> False,
+...      <span class="nb">source</span> <span class="o">=</span> None<span class="o">)</span>
+</pre></div>
+</div>
+<p>And the corner plots showing how the parameters converged can be called with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1,figsize<span class="o">=(</span><span class="m">8</span>,8<span class="o">))</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">engine</span><span class="o">=</span>None, <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;bazin&#39;</span>, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">filts</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span><span class="o">]</span>, <span class="nv">clobber</span><span class="o">=</span>False<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example6.png"><img alt="../_images/example6.png" src="../_images/example6.png" style="width: 400px;" /></a>
+<p>And we can overplot the fitting samplings into the flux and magnitude plots.
+We mention besides calling subplots, e.g. <cite>sncls._ax1()</cite>, a summarizing plot function is available to show all subplots together (Note by defaul <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code> calculate g-r colours and estimate bolometric LCs via Lyman bolometric correction functions):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.summarize_plot<span class="o">(</span><span class="nv">ax</span><span class="o">=</span>None<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example7.png"><img alt="../_images/example7.png" src="../_images/example7.png" style="width: 400px;" /></a>
+<p>Then let’s try fitting with the <strong>powerlaw_multiple</strong> models as an example for the <strong>mainband_main</strong> engine:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; get_model<span class="o">(</span><span class="nv">which_engine</span><span class="o">=</span><span class="s1">&#39;multiband_early&#39;</span>, <span class="nv">with_alias</span><span class="o">=</span>True<span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;multiband_early&#39;</span>: <span class="o">[</span><span class="s1">&#39;powerlaw_multiple&#39;</span>,
+<span class="s1">&#39;pl&#39;</span>,
+<span class="s1">&#39;powerlaw&#39;</span>,
+<span class="s1">&#39;powerlaw&#39;</span>,
+<span class="s1">&#39;powerlaw_single&#39;</span>,
+<span class="s1">&#39;pl2&#39;</span>,
+<span class="s1">&#39;powerlaw2&#39;</span>,
+<span class="s1">&#39;powerlaw2&#39;</span>,
+<span class="s1">&#39;pl_single&#39;</span>,
+<span class="s1">&#39;powerlaw_single&#39;</span><span class="o">]}</span>
+
+&gt;&gt;&gt; get_pars<span class="o">(</span><span class="s1">&#39;powerlaw_multiple&#39;</span>, <span class="nv">with_alias</span><span class="o">=</span>True<span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;func&#39;</span>: &lt;<span class="k">function</span> sdapy.models.risepl.functions.powerlaw_full<span class="o">(</span>times, <span class="nv">t_0</span><span class="o">=</span><span class="m">0</span>, <span class="nv">amplitude</span><span class="o">=</span><span class="m">25</span>, <span class="nv">alpha_r</span><span class="o">=</span><span class="m">2</span>, <span class="nv">c</span><span class="o">=</span><span class="m">0</span><span class="o">)</span>&gt;,
+<span class="s1">&#39;engine&#39;</span>: &lt;<span class="k">function</span> sdapy.engines.multiband_early.engine<span class="o">(</span>self, model_name, engine_name, <span class="nv">sourcename</span><span class="o">=</span>None, **kwargs<span class="o">)</span>&gt;,
+<span class="s1">&#39;enginename&#39;</span>: <span class="s1">&#39;multiband_early&#39;</span>,
+<span class="s1">&#39;parname&#39;</span>: <span class="o">[</span><span class="s1">&#39;$t_\\mathrm{fl}$&#39;</span>, <span class="s1">&#39;$A$&#39;</span>, <span class="s1">&#39;$\\alpha$&#39;</span>, <span class="s1">&#39;$C$&#39;</span><span class="o">]</span>,
+<span class="s1">&#39;par&#39;</span>: <span class="o">[</span><span class="s1">&#39;texp&#39;</span>, <span class="s1">&#39;a&#39;</span>, <span class="s1">&#39;alpha&#39;</span>, <span class="s1">&#39;c&#39;</span><span class="o">]</span>,
+<span class="s1">&#39;same_parameter&#39;</span>: <span class="o">[</span><span class="s1">&#39;texp&#39;</span><span class="o">]</span>,
+<span class="s1">&#39;fit_error&#39;</span>: True,
+<span class="s1">&#39;bestv&#39;</span>: <span class="o">[</span>-18, <span class="m">100</span>, <span class="m">2</span>, <span class="m">60</span><span class="o">]</span>,
+<span class="s1">&#39;bounds&#39;</span>: <span class="o">([</span>-100, <span class="m">0</span>, <span class="m">0</span>, <span class="m">0</span><span class="o">]</span>, <span class="o">[</span><span class="m">0</span>, <span class="m">10000</span>, <span class="m">10</span>, <span class="m">10000</span><span class="o">])}</span>
+</pre></div>
+</div>
+<p>As shown, the <strong>same_parameter</strong> is set as [‘texp’], which means the fittings of different bands would be performed together with a common explosion epoch. Let’s try run these on ZTF gri, togerther with ATLAS co:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span>
+...  <span class="s1">&#39;multiband_early&#39;</span>,
+...  <span class="nv">fit_methods</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;powerlaw_multiple&#39;</span><span class="o">]</span>,
+...  <span class="nv">multiband_early_bands</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;r&#39;</span>,<span class="s1">&#39;i&#39;</span>,<span class="s1">&#39;c&#39;</span>,<span class="s1">&#39;o&#39;</span><span class="o">]</span>,
+...  <span class="nv">multiband_early_xrange</span> <span class="o">=</span> <span class="o">[</span>-50,0<span class="o">]</span>,
+...  <span class="nv">multiband_early_xrangep</span> <span class="o">=</span> <span class="o">[</span>-50,0<span class="o">]</span>,
+...  <span class="nv">multiband_early_routine</span> <span class="o">=</span> <span class="s1">&#39;mcmc&#39;</span>,
+...  <span class="nv">nwalkers</span> <span class="o">=</span> <span class="m">200</span>,
+...  <span class="nv">nsteps</span> <span class="o">=</span> <span class="m">20000</span>,
+...  <span class="nv">nsteps_burnin</span> <span class="o">=</span> <span class="m">10000</span>,
+...  <span class="nv">fit_redo</span> <span class="o">=</span> True,
+...  <span class="nb">source</span> <span class="o">=</span> None<span class="o">)</span>
+</pre></div>
+</div>
+<p>The contours can be obtained via:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1,figsize<span class="o">=(</span><span class="m">15</span>,15<span class="o">))</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">engine</span><span class="o">=</span>None, <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;powerlaw_multiple&#39;</span>, <span class="nv">source</span><span class="o">=</span>None,clobber<span class="o">=</span>False<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example9.png"><img alt="../_images/example9.png" src="../_images/example9.png" style="width: 800px;" /></a>
+<p>And the early LCs can be reproduced by the multiband power law models as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+
+<span class="c1"># set explosion epoch with r band</span>
+&gt;&gt;&gt; sncls.set_texp_pl<span class="o">(</span><span class="s1">&#39;r&#39;</span>, <span class="nv">model_name</span><span class="o">=</span>None<span class="o">)</span>
+
+&gt;&gt;&gt; sncls._ax<span class="o">(</span><span class="nv">plot_bands</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span>,<span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;i&#39;</span>,<span class="s1">&#39;c&#39;</span>,<span class="s1">&#39;o&#39;</span><span class="o">]</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">ax_ylim</span><span class="o">=(</span><span class="m">0</span>,200<span class="o">)</span>, <span class="nv">ax_xlim</span><span class="o">=(</span>-30,0<span class="o">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example10.png"><img alt="../_images/example10.png" src="../_images/example10.png" style="width: 400px;" /></a>
+<p>Let’s try fit power law on ZTF gri band LCs independently for a comparison:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span>
+...  <span class="s1">&#39;multiband_early&#39;</span>,
+...  <span class="nv">fit_methods</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;powerlaw_single&#39;</span><span class="o">]</span>,
+...  <span class="nv">multiband_early_bands</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;r&#39;</span>,<span class="s1">&#39;i&#39;</span><span class="o">]</span>,
+...  <span class="nv">multiband_early_xrange</span> <span class="o">=</span> <span class="o">[</span>-50,0<span class="o">]</span>,
+...  <span class="nv">multiband_early_xrangep</span> <span class="o">=</span> <span class="o">[</span>-50,0<span class="o">]</span>,
+...  <span class="nv">multiband_early_routine</span> <span class="o">=</span> <span class="s1">&#39;mcmc&#39;</span>,
+...  <span class="nv">nwalkers</span> <span class="o">=</span> <span class="m">100</span>,
+...  <span class="nv">nsteps</span> <span class="o">=</span> <span class="m">20000</span>,
+...  <span class="nv">nsteps_burnin</span> <span class="o">=</span> <span class="m">10000</span>,
+...  <span class="nv">fit_redo</span> <span class="o">=</span> True,
+...  <span class="nb">source</span> <span class="o">=</span> None<span class="o">)</span>
+</pre></div>
+</div>
+<p>The reproduced gri power law modelled LCs overploted with observed LCs and the GP interpolated LCs are:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.set_texp_pl<span class="o">(</span><span class="s1">&#39;r&#39;</span>, <span class="nv">model_name</span><span class="o">=</span>None<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax<span class="o">(</span><span class="nv">plot_bands</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span>,<span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;i&#39;</span><span class="o">]</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">ax_ylim</span><span class="o">=(</span><span class="m">0</span>,200<span class="o">)</span>, <span class="nv">ax_xlim</span><span class="o">=(</span>-30,0<span class="o">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example11.png"><img alt="../_images/example11.png" src="../_images/example11.png" style="width: 400px;" /></a>
+<p>Then, The r band contour is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">filts</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span><span class="o">]</span>, <span class="nv">engine</span><span class="o">=</span>None, <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;powerlaw_single&#39;</span>, <span class="nv">source</span><span class="o">=</span>None,clobber<span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example12.png"><img alt="../_images/example12.png" src="../_images/example12.png" style="width: 400px;" /></a>
+<p>Besides the contours, one may need the bestfit and errors for one specific parameter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># for instance, I want to know the fitted tau fall from the Bazin model</span>
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;tfall&#39;</span>, <span class="nv">quant</span><span class="o">=[</span>.05,.5,.95<span class="o">])</span>
+
+<span class="c1"># this will return a dictionary includes all modelling results that contain tfall as free parameter</span>
+<span class="o">{</span><span class="s1">&#39;bazin None&#39;</span>: <span class="o">(</span><span class="m">14</span>.885858922707264, <span class="m">15</span>.023022856549716, <span class="m">15</span>.165647503295025<span class="o">)}</span>
+
+<span class="c1"># or the fitted power law indices from the power law fits</span>
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;alpha&#39;</span>, <span class="nv">filt</span><span class="o">=</span><span class="s1">&#39;g&#39;</span>, <span class="nv">quant</span><span class="o">=[</span>.05,.5,.95<span class="o">])</span>
+<span class="o">{</span><span class="s1">&#39;powerlaw_single None&#39;</span>: <span class="o">(</span><span class="m">0</span>.7948356612661145, <span class="m">0</span>.8783020839198484, <span class="m">0</span>.9392650238103688<span class="o">)}</span>
+
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;alpha&#39;</span>, <span class="nv">filt</span><span class="o">=</span><span class="s1">&#39;r&#39;</span>, <span class="nv">quant</span><span class="o">=[</span>.05,.5,.95<span class="o">])</span>
+<span class="o">{</span><span class="s1">&#39;powerlaw_single None&#39;</span>: <span class="o">(</span><span class="m">0</span>.5452672526172516, <span class="m">0</span>.6572905950780903, <span class="m">0</span>.7325257385397606<span class="o">)}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="colours-bolometric-lcs-and-bolometric-lc-fittings">
+<span id="package13"></span><h2>Colours, bolometric LCs and bolometric LC fittings<a class="headerlink" href="#colours-bolometric-lcs-and-bolometric-lc-fittings" title="Permalink to this headline">¶</a></h2>
+<p>After multiple band LCs interpolated, the next step is to match epochs from different bands for the SED and then bolometric luminosities. Moreover, we can fit these inferred bolometric LCs to some existing models to estimate their physical parameters.</p>
+<p>In <cite>HAFFET</cite>, there’re two approaches available to make bolometric LCs. The first one is to use the analytic functions from Lyman et al 2014, that relates the bolometric correction (BC) to the colours. Therefore, we can match colours and then convert them to bolometric magnitudes:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate g-r, with 3 approaches</span>
+&gt;&gt;&gt; sncls.calc_colors<span class="o">(</span><span class="nv">color_bands</span><span class="o">=[</span><span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;r&#39;</span><span class="o">]</span>, <span class="nv">tdbin</span><span class="o">=</span><span class="m">1</span>, <span class="nv">color_interp</span><span class="o">=[</span><span class="s1">&#39;bin&#39;</span>,<span class="s1">&#39;gp&#39;</span>,<span class="s1">&#39;fit&#39;</span><span class="o">])</span>
+
+<span class="c1"># plot them</span>
+&gt;&gt;&gt; sncls.fig, sncls.ax3<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax3<span class="o">(</span><span class="nv">show_legend</span><span class="o">=</span>True,ylabel_2right<span class="o">=</span>False<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example14.png"><img alt="../_images/example14.png" src="../_images/example14.png" style="width: 400px;" /></a>
+<p>As shown in the plot, there’re three coloured dots: the black ones are from 1 day binning, while the green ones are guessing missed data from fittings, and those blue points are for GP interpolation.</p>
+<p>Then let’s calculate host galaxy extinction via colour comparisons, and call functions to convert the g-r colours to bolometric LCs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># the default hostebv is 0</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.hostebv<span class="o">)</span>
+<span class="m">0</span>
+
+<span class="c1"># estimate g-r colour with GP interpolation, and compare to templates for hostebv</span>
+&gt;&gt;&gt; sncls.est_hostebv_with_colours<span class="o">(</span><span class="nv">hostebv_bands</span><span class="o">=[</span><span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;r&#39;</span><span class="o">]</span>, <span class="nv">hostebv_interp</span><span class="o">=</span><span class="s1">&#39;gp&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.hostebv<span class="o">)</span>
+<span class="m">0</span>.02128907973013693
+
+<span class="c1"># Then make bolometric LCs</span>
+&gt;&gt;&gt; sncls.lyman_bol<span class="o">(</span><span class="nv">interpolation</span><span class="o">=[</span><span class="s1">&#39;bin&#39;</span>,<span class="s1">&#39;fit&#39;</span>,<span class="s1">&#39;gp&#39;</span><span class="o">])</span>
+
+<span class="c1"># plot them</span>
+&gt;&gt;&gt; sncls.fig, sncls.ax4<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax4<span class="o">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example15.png"><img alt="../_images/example15.png" src="../_images/example15.png" style="width: 400px;" /></a>
+<p>Another approach to make bolometric LCs is to assume the SNe fluxes during photospheric phases are roughly distributed as a blackbody (BB). Therefore we fit photometric or spectral data to the stefan boltzmann function, which was integrated within a range to represent the bolometric luminosities. In <cite>HAFFET</cite>, we could call:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># match epochs from multiple bands for BB</span>
+&gt;&gt;&gt; sncls.bb_colors<span class="o">(</span><span class="nv">bb_bands</span><span class="o">=[</span><span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;r&#39;</span>,<span class="s1">&#39;i&#39;</span><span class="o">]</span>, <span class="nv">tdbin</span><span class="o">=</span><span class="m">1</span>, <span class="nv">bb_interp</span><span class="o">=[</span><span class="s1">&#39;bin&#39;</span>,<span class="s1">&#39;gp&#39;</span>,<span class="s1">&#39;fit&#39;</span><span class="o">])</span>
+</pre></div>
+</div>
+<p>this was matching epochs from different filters, stored in <code class="docutils literal notranslate"><span class="pre">sncls.cbb</span></code>.
+Then we can run blackbody fits via the SED fitting engine.
+Again, there’re minimize and mcmc routines available.
+Since mcmc is time consuming, we recomment to use mcmc to check fits at specific phases and minimize routine for the full bolometric budgets.
+As an example, we fit blackbody for datapoints at peak epoch:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.bb_colors<span class="o">(</span>
+...     <span class="nv">xpred</span><span class="o">=[</span><span class="m">0</span><span class="o">]</span>, <span class="nv">clobber</span><span class="o">=</span>True<span class="o">)</span>
+
+&gt;&gt;&gt; sncls.run_fit<span class="o">(</span>
+...     <span class="s1">&#39;sed&#39;</span>,
+...     <span class="nv">make_bol</span><span class="o">=[</span><span class="s1">&#39;bb&#39;</span><span class="o">]</span>,
+...     <span class="nv">sed_routine</span> <span class="o">=</span> <span class="s1">&#39;mcmc&#39;</span>,
+...     <span class="nv">nwalkers</span> <span class="o">=</span> <span class="m">30</span>,
+...     <span class="nv">nsteps</span> <span class="o">=</span> <span class="m">2000</span>,
+...     <span class="nv">nsteps_burnin</span> <span class="o">=</span> <span class="m">1000</span>,
+...     <span class="nv">fit_redo</span> <span class="o">=</span> True,
+...     <span class="nv">sed_color_interp_mix</span> <span class="o">=</span> True<span class="o">)</span>
+</pre></div>
+</div>
+<p>Let’s show the fitting contous:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1,figsize<span class="o">=(</span><span class="m">8</span>,8<span class="o">))</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>
+...     ax, <span class="nv">engine</span><span class="o">=</span><span class="s1">&#39;sed&#39;</span>, <span class="nv">clobber</span><span class="o">=</span>True, <span class="nv">filts</span><span class="o">=</span>None<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example33.png"><img alt="../_images/example33.png" src="../_images/example33.png" style="width: 400px;" /></a>
+<p>Here, T is temperature with unit of 1000 Kelvin, and R is the radius with unit of 1e15 cm.</p>
+<p>Then we can compare the blackbody inferred luminosity (1 point at peak), to the one estimated with Lyman bolometric corrections:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax4<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax4<span class="o">(</span><span class="nv">make_bol</span><span class="o">=[</span><span class="s1">&#39;bb&#39;</span>,<span class="s1">&#39;lyman&#39;</span><span class="o">]</span>, <span class="nv">show_legend</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example34.png"><img alt="../_images/example34.png" src="../_images/example34.png" style="width: 400px;" /></a>
+<p>OK, now let’s conduct the blackbody fits in the full range:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.bb_colors<span class="o">(</span>
+...      <span class="nv">xpred</span><span class="o">=</span>None, <span class="nv">corr_mkw</span> <span class="o">=</span> True, <span class="nv">corr_host</span> <span class="o">=</span> True, <span class="nv">clobber</span><span class="o">=</span>True<span class="o">)</span>
+
+&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;sed&#39;</span>, <span class="nv">make_bol</span><span class="o">=[</span><span class="s1">&#39;bb&#39;</span><span class="o">]</span>, <span class="nv">sed_routine</span><span class="o">=</span><span class="s1">&#39;minimize&#39;</span>, <span class="nv">fit_redo</span><span class="o">=</span>True<span class="o">)</span>
+
+&gt;&gt;&gt; sncls.bb_bol<span class="o">(</span><span class="nv">make_bol</span><span class="o">=[</span><span class="s1">&#39;bb&#39;</span><span class="o">]</span>, <span class="nv">do_Kcorr</span><span class="o">=</span>True, <span class="nv">ab2vega</span><span class="o">=</span>True<span class="o">)</span>
+
+<span class="c1"># show them</span>
+&gt;&gt;&gt; sncls.fig, sncls.ax4<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax4<span class="o">()</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example16.png"><img alt="../_images/example16.png" src="../_images/example16.png" style="width: 400px;" /></a>
+<p>As shown, now there’re 2 sets of luminosities showing there: the dots are those estimated with Lyman approach, while the quares are from the BB fits.</p>
+<p>OK, we can then fit them to varies of bolometric LC models. We test the Lyman inferred boloemtric LC with the classic Arnett model as an example:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s start fitting Arnett model without fitting texp</span>
+<span class="c1"># then texp should came from the last non detection to the first detection</span>
+&gt;&gt;&gt; sncls.set_texp_midway<span class="o">()</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.texp<span class="o">)</span>
+<span class="o">[</span>-13.962997700087726, -13.433732650242746, -12.904467599932104<span class="o">]</span>
+
+<span class="c1"># or the power law fits</span>
+&gt;&gt;&gt; sncls.set_texp_pl<span class="o">(</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.texp<span class="o">)</span>
+<span class="o">[</span>-13.71122387363501, -13.492999670029164, -13.019500506705334<span class="o">]</span>
+
+<span class="c1"># Let&#39;s try **arnett_fit_taum** model, which fits on nickel mass (mni), and the characteristic time(taum)</span>
+&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;bol_main&#39;</span>, <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;arnett_fit_taum&#39;</span><span class="o">]</span>,
+...        <span class="nv">bol_main_xrange</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">]</span>, <span class="nv">bol_main_xrangep</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">])</span>
+
+<span class="c1"># and show them</span>
+&gt;&gt;&gt; sncls.fig, sncls.ax4<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax4<span class="o">(</span><span class="nv">sourcename</span><span class="o">=[</span><span class="s1">&#39;mbol&#39;</span><span class="o">])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example17.png"><img alt="../_images/example17.png" src="../_images/example17.png" style="width: 400px;" /></a>
+<p>The <strong>minimize</strong> routine is applied by default, and the parameter contours are:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">engine</span><span class="o">=</span>None, <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;arnett_fit_taum&#39;</span>, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">clobber</span><span class="o">=</span>False<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example18.png"><img alt="../_images/example18.png" src="../_images/example18.png" style="width: 400px;" /></a>
+<p>We can obtain nickel mass as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;mni&#39;</span><span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;arnett_fit_taum mbol&#39;</span>: <span class="o">(</span><span class="m">0</span>.13296870469342506, <span class="m">0</span>.13529573835360997, <span class="m">0</span>.13759833117293568<span class="o">)}</span>
+</pre></div>
+</div>
+<p>One might wanna try <strong>mcmc</strong> routines:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;bol_main&#39;</span>, <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;arnett_fit_taum&#39;</span><span class="o">]</span>,
+...        <span class="nv">bol_main_xrange</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">]</span>, <span class="nv">bol_main_xrangep</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">]</span>,
+...        <span class="nv">bol_main_routine</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span><span class="o">)</span>
+
+&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+
+<span class="c1"># Note: whenever you&#39;ve done any corner plots before for the same source, set clobber to True at the second time, otherwise, it will give you the corner plots generated in the last time</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">engine</span><span class="o">=</span>None,
+...        <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;arnett_fit_taum&#39;</span>, <span class="nv">source</span><span class="o">=</span>None,clobber<span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example19.png"><img alt="../_images/example19.png" src="../_images/example19.png" style="width: 400px;" /></a>
+<p>And one can fit the Arnett model with texp as a free parameter as well:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;bol_main&#39;</span>, <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;arnett_fit_taum_texp&#39;</span><span class="o">]</span>,
+...        <span class="nv">bol_main_xrange</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">]</span>, <span class="nv">bol_main_xrangep</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">]</span>,
+...        <span class="nv">bol_main_routine</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span><span class="o">)</span>
+
+&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">engine</span><span class="o">=</span>None,
+...        <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;arnett_fit_taum_texp&#39;</span>, <span class="nv">source</span><span class="o">=</span>None,clobber<span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example20.png"><img alt="../_images/example20.png" src="../_images/example20.png" style="width: 400px;" /></a>
+<p>We plan to make more model fitting examples in the github page: <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/notebook/snobject.ipynb">https://github.com/saberyoung/HAFFET/blob/master/notebook/snobject.ipynb</a>, and recommend user check carefully <a class="reference internal" href="../generated/sdapy.snerun.snobject.run_fit.html#sdapy.snerun.snobject.run_fit" title="sdapy.snerun.snobject.run_fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sdapy.snerun.snobject.run_fit()</span></code></a> and the dedicated model <a class="reference internal" href="../models.html#models"><span class="std std-ref">API</span></a> page before exploring more models, know what options are available, and how to use them to control the overall fittings.</p>
+</div>
+<div class="section" id="spectral-line-fittings-and-the-photospheric-velocities">
+<span id="package14"></span><h2>Spectral line fittings and the photospheric velocities<a class="headerlink" href="#spectral-line-fittings-and-the-photospheric-velocities" title="Permalink to this headline">¶</a></h2>
+<p>One can fit the ejecta mass and kinetic energy of the SN with for instance the <cite>arnett_fit_Mej_Ek</cite> model. Besides bolometric LCs, the relation of ejecta mass and kinetic energy can be also decided with the photospheric velocity, that can be estimated via specific spectral lines. Therefore an alternative way is to fit the bolometric LC with the <cite>arnett_fit_taum</cite> alike model (as what we did in the last section), obtain the mni and taum, and perform spectral line fittings that can be uesd to break the degeneracy of taum, to decide the physical parameters.</p>
+<p>The spectral data can be obtained and processed following <a class="reference internal" href="#package11"><span class="std std-ref">Input data</span></a>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.get_local_spectra<span class="o">(</span><span class="nv">bin_size</span><span class="o">=</span><span class="m">11</span>, <span class="nv">spec_snr</span><span class="o">=</span><span class="m">10</span>, <span class="nv">bin_method</span><span class="o">=</span><span class="s1">&#39;savgol&#39;</span>, <span class="nv">savgol_order</span><span class="o">=</span><span class="m">2</span>,
+...          <span class="nv">continuum_method</span><span class="o">=</span><span class="s1">&#39;poly&#39;</span>, <span class="nv">continuum_degree</span><span class="o">=</span><span class="m">7</span>, <span class="nv">pfactor</span> <span class="o">=</span><span class="m">20</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Check what the meaning of parameters at <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt</a>, or the dedicated API page <a class="reference internal" href="../generated/sdapy.snerun.snobject.get_local_spectra.html#sdapy.snerun.snobject.get_local_spectra" title="sdapy.snerun.snobject.get_local_spectra"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sdapy.snerun.snobject.get_local_spectra()</span></code></a>.</p>
+<p>Then let’s show the original spectra that was normalized and plused an offset:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;original&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...       <span class="nv">element</span><span class="o">=</span>None, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example21.png"><img alt="../_images/example21.png" src="../_images/example21.png" style="width: 400px;" /></a>
+<p>The red dashed regions marks the telluric lines, which could be set at <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/constants.py">https://github.com/saberyoung/HAFFET/blob/master/sdapy/constants.py</a>.
+The first step is to put them into rest frame:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;rest&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...       <span class="nv">element</span><span class="o">=</span>None, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example22.png"><img alt="../_images/example22.png" src="../_images/example22.png" style="width: 400px;" /></a>
+<p>Then let’s show the binned spectra:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;bin&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...       <span class="nv">element</span><span class="o">=</span>None, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example23.png"><img alt="../_images/example23.png" src="../_images/example23.png" style="width: 400px;" /></a>
+<p>The next step is to estimate a continuum for each of them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;continuum&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...       <span class="nv">element</span><span class="o">=</span>None, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example24.png"><img alt="../_images/example24.png" src="../_images/example24.png" style="width: 400px;" /></a>
+<p>Finally we can remove the continuum, showing only the features:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;flat&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...       <span class="nv">element</span><span class="o">=</span>None, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example25.png"><img alt="../_images/example25.png" src="../_images/example25.png" style="width: 400px;" /></a>
+<p>Then we can go to specific features. <cite>SN2020bcq</cite> is a type Ib SN, so we can go checking the He I 5876. The elements are defined in line_location at <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/constants.py">https://github.com/saberyoung/HAFFET/blob/master/sdapy/constants.py</a>, make sure you’re using correct name, if the line you want is missing, define it there.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;flat&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...         <span class="nv">element</span><span class="o">=</span>r<span class="s1">&#39;He~I~5876$\AA$&#39;</span>, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example26.png"><img alt="../_images/example26.png" src="../_images/example26.png" style="width: 400px;" /></a>
+<p>This provides a zoomin view of the He I 5875 absorption lines for all the spectra.
+Providing a proper source name will show specific spectrum:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;flat&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...         <span class="nv">element</span><span class="o">=</span>r<span class="s1">&#39;He~I~5876$\AA$&#39;</span>, <span class="nv">source</span><span class="o">=</span><span class="s1">&#39;20200128 LT&#39;</span>, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example27.png"><img alt="../_images/example27.png" src="../_images/example27.png" style="width: 400px;" /></a>
+<p>Here, thre grey line present the flat spectrum, while the brown dashed line denote its local comtinumm, which is used to defined the peaks (orange upper arrows) and valleys (cyan upper arrows) for the absorption feature. By default, the two peaks and the valley in the between that are closest to the intrinstic wavelength (the black vertical dashed line) are considered as the absorption feature.</p>
+<p>The next thing is to fit the absorption feature. Here we test fitting the Gaussian model via mcmc:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;specline&#39;</span>, <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;gauss&#39;</span><span class="o">]</span>,
+...     <span class="nv">specline_routine</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span>, <span class="nv">nsteps</span><span class="o">=</span><span class="m">2000</span>, <span class="nv">source</span><span class="o">=</span><span class="s1">&#39;20200128 LT&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>Ans show again the spectrum:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.fig, sncls.ax1 <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls._ax1<span class="o">(</span><span class="nv">stype</span><span class="o">=</span><span class="s1">&#39;flat&#39;</span>, <span class="nv">show_title</span><span class="o">=</span>False, <span class="nv">show_legend</span><span class="o">=</span>False,
+...       <span class="nv">element</span><span class="o">=</span>r<span class="s1">&#39;He~I~5876$\AA$&#39;</span>, <span class="nv">source</span><span class="o">=</span><span class="s1">&#39;20200128 LT&#39;</span>, <span class="nv">show_text</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example28.png"><img alt="../_images/example28.png" src="../_images/example28.png" style="width: 400px;" /></a>
+<p>As shown, there’re blue lines appeared there as mcmc samples.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;bol_main&#39;</span>, <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;arnett_fit_taum_texp&#39;</span><span class="o">]</span>,
+...        <span class="nv">bol_main_xrange</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">]</span>, <span class="nv">bol_main_xrangep</span><span class="o">=[</span>-30, <span class="m">40</span><span class="o">]</span>,
+...        <span class="nv">bol_main_routine</span><span class="o">=</span><span class="s1">&#39;mcmc&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>The corresponding contours are:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, <span class="nv">ax</span> <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.show_corner<span class="o">(</span>ax, <span class="nv">index</span><span class="o">=</span><span class="m">0</span>, <span class="nv">gp</span><span class="o">=</span>False, <span class="nv">engine</span><span class="o">=</span>None,
+...     <span class="nv">model</span><span class="o">=</span><span class="s1">&#39;gauss&#39;</span>, <span class="nv">source</span><span class="o">=</span><span class="s1">&#39;20200128_LT_He~I~5876$\AA$&#39;</span>, <span class="nv">clobber</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example29.png"><img alt="../_images/example29.png" src="../_images/example29.png" style="width: 400px;" /></a>
+<p>where <strong>x0</strong> is the mean wavelength in Angstrom relative to the intrinstic wavelength of the Gaussian, that can be easily converted to velocity.</p>
+<p>We could then estimate this Guassian fitting for all of the spectra, obtain an evolution of the line velocities, which could be then fitted with an exponential model:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;specline&#39;</span>, <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;gauss&#39;</span><span class="o">]</span>, <span class="nv">specline_routine</span><span class="o">=</span><span class="s1">&#39;minimize&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.run_fit<span class="o">(</span><span class="s1">&#39;specv_evolution&#39;</span>, <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;exp&#39;</span><span class="o">]</span>, <span class="nv">specline_routine</span><span class="o">=</span><span class="s1">&#39;minimize&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.vexp<span class="o">)</span>
+<span class="o">[</span>array<span class="o">(</span><span class="m">11</span>.50936207<span class="o">)</span>, array<span class="o">(</span><span class="m">11</span>.95739066<span class="o">)</span>, array<span class="o">(</span><span class="m">12</span>.35461975<span class="o">)]</span>
+</pre></div>
+</div>
+<p>This gave us the bestfit, and the lower, upper limits of the line velocity at the epoch with maximum brightness (unit in 1000 km/s).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># for instance, I want to know the fitted tau fall from the Bazin model</span>
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;tfall&#39;</span>, <span class="nv">quant</span><span class="o">=[</span>.05,.5,.95<span class="o">])</span>
+</pre></div>
+</div>
+<p>Now with the vexp, we can have the ejecta mass and kinetic energy:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># mej, unit in solar mass</span>
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;mej&#39;</span>, <span class="nv">quant</span><span class="o">=[</span>.05,.5,.95<span class="o">])</span>
+<span class="o">{</span><span class="s1">&#39;arnett_fit_taum mbol&#39;</span>: <span class="o">(</span><span class="m">2</span>.1856202832456715, <span class="m">2</span>.3253396772189863, <span class="m">2</span>.485691024601841<span class="o">)}</span>
+
+<span class="c1"># ekin, unit in foe</span>
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;ekin&#39;</span>, <span class="nv">quant</span><span class="o">=[</span>.05,.5,.95<span class="o">])</span>
+<span class="o">{</span><span class="s1">&#39;arnett_fit_taum mbol&#39;</span>: <span class="o">(</span><span class="m">3</span>.224372730545199, <span class="m">3</span>.430496093925981, <span class="m">3</span>.6670570902577224<span class="o">)}</span>
+
+<span class="c1"># If you gave a parameter that was not correct</span>
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;ek&#39;</span>, <span class="nv">quant</span><span class="o">=[</span>.05,.5,.95<span class="o">])</span>
+<span class="o">{}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-of-snelist">
+<span id="package2"></span><h2>Example of snelist<a class="headerlink" href="#example-of-snelist" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>They’re also avaliable in jupyter-notebook at <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/notebook/ZTF_Ibc.ipynb">https://github.com/saberyoung/HAFFET/blob/master/notebook/ZTF_Ibc.ipynb</a>.</p>
+</div>
+<p><cite>snelist</cite> class is designed to deal with data and fittings for a list objects.
+So the first step is to initialize a <cite>snelist</cite> class from a meta table:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize the class</span>
+&gt;&gt;&gt; <span class="nv">sncls</span> <span class="o">=</span> snerun.snelist<span class="o">()</span>
+
+<span class="c1"># read meta from BTS catalog: https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/bts_meta.txt</span>
+<span class="c1"># select only SNe Ib and Ics</span>
+&gt;&gt;&gt; sncls.parse_meta<span class="o">(</span><span class="nv">withnew</span><span class="o">=</span><span class="s1">&#39;skip&#39;</span>, <span class="nv">source</span><span class="o">=</span><span class="s1">&#39;BTS&#39;</span>, <span class="nv">metafile</span><span class="o">=</span>None, <span class="nv">syntax</span><span class="o">=</span><span class="s1">&#39;type in [&quot;Ib&quot;,&quot;Ic&quot;]&#39;</span><span class="o">)</span>
+
+<span class="c1"># the general parameter settings, i.e. https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt, are read as default when starting the class. As an option, one can also read parameters for individual SNe</span>
+&gt;&gt;&gt; sncls.parse_params<span class="o">(</span><span class="nv">force</span><span class="o">=</span>False, <span class="nv">parfile</span><span class="o">=</span><span class="s1">&#39;individual_par.txt&#39;</span><span class="o">)</span>
+
+<span class="c1"># show the meta</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.meta<span class="o">)</span>
+objid        <span class="nb">alias</span>   ra      dec     peakt   peakfilt        peakmag lastfilt        lastmag lasttnow        peakm   duration        rise    fade    <span class="nb">type</span>    z       vissave vispeak30       visnow  b       A_V
+ZTF19abirmkt AT2019pih       <span class="m">00</span>:44:18.18     +41:32:47.0     <span class="m">803</span>.76  r       <span class="m">17</span>.9091 g       <span class="m">19</span>.9881 -909.53 -6.639  <span class="m">12</span>.936  <span class="m">5</span>.031   <span class="m">7</span>.905   nova    <span class="m">0</span>.00017 <span class="m">5</span>.649960        <span class="m">6</span>.445292        <span class="m">6</span>.051191        -21.305369      <span class="m">0</span>.170
+ZTF19acxrihd AT2019wkp       <span class="m">00</span>:39:55.41     +40:46:01.2     <span class="m">828</span>.69  r       <span class="m">17</span>.9722 r       <span class="m">20</span>.1416 -909.55 -6.576  <span class="m">13</span>.589  <span class="m">4</span>.661   <span class="m">8</span>.928   nova    <span class="m">0</span>.00017 <span class="m">6</span>.665180        <span class="m">4</span>.462163        <span class="m">6</span>.099348        -22.052042      <span class="m">0</span>.170
+ZTF19abtrjqg AT2019aafn      <span class="m">00</span>:43:49.48     +41:26:02.7     <span class="m">819</span>.62  r       <span class="m">18</span>.2194 r       <span class="m">20</span>.5445 -667.38 -6.329  <span class="m">14</span>.394  <span class="m">6</span>.739   <span class="m">7</span>.655   nova?   <span class="m">0</span>.00017 <span class="m">9</span>.703686        <span class="m">5</span>.255307        <span class="m">6</span>.055584        -21.414920      <span class="m">0</span>.170
+... ...
+</pre></div>
+</div>
+<p id="owntable">One can also use their own table as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a file</span>
+&gt;&gt;&gt; touch test.txt
+
+<span class="c1"># set the objid</span>
+&gt;&gt;&gt; vi test.txt
+objid
+ss
+
+<span class="c1"># start python</span>
+&gt;&gt;&gt; python
+&gt;&gt;&gt; from sdapy import snerun
+&gt;&gt;&gt; <span class="nv">sncls</span> <span class="o">=</span> snerun.snelist<span class="o">()</span>
+
+<span class="c1"># read the test.txt as your meta</span>
+&gt;&gt;&gt; sncls.parse_meta<span class="o">(</span><span class="nv">withnew</span><span class="o">=</span><span class="s1">&#39;skip&#39;</span>, <span class="nv">source</span><span class="o">=</span>None, <span class="nv">metafile</span><span class="o">=</span><span class="s1">&#39;test.txt&#39;</span>, **kwargs<span class="o">)</span>:
+
+<span class="c1"># show it</span>
+&gt;&gt;&gt; print <span class="o">(</span>sncls.meta<span class="o">)</span>
+objid        <span class="nb">type</span>
+ss           -
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Following <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt</a> to set the meta headers. For all the meta keywords, the Object ID (<cite>objid</cite>) is the only item required as the identifier of an object. For the rest parameter, skip or set them as <cite>None</cite> or <cite>-</cite> if you don’t know. Coordinates (<cite>ra</cite> and <cite>dec</cite>) are essential mainly when using forced photometry services, and for getting Milky way extinctions. The redshift (<cite>z</cite>) for each object should be well determined; otherwise all the analysis will be done in the observer frame. The distance module can be obtained from redshift with a standard cosmology if it was set to <cite>None</cite>. The host galaxy extinction (<cite>hostebv</cite>) and the peak Juliand date (<cite>jdpeak</cite>) can be estimated later with varies of fittings. The mikly way extinction (<cite>mkwebv</cite>) can be obtain if <a class="reference external" href="https://dustmaps.readthedocs.io/en/latest/examples.html">dustmaps</a> installed correctly, and the SFD map file is available. Otherwise, <cite>HAFFET</cite> will ignore the  mikly way extinction as well.</p>
+</div>
+<p>Once a meta table is properly parsed, the next step is to define a list of objects and for each of them, define a <cite>snobject</cite> class, run all the fittings as what we did in <a class="reference internal" href="#package1"><span class="std std-ref">snobject</span></a>.
+Let’s try this with <cite>SN2020bcq</cite> as well:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nv">objid</span> <span class="o">=</span> <span class="s1">&#39;ZTF20aajcdad&#39;</span>
+
+<span class="c1"># parse meta correctly for the object</span>
+&gt;&gt;&gt; sncls.parse_meta_all<span class="o">(</span>sncls.kwargs, objid<span class="o">)</span>
+
+<span class="c1"># define sncls.data[objid] as a snerun.snobject</span>
+&gt;&gt;&gt; sncls.data<span class="o">[</span>objid<span class="o">]</span> <span class="o">=</span> snerun.snobject<span class="o">(</span>objid, <span class="nv">z</span><span class="o">=</span>sncls.z, <span class="nv">ra</span><span class="o">=</span>sncls.ra,
+...      <span class="nv">dec</span><span class="o">=</span>sncls.dec, <span class="nv">mkwebv</span><span class="o">=</span>sncls.mkwebv, <span class="nv">hostebv</span><span class="o">=</span>sncls.hostebv,
+...      <span class="nv">sntype</span><span class="o">=</span>sncls.sntype, <span class="nv">dm</span><span class="o">=</span>sncls.dm, <span class="nv">jdpeak</span><span class="o">=</span>sncls.jdpeak<span class="o">)</span>
+</pre></div>
+</div>
+<p>Actually we can do similar things as shown in <a class="reference internal" href="#package1"><span class="std std-ref">snobject</span></a> on the sncls.data[objid]:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.data<span class="o">[</span>objid<span class="o">]</span>.get_fp_ztf<span class="o">()</span>
+&gt;&gt;&gt; sncls.data<span class="o">[</span>objid<span class="o">]</span>.run_gp<span class="o">(</span><span class="nv">gp_bands</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span>,<span class="s1">&#39;g&#39;</span>,<span class="s1">&#39;i&#39;</span><span class="o">])</span>
+&gt;&gt;&gt; sncls.data<span class="o">[</span>objid<span class="o">]</span>.set_peak_gp<span class="o">(</span><span class="s1">&#39;r&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.data<span class="o">[</span>objid<span class="o">]</span>.fig, sncls.data<span class="o">[</span>objid<span class="o">]</span>.ax<span class="o">=</span>plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.data<span class="o">[</span>objid<span class="o">]</span>._ax<span class="o">(</span><span class="nv">plot_bands</span><span class="o">=[</span><span class="s1">&#39;r&#39;</span>, <span class="s1">&#39;g&#39;</span>, <span class="s1">&#39;i&#39;</span>, <span class="s1">&#39;c&#39;</span>, <span class="s1">&#39;o&#39;</span><span class="o">]</span>, <span class="nv">show_title</span><span class="o">=</span>False<span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example30.png"><img alt="../_images/example30.png" src="../_images/example30.png" style="width: 400px;" /></a>
+<p>An alternative build-in function is available to run all needed fittings for a large sample of SNe:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># get all SNe Ib and Ic from BTS catalog</span>
+&gt;&gt;&gt; sncls.parse_meta<span class="o">(</span><span class="nv">source</span><span class="o">=</span><span class="s1">&#39;BTS&#39;</span>, <span class="nv">syntax</span><span class="o">=</span><span class="s1">&#39;type in [&quot;Ib&quot;,&quot;Ic&quot;]&#39;</span><span class="o">)</span>
+
+<span class="c1"># obtain ztf forced photometry, Growth marshal and fritz spectra for each of them</span>
+<span class="c1"># fit the GP, bazin model on the multiband main LCs, Arnett models on bolometric LC, and a Gaussian for the absorption minima</span>
+&gt;&gt;&gt; sncls.run<span class="o">(</span><span class="nv">lctype</span><span class="o">=</span> <span class="o">[</span><span class="s1">&#39;ztffp&#39;</span><span class="o">]</span>, <span class="nv">spectype</span><span class="o">=[</span><span class="s1">&#39;marshal&#39;</span>, <span class="s1">&#39;fritz&#39;</span><span class="o">]</span>,
+...       <span class="nv">fit_methods</span><span class="o">=[</span><span class="s1">&#39;bazin&#39;</span>, <span class="s1">&#39;arnett_fit_taum_texp&#39;</span>, <span class="s1">&#39;gauss&#39;</span><span class="o">])</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Check all possible parameters at <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt</a></p>
+</div>
+<p>After all the computations, all the fitting results are stored as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; print <span class="o">(</span>sncls.data<span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;ZTF21abmlldj&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd29f28&gt;,
+<span class="s1">&#39;ZTF19abqxibq&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dcd6eb8&gt;,
+<span class="s1">&#39;ZTF19abcegvm&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd06518&gt;,
+<span class="s1">&#39;ZTF19aarfyvc&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd0ae48&gt;,
+... ...
+</pre></div>
+</div>
+<p>One can save all the results as cached files in local machine with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="k">for</span> objid in sncls.data:
+...    sncls.save_data<span class="o">(</span>objid, <span class="nv">force</span><span class="o">=</span>False, <span class="nv">datafile</span><span class="o">=</span><span class="s1">&#39;%s_data.clf&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>And in the next time user starts the class, one can recover all the results obtained before with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nv">sncls</span> <span class="o">=</span> snerun.snelist<span class="o">()</span>
+&gt;&gt;&gt; <span class="k">for</span> objid in sncls.meta.index:
+...   sncls.load_data<span class="o">(</span>objid, <span class="nv">force</span><span class="o">=</span>False, <span class="nv">datafile</span><span class="o">=</span><span class="s1">&#39;%s_data.clf&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>OK, now we had different kinds of fitting results for a large set of SNe, which can be then scattered in different styles of figures for a sample study.
+We mention that with the default settings, some fittings might be wrong, especially with the minimize routine, thus we encourage user to revisit all the fitting results, make sure the results are reliable.</p>
+<p>Before scattering datasets into parameter spaces, One need to define datasets:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># by default, use the full dataset</span>
+&gt;&gt;&gt; sncls.add_subset<span class="o">(</span><span class="nv">syntax</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>or several subsets like:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># decide plotting styles here as well</span>
+&gt;&gt;&gt; sncls.add_subset<span class="o">(</span><span class="nv">syntax</span><span class="o">=</span><span class="s1">&#39;type in [&quot;Ib&quot;]&#39;</span>, <span class="nv">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span>, <span class="nv">label</span><span class="o">=</span><span class="s2">&quot;Ib&quot;</span>, <span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_subset<span class="o">(</span><span class="nv">syntax</span><span class="o">=</span><span class="s1">&#39;type in [&quot;Ic&quot;]&#39;</span>, <span class="nv">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span>, <span class="nv">label</span><span class="o">=</span><span class="s2">&quot;Ic&quot;</span>, <span class="nv">ls</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>and parameters:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;objid&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;hostebv&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;z&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;mni&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;Mag&#39;</span>, <span class="nv">phase1</span><span class="o">=</span><span class="m">0</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;color&#39;</span>, <span class="nv">filt1</span><span class="o">=</span><span class="s1">&#39;g&#39;</span>,filt2<span class="o">=</span><span class="s1">&#39;r&#39;</span>,phase1<span class="o">=</span><span class="m">10</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;ra&#39;</span><span class="o">)</span>
+&gt;&gt;&gt; sncls.add_parameter<span class="o">(</span><span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;dec&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<p>After this, we will have the datasets and parameters in the <cite>snelist</cite>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; print <span class="o">(</span>sncls.dset<span class="o">)</span>
+<span class="o">{</span><span class="s1">&#39;type in [&quot;Ib&quot;]&#39;</span>: <span class="o">{</span><span class="s1">&#39;ZTF21abmlldj&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd29f28&gt;,
+<span class="s1">&#39;ZTF19abqxibq&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dcd6eb8&gt;,
+<span class="s1">&#39;ZTF19abcegvm&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd06518&gt;,
+<span class="s1">&#39;ZTF19aarfyvc&#39;</span>: None,
+... ...
+<span class="s1">&#39;type in [&quot;Ic&quot;]&#39;</span>: <span class="o">{</span><span class="s1">&#39;ZTF21abmlldj&#39;</span>: None,
+<span class="s1">&#39;ZTF19abqxibq&#39;</span>: None,
+<span class="s1">&#39;ZTF19abcegvm&#39;</span>: None,
+<span class="s1">&#39;ZTF19aarfyvc&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd0ae48&gt;,
+... ...
+<span class="s1">&#39;all&#39;</span>: <span class="o">{</span><span class="s1">&#39;ZTF21abmlldj&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd29f28&gt;,
+<span class="s1">&#39;ZTF19abqxibq&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dcd6eb8&gt;,
+<span class="s1">&#39;ZTF19abcegvm&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd06518&gt;,
+<span class="s1">&#39;ZTF19aarfyvc&#39;</span>: &lt;sdapy.snerun.snobject at 0x7fd68dd0ae48&gt;,
+... ...
+<span class="o">}</span>
+
+&gt;&gt;&gt; print <span class="o">(</span>sncls.pars<span class="o">)</span>
+<span class="o">[{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;objid&#39;</span><span class="o">}</span>,
+<span class="o">{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;hostebv&#39;</span><span class="o">}</span>,
+<span class="o">{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;z&#39;</span><span class="o">}</span>,
+<span class="o">{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;mni&#39;</span><span class="o">}</span>,
+<span class="o">{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;Mag&#39;</span>, <span class="s1">&#39;phase1&#39;</span>: <span class="m">0</span><span class="o">}</span>,
+<span class="o">{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;color&#39;</span>, <span class="s1">&#39;filt1&#39;</span>: <span class="s1">&#39;g&#39;</span>, <span class="s1">&#39;filt2&#39;</span>: <span class="s1">&#39;r&#39;</span>, <span class="s1">&#39;phase1&#39;</span>: <span class="m">10</span><span class="o">}</span>,
+<span class="o">{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;ra&#39;</span><span class="o">}</span>,
+<span class="o">{</span><span class="s1">&#39;parname&#39;</span>: <span class="s1">&#39;dec&#39;</span><span class="o">}]</span>
+</pre></div>
+</div>
+<p>Then we can get the parameters into tables, e.g.:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="nv">tab</span> <span class="o">=</span> sncls.table<span class="o">(</span><span class="nv">syntax</span><span class="o">=</span><span class="s1">&#39;type in [&quot;Ib&quot;]&#39;</span>, <span class="nv">keys</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;z&#39;</span>, <span class="s1">&#39;ra&#39;</span>, <span class="s1">&#39;dec&#39;</span><span class="o">])</span>
+&gt;&gt;&gt; print <span class="o">(</span>tab<span class="o">)</span>
+objid <span class="p">&amp;</span> z <span class="p">&amp;</span> ra <span class="p">&amp;</span> dec <span class="se">\\</span>
+ZTF21abmlldj <span class="p">&amp;</span> <span class="m">0</span>.094 <span class="p">&amp;</span> <span class="m">7</span>.379 <span class="p">&amp;</span> <span class="m">12</span>.106 <span class="se">\\</span>
+ZTF19abqxibq <span class="p">&amp;</span> <span class="m">0</span>.082 <span class="p">&amp;</span> <span class="m">9</span>.241 <span class="p">&amp;</span> -3.828 <span class="se">\\</span>
+ZTF19abcegvm <span class="p">&amp;</span> <span class="m">0</span>.073 <span class="p">&amp;</span> <span class="m">337</span>.585 <span class="p">&amp;</span> -14.868 <span class="se">\\</span>
+ZTF19abztknu <span class="p">&amp;</span> <span class="m">0</span>.053 <span class="p">&amp;</span> <span class="m">47</span>.256 <span class="p">&amp;</span> <span class="m">24</span>.044 <span class="se">\\</span>
+ZTF20acvebcu <span class="p">&amp;</span> <span class="m">0</span>.063 <span class="p">&amp;</span> <span class="m">178</span>.103 <span class="p">&amp;</span> <span class="m">67</span>.548 <span class="se">\\</span>
+... ...
+
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;ZTF20aajcdad&#39;</span>, <span class="s1">&#39;z&#39;</span><span class="o">)</span>
+<span class="o">(</span><span class="m">0</span>.01861, None, None<span class="o">)</span>
+
+&gt;&gt;&gt; sncls.get_par<span class="o">(</span><span class="s1">&#39;ZTF20aajcdad&#39;</span>, <span class="nv">parname</span><span class="o">=</span><span class="s1">&#39;mni&#39;</span><span class="o">)</span>
+<span class="o">(</span><span class="m">0</span>.14349521005302834, <span class="m">0</span>.14262398157200762, <span class="m">0</span>.14424636360440404<span class="o">)</span>
+</pre></div>
+</div>
+<p>or 1d plots:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># note here 2 means the third element (0 is the first) of the parameters, that is the redshift</span>
+&gt;&gt;&gt; fig, sncls.ax <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.show1d<span class="o">(</span><span class="m">2</span>, <span class="nv">style</span><span class="o">=</span><span class="s1">&#39;pdf&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example31.png"><img alt="../_images/example31.png" src="../_images/example31.png" style="width: 400px;" /></a>
+<p>or 2d plots:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; fig, sncls.ax <span class="o">=</span> plt.subplots<span class="o">(</span><span class="m">1</span>,1<span class="o">)</span>
+&gt;&gt;&gt; sncls.show2d<span class="o">(</span><span class="m">6</span>, <span class="m">7</span><span class="o">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/example32.png"><img alt="../_images/example32.png" src="../_images/example32.png" style="width: 400px;" /></a>
+<p>More plots are available and wait for your exploration. Let me know whenever you met any problems in the meanwhile.
+Note that in the example, we perform most of the calculations with default parameters. We suggest user to check carefull the API pages, i.e. <a class="reference internal" href="../snelist.html#snelist"><span class="std std-ref">snelist</span></a> and <a class="reference internal" href="../snobject.html#snobject"><span class="std std-ref">snobject</span></a>, and the <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">parameter file</a></p>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#package"><span class="std std-ref">Top</span></a></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/package.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

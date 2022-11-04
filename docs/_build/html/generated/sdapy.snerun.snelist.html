@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snelist &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snelist.add_hist" href="sdapy.snerun.snelist.add_hist.html" />
+    <link rel="prev" title="snelist – class deal with a list of objects" href="../snelist.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snelist">
+<h1>sdapy.snerun.snelist<a class="headerlink" href="#sdapy-snerun-snelist" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sdapy.snerun.snelist">
+<em class="property">class </em><code class="sig-prename descclassname">sdapy.snerun.</code><code class="sig-name descname">snelist</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">errors='ignore'</em>, <em class="sig-param">updatepar=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>snelist: define a list of <em>snobject</em>, handle their data and fittings, aimed for a population study</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snobject.html#sdapy.snerun.snobject" title="sdapy.snerun.snobject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Take careful of meta table of <em>snelist</em>, especially their types.</p>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.add_hist.html#sdapy.snerun.snelist.add_hist" title="sdapy.snerun.snelist.add_hist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_hist</span></code></a>(self, x, y[, nbinx, nbiny, xticks, …])</p></td>
+<td><p>make histograms</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.add_parameter.html#sdapy.snerun.snelist.add_parameter" title="sdapy.snerun.snelist.add_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_parameter</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>add a parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.add_subset.html#sdapy.snerun.snelist.add_subset" title="sdapy.snerun.snelist.add_subset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_subset</span></code></a>(self[, syntax, astype])</p></td>
+<td><p>add a data subset, and corresponding plotting kwargs</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.format_par.html#sdapy.snerun.snelist.format_par" title="sdapy.snerun.snelist.format_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format_par</span></code></a>(v, vlow, vup[, digits, style])</p></td>
+<td><p>make parameter into latex format</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.get_par.html#sdapy.snerun.snelist.get_par" title="sdapy.snerun.snelist.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a>(self, objid[, returnname])</p></td>
+<td><p>get parameter of one SN</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.init_hist_axes.html#sdapy.snerun.snelist.init_hist_axes" title="sdapy.snerun.snelist.init_hist_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_hist_axes</span></code></a>(self[, pad, labelbottom, …])</p></td>
+<td><p>create 2 subplots as histograms for the scatter plots</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.load_data.html#sdapy.snerun.snelist.load_data" title="sdapy.snerun.snelist.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_data</span></code></a>(self, objid[, datafile, reloadclass])</p></td>
+<td><p>for each object, load their <em>snobject</em> classes if they’re cached before.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_meta.html#sdapy.snerun.snelist.parse_meta" title="sdapy.snerun.snelist.parse_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_meta</span></code></a>(self[, withnew, metafile])</p></td>
+<td><p>Read a meta table from local</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_meta_all.html#sdapy.snerun.snelist.parse_meta_all" title="sdapy.snerun.snelist.parse_meta_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_meta_all</span></code></a>(self, kwargs, objid)</p></td>
+<td><p>properly read a list of meta infomations from self.meta, i.e.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_meta_one.html#sdapy.snerun.snelist.parse_meta_one" title="sdapy.snerun.snelist.parse_meta_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_meta_one</span></code></a>(self, idkey, objid, key)</p></td>
+<td><p>Obtain value with object ID and a meta key</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_params.html#sdapy.snerun.snelist.parse_params" title="sdapy.snerun.snelist.parse_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_params</span></code></a>(self[, clobber, verbose, parfile])</p></td>
+<td><p>Besides the general parameter settings, for SNe with peculiar properties, a specific parameter is sometimes needed, and <em>parse_params</em> can read a text file (individual_par.txt) that includes all special settings for particular SNe.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.read_kwargs.html#sdapy.snerun.snelist.read_kwargs" title="sdapy.snerun.snelist.read_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_kwargs</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Define a proper way to read and update optional parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.run.html#sdapy.snerun.snelist.run" title="sdapy.snerun.snelist.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(self[, ax, ax1, ax2, ax3, ax4, debug])</p></td>
+<td><p>get a list of SNe, for each SN, define a dedicated <em>snobject</em>, and run snobject.run() for all of them.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.save_data.html#sdapy.snerun.snelist.save_data" title="sdapy.snerun.snelist.save_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_data</span></code></a>(self, objid[, datafile])</p></td>
+<td><p>for each object, save their <em>snobject</em> classes to local cached files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.show1d.html#sdapy.snerun.snelist.show1d" title="sdapy.snerun.snelist.show1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show1d</span></code></a>(self[, index, style])</p></td>
+<td><p>1D histograms plot for one parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.show2d.html#sdapy.snerun.snelist.show2d" title="sdapy.snerun.snelist.show2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show2d</span></code></a>(self, index1, index2)</p></td>
+<td><p>2D scatter plot for two parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax.html#sdapy.snerun.snelist.showax" title="sdapy.snerun.snelist.showax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax</span></code></a>(self[, syntax, show_data, show_fits, …])</p></td>
+<td><p>make flux plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax2.html#sdapy.snerun.snelist.showax2" title="sdapy.snerun.snelist.showax2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax2</span></code></a>(self[, syntax, show_data, …])</p></td>
+<td><p>make mag plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax3.html#sdapy.snerun.snelist.showax3" title="sdapy.snerun.snelist.showax3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax3</span></code></a>(self[, syntax, show_data, …])</p></td>
+<td><p>make colour plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax4.html#sdapy.snerun.snelist.showax4" title="sdapy.snerun.snelist.showax4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax4</span></code></a>(self[, syntax, show_data, …])</p></td>
+<td><p>make bolometric lc plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax6</span></code>(self[, syntax, show_data, …])</p></td>
+<td><p>velocity evolution plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.shownd.html#sdapy.snerun.snelist.shownd" title="sdapy.snerun.snelist.shownd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shownd</span></code></a>(self[, syntax])</p></td>
+<td><p>contour plots for the bestfit value of all parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.table.html#sdapy.snerun.snelist.table" title="sdapy.snerun.snelist.table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code></a>(self[, syntax, tablepars, tablename, …])</p></td>
+<td><p>create a latex table for a subset of SNe</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sdapy.snerun.snelist.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">errors='ignore'</em>, <em class="sig-param">updatepar=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snelist.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>initialize <em>snelist</em></p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>fig</strong><span class="classifier"><cite>matplotlib.subplot</cite></span></dt><dd><p>used for histogram/scatter or other population plots</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>used for histogram/scatter or other population plots</p>
+</dd>
+<dt><strong>errors</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Control raising of exceptions on invalid data for provided dtype.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">raise</span></code> : allow exceptions to be raised</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ignore</span></code>  : suppress exceptions. On error return original object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">warning</span></code> : suppress exceptions. On error print it as warning</p></li>
+</ul>
+</dd>
+<dt><strong>updatepar</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if update parameter, when reading them</p>
+</dd>
+<dt><strong>kwargs</strong><span class="classifier"><cite>Keyword Arguments</cite></span></dt><dd><p>see <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt</a>,
+<strong>snelist</strong> part</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdapy</span> <span class="kn">import</span> <span class="n">snerun</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">snerun</span><span class="o">.</span><span class="n">snelist</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">&lt;sdapy.snerun.snelist object at 0x7fd6fb805f60&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.__init__.html#sdapy.snerun.snelist.__init__" title="sdapy.snerun.snelist.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self[, fig, ax, errors, updatepar])</p></td>
+<td><p>initialize <em>snelist</em></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.add_hist.html#sdapy.snerun.snelist.add_hist" title="sdapy.snerun.snelist.add_hist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_hist</span></code></a>(self, x, y[, nbinx, nbiny, xticks, …])</p></td>
+<td><p>make histograms</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.add_parameter.html#sdapy.snerun.snelist.add_parameter" title="sdapy.snerun.snelist.add_parameter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_parameter</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>add a parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.add_subset.html#sdapy.snerun.snelist.add_subset" title="sdapy.snerun.snelist.add_subset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_subset</span></code></a>(self[, syntax, astype])</p></td>
+<td><p>add a data subset, and corresponding plotting kwargs</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.format_par.html#sdapy.snerun.snelist.format_par" title="sdapy.snerun.snelist.format_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">format_par</span></code></a>(v, vlow, vup[, digits, style])</p></td>
+<td><p>make parameter into latex format</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.get_par.html#sdapy.snerun.snelist.get_par" title="sdapy.snerun.snelist.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a>(self, objid[, returnname])</p></td>
+<td><p>get parameter of one SN</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.init_hist_axes.html#sdapy.snerun.snelist.init_hist_axes" title="sdapy.snerun.snelist.init_hist_axes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">init_hist_axes</span></code></a>(self[, pad, labelbottom, …])</p></td>
+<td><p>create 2 subplots as histograms for the scatter plots</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.load_data.html#sdapy.snerun.snelist.load_data" title="sdapy.snerun.snelist.load_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_data</span></code></a>(self, objid[, datafile, reloadclass])</p></td>
+<td><p>for each object, load their <em>snobject</em> classes if they’re cached before.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_meta.html#sdapy.snerun.snelist.parse_meta" title="sdapy.snerun.snelist.parse_meta"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_meta</span></code></a>(self[, withnew, metafile])</p></td>
+<td><p>Read a meta table from local</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_meta_all.html#sdapy.snerun.snelist.parse_meta_all" title="sdapy.snerun.snelist.parse_meta_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_meta_all</span></code></a>(self, kwargs, objid)</p></td>
+<td><p>properly read a list of meta infomations from self.meta, i.e.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_meta_one.html#sdapy.snerun.snelist.parse_meta_one" title="sdapy.snerun.snelist.parse_meta_one"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_meta_one</span></code></a>(self, idkey, objid, key)</p></td>
+<td><p>Obtain value with object ID and a meta key</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parse_params.html#sdapy.snerun.snelist.parse_params" title="sdapy.snerun.snelist.parse_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_params</span></code></a>(self[, clobber, verbose, parfile])</p></td>
+<td><p>Besides the general parameter settings, for SNe with peculiar properties, a specific parameter is sometimes needed, and <em>parse_params</em> can read a text file (individual_par.txt) that includes all special settings for particular SNe.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.read_kwargs.html#sdapy.snerun.snelist.read_kwargs" title="sdapy.snerun.snelist.read_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_kwargs</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Define a proper way to read and update optional parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.run.html#sdapy.snerun.snelist.run" title="sdapy.snerun.snelist.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(self[, ax, ax1, ax2, ax3, ax4, debug])</p></td>
+<td><p>get a list of SNe, for each SN, define a dedicated <em>snobject</em>, and run snobject.run() for all of them.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.save_data.html#sdapy.snerun.snelist.save_data" title="sdapy.snerun.snelist.save_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_data</span></code></a>(self, objid[, datafile])</p></td>
+<td><p>for each object, save their <em>snobject</em> classes to local cached files.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.show1d.html#sdapy.snerun.snelist.show1d" title="sdapy.snerun.snelist.show1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show1d</span></code></a>(self[, index, style])</p></td>
+<td><p>1D histograms plot for one parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.show2d.html#sdapy.snerun.snelist.show2d" title="sdapy.snerun.snelist.show2d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show2d</span></code></a>(self, index1, index2)</p></td>
+<td><p>2D scatter plot for two parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax.html#sdapy.snerun.snelist.showax" title="sdapy.snerun.snelist.showax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax</span></code></a>(self[, syntax, show_data, show_fits, …])</p></td>
+<td><p>make flux plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax2.html#sdapy.snerun.snelist.showax2" title="sdapy.snerun.snelist.showax2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax2</span></code></a>(self[, syntax, show_data, …])</p></td>
+<td><p>make mag plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax3.html#sdapy.snerun.snelist.showax3" title="sdapy.snerun.snelist.showax3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax3</span></code></a>(self[, syntax, show_data, …])</p></td>
+<td><p>make colour plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.showax4.html#sdapy.snerun.snelist.showax4" title="sdapy.snerun.snelist.showax4"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showax4</span></code></a>(self[, syntax, show_data, …])</p></td>
+<td><p>make bolometric lc plot for a large set of SNe</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.shownd.html#sdapy.snerun.snelist.shownd" title="sdapy.snerun.snelist.shownd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shownd</span></code></a>(self[, syntax])</p></td>
+<td><p>contour plots for the bestfit value of all parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.table.html#sdapy.snerun.snelist.table" title="sdapy.snerun.snelist.table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">table</span></code></a>(self[, syntax, tablepars, tablename, …])</p></td>
+<td><p>create a latex table for a subset of SNe</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snelist.parlist.html#sdapy.snerun.snelist.parlist" title="sdapy.snerun.snelist.parlist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parlist</span></code></a></p></td>
+<td><p>parameter list</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snelist.version.html#sdapy.snerun.snelist.version" title="sdapy.snerun.snelist.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
+<td><p>Static version info</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a><ul>
+      <li>Previous: <a href="../snelist.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+      <li>Next: <a href="sdapy.snerun.snelist.add_hist.html" title="next chapter">sdapy.snerun.snelist.add_hist</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snelist.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

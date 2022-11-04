@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Add your own models &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="add-your-own-models">
+<span id="esternalmodels"></span><h1>Add your own models<a class="headerlink" href="#add-your-own-models" title="Permalink to this headline">¶</a></h1>
+<p>Besides those build-in models, users can use their own models as well. We show an example below, that is a linear model fittting for the tail of SNe multi-band lightcurves. One can add models directly to the exsisting models, e.g. <cite>ZTFDATA</cite>/models/polynomial/ directory. Another option is to make a directory/model, e.g. <cite>test</cite>, under <cite>ZTFDATA</cite>/models/, and registered it in the <cite>ZTFDATA</cite>/models/__init__.py with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from .test import *
+</pre></div>
+</div>
+<p>Then inside the directory, one can define analytic models (in <cite>ZTFDATA</cite>/models/test/functions.py), e.g.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>def linear<span class="o">(</span>x, a, b<span class="o">)</span>:
+   <span class="k">return</span> a*x+b
+</pre></div>
+</div>
+<p>and claim model name, <a class="reference internal" href="engines.html#engines"><span class="std std-ref">engine</span></a>, parameter descriptions, etc in the <cite>ZTFDATA</cite>/models/test/parameters.py, e.g.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>import numpy as np
+
+<span class="nv">modelmeta</span> <span class="o">=</span> <span class="o">{</span>
+   <span class="s1">&#39;poly1&#39;</span>:
+   <span class="o">{</span>
+      <span class="s1">&#39;engine&#39;</span>: <span class="s1">&#39;multiband_tail&#39;</span>,
+      <span class="s1">&#39;alias&#39;</span>:
+      <span class="o">[</span>
+         <span class="s1">&#39;linear&#39;</span>, <span class="s1">&#39;polynomial1&#39;</span>,
+      <span class="o">]</span>,
+      <span class="s1">&#39;description&#39;</span>: <span class="s1">&#39;1 order polynomial&#39;</span>,
+      <span class="s1">&#39;func&#39;</span>: <span class="s1">&#39;functions.linear&#39;</span>,
+      <span class="s1">&#39;parname&#39;</span> :
+      <span class="o">[</span>
+         r<span class="s1">&#39;$a$&#39;</span>, r<span class="s1">&#39;$b$&#39;</span>,
+      <span class="o">]</span>,
+      <span class="s1">&#39;par&#39;</span> :
+      <span class="o">[</span>
+         <span class="s1">&#39;a&#39;</span>, <span class="s1">&#39;b&#39;</span>,
+      <span class="o">]</span>,
+      <span class="s1">&#39;bestv&#39;</span>:
+      <span class="o">{</span>
+         <span class="s1">&#39;a&#39;</span> : <span class="m">1</span>,
+         <span class="s1">&#39;b&#39;</span> : <span class="m">0</span>.,
+      <span class="o">}</span>,
+      <span class="s1">&#39;bounds&#39;</span>:
+      <span class="o">{</span>
+         <span class="s1">&#39;a&#39;</span> : <span class="o">[</span>-np.inf, np.inf<span class="o">]</span>,
+         <span class="s1">&#39;b&#39;</span> : <span class="o">[</span>-np.inf, np.inf<span class="o">]</span>,
+      <span class="o">}</span>,
+      <span class="s1">&#39;same_parameter&#39;</span>: <span class="o">[</span><span class="s1">&#39;a&#39;</span><span class="o">]</span>,
+      <span class="s1">&#39;fit_error&#39;</span> : True,
+   <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Here, the <strong>same_parameter</strong> item decides whether to fit multiple band LCs simultaneously.  If the <strong>same_parameter</strong> is left blank, HAFFET will fit the LC tails in different bands one by one. If some parameters are specified, such as <strong>a</strong> for example, HAFFET fit all bands with a same <strong>a</strong>, which is the slope of tail.</p>
+<p>Demo codes can be downloaded <a class="reference download internal" download="" href="../_downloads/67d4ac7a233a5482fdff00a563c221fe/poly.zip"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a></p>
+</div>
+<div class="section" id="import-external-models">
+<h1>Import external models<a class="headerlink" href="#import-external-models" title="Permalink to this headline">¶</a></h1>
+<p>Another option is to import models from other open public python packages. As an example, we introduce magnetar model from <cite>redback</cite>, which can be then used to fit on bolometric lightcurves of SLSNe. After installing <cite>redback</cite> and registering it to <cite>HAFFET</cite> correctly, one can import functions at <cite>ZTFDATA</cite>/models/test2/functions.py as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>from redback.transient_models.supernova_models import basic_magnetar_powered_bolometric
+</pre></div>
+</div>
+<p>and claim model settings as:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">modelmeta</span> <span class="o">=</span> <span class="o">{</span>
+   <span class="s1">&#39;magnetar&#39;</span>:
+   <span class="o">{</span>
+      <span class="s1">&#39;engine&#39;</span>: <span class="s1">&#39;bol_main&#39;</span>,
+      <span class="s1">&#39;alias&#39;</span>:
+      <span class="o">[</span>
+         <span class="s1">&#39;redback_magnetar&#39;</span>,
+         <span class="s1">&#39;basic_magnetar_powered_bolometric&#39;</span>
+      <span class="o">]</span>,
+      <span class="s1">&#39;description&#39;</span>: <span class="s1">&#39;magnetar model fit&#39;</span>,
+      <span class="s1">&#39;func&#39;</span>: <span class="s1">&#39;functions.basic_magnetar_powered_bolometric&#39;</span>,
+      <span class="s1">&#39;parname&#39;</span>:
+      <span class="o">[</span>
+         r<span class="s1">&#39;$P_{0}\ [ms]$&#39;</span>,
+         r<span class="s1">&#39;$B_{p}\ [10^{14}G$]&#39;</span>,
+         r<span class="s1">&#39;$M_{\mathrm{NS}} [M_{\odot}]$&#39;</span>,
+         r<span class="s1">&#39;$\theta_{P-B}$&#39;</span>,
+      <span class="o">]</span>,
+      <span class="s1">&#39;par&#39;</span> :
+      <span class="o">[</span>
+         <span class="s1">&#39;p0&#39;</span>, <span class="s1">&#39;bp&#39;</span>, <span class="s1">&#39;mass_ns&#39;</span>, <span class="s1">&#39;theta_pb&#39;</span>,
+      <span class="o">]</span>,
+      <span class="s1">&#39;bestv&#39;</span>:
+      <span class="o">{</span>
+         <span class="s1">&#39;p0&#39;</span>: <span class="m">5</span>,
+         <span class="s1">&#39;bp&#39;</span>: <span class="m">1</span>,
+         <span class="s1">&#39;mass_ns&#39;</span>: <span class="m">1</span>.4,
+         <span class="s1">&#39;theta_pb&#39;</span>: <span class="m">1</span>,
+      <span class="o">}</span>,
+      <span class="s1">&#39;bounds&#39;</span>:
+      <span class="o">{</span>
+         <span class="s1">&#39;p0&#39;</span>: <span class="o">[</span><span class="m">1</span>,10<span class="o">]</span>,
+         <span class="s1">&#39;bp&#39;</span>: <span class="o">[</span>.1,10<span class="o">]</span>,
+         <span class="s1">&#39;mass_ns&#39;</span>:  <span class="o">[</span><span class="m">1</span>.1,2.2<span class="o">]</span>,
+         <span class="s1">&#39;theta_pb&#39;</span>: <span class="o">[</span><span class="m">0</span>, <span class="m">3</span>.14/2<span class="o">]</span>,
+      <span class="o">}</span>,
+   <span class="o">}</span>,
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>Demo codes can be downloaded <a class="reference download internal" download="" href="../_downloads/b31139e6268602e5dd49116999c07a8a/redback_magnetar.zip"><code class="xref download docutils literal notranslate"><span class="pre">here</span></code></a></p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/models/extmodels.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

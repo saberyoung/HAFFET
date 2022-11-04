@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snobject._get_fp_atlas &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snobject._get_par" href="sdapy.snerun.snobject._get_par.html" />
+    <link rel="prev" title="sdapy.snerun.snobject._add_mag" href="sdapy.snerun.snobject._add_mag.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snobject-get-fp-atlas">
+<h1>sdapy.snerun.snobject._get_fp_atlas<a class="headerlink" href="#sdapy-snerun-snobject-get-fp-atlas" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snobject._get_fp_atlas">
+<code class="sig-prename descclassname">snobject.</code><code class="sig-name descname">_get_fp_atlas</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">f</em>, <em class="sig-param">binned=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject._get_fp_atlas" title="Permalink to this definition">¶</a></dt>
+<dd><p>(static) parse local ATLAS forced (binned or not binned) photometric data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code></p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>f</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>ATLAS file name</p>
+</dd>
+<dt><strong>binned</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if file is binned data or not</p>
+</dd>
+<dt><strong>zp</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>zeropoint to convert flux to magnitude.
+zp = 23.9 for micro Jansky to AB mag
+zp = 48.6 for ergs/s/cm2/Hz to AB mag
+e.g. mab = -2.5 * log10(fv[Jy]/3631) = -2.5 * log10(fv[mJy]) + 2.5*log10(3631*1e6)</p>
+</dd>
+<dt><strong>snrt</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>SNR threshold to distinguish detection/limit</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snobject.add_lc.html#sdapy.snerun.snobject.add_lc" title="sdapy.snerun.snobject.add_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.add_lc</span></code></a>, <a class="reference internal" href="sdapy.snerun.snobject.add_mag.html#sdapy.snerun.snobject.add_mag" title="sdapy.snerun.snobject.add_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.add_mag</span></code></a></dt><dd></dd>
+</dl>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snobject._add_mag.html" title="previous chapter">sdapy.snerun.snobject._add_mag</a></li>
+      <li>Next: <a href="sdapy.snerun.snobject._get_par.html" title="next chapter">sdapy.snerun.snobject._get_par</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snobject._get_fp_atlas.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

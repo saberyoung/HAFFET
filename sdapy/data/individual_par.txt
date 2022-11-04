@@ -1,0 +1,7 @@
+## This is a sample sdapy configuration file
+## format: objic key1=value1 key2=value2 key3=value3 ... ...
+## key should be taken from snobject of https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt
+
+ZTF19abqxibq fit_redo=True fit_methods=['bazin1','arnett_fit_taum','gauss'] bol_main_xrange=[-30,20] bol_tail_xrange=[40,120] verbose=True
+
+ZTF20aajcdad fit_redo=False plot_bands=['g','r','i','o','c'] verbose=True bol_main_xrange=[-20,40] bol_tail_xrange=[40,120] verbose=True

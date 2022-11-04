@@ -1,0 +1,6 @@
+sdapy.snerun.snobject.bb\_bol\_show
+===================================
+
+.. currentmodule:: sdapy.snerun
+
+.. automethod:: snobject.bb_bol_show

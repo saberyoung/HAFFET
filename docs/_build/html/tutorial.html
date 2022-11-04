@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Getting started &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Installation" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="getting-started">
+<span id="getstart"></span><h1>Getting started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<p>Once installed, <cite>HAFFET</cite> can be run from any directory, but a data directory should be defined in advance to deal with cached data and fitting samples. The default data directory is a folder in the current directory, i.e. ./data/. It would be more convenient to make a new directory for your project, and refer it in your shell profile:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; mkdir /xxx/yyy/haffet_data
+&gt;&gt;&gt; <span class="nb">export</span> <span class="nv">ZTFDATA</span><span class="o">=</span><span class="s2">&quot;/xxx/yyy/haffet_data&quot;</span>
+
+<span class="c1"># or add it to your shell profiles, e.g. bash, zsh, etc,</span>
+<span class="c1"># so that every time your started the shell, the data directory is defined.</span>
+&gt;&gt;&gt; vi ~/.bashrc
+
+<span class="c1"># add the line below</span>
+&gt;&gt;&gt; <span class="nb">export</span> <span class="nv">ZTFDATA</span><span class="o">=</span><span class="s2">&quot;/xxx/yyy/haffet_data&quot;</span>
+
+<span class="c1"># save, quit, and source your shell profile</span>
+&gt;&gt;&gt; <span class="nb">source</span> ~/.bashrc
+</pre></div>
+</div>
+<p>The variable <cite>ZTFDATA</cite> is then defined serving as the data directory for <cite>HAFFET</cite>. The structure of the data directory would be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="sb">`</span>ZTFDATA<span class="sb">`</span>/
+   auth.txt
+   bc_table.txt
+   bts_meta.txt
+   c10_template.txt
+   default_par.txt
+   individual_par.txt
+   logo.txt
+   oac_meta.txt
+   marshal/
+      lightcurves/
+         <span class="sb">`</span>objid<span class="sb">`</span>/
+            ***.csv
+      spectra/
+         <span class="sb">`</span>objid<span class="sb">`</span>/
+            ***.ascii
+   fritz/
+      lightcurves/
+         <span class="sb">`</span>objid<span class="sb">`</span>/
+            ***.csv
+      sample/
+         fritz_groups.json
+      spectra/
+         <span class="sb">`</span>objid<span class="sb">`</span>/
+            ***.ascii
+   ForcePhot/
+      <span class="sb">`</span>objid<span class="sb">`</span>/
+         ***.csv
+   ForcePhot_atlas/
+      <span class="sb">`</span>objid<span class="sb">`</span>/
+         ***.csv
+         ***.txt
+   oac/
+      <span class="sb">`</span>objid<span class="sb">`</span>/
+         ***.csv
+   cache/
+       ***.h5
+   plots/
+       ***.png
+   images/
+       ***.fits
+</pre></div>
+</div>
+<p>The text files are copied from <a class="reference external" href="https://github.com/saberyoung/HAFFET/tree/master/sdapy/data">https://github.com/saberyoung/HAFFET/tree/master/sdapy/data</a>, e.g. the <code class="docutils literal notranslate"><span class="pre">auth.txt</span></code> defined the user accounts for different services, <code class="docutils literal notranslate"><span class="pre">default_par.txt</span></code> defined general parameters, and <code class="docutils literal notranslate"><span class="pre">individual_par.txt</span></code> defined specific parameters for individual objects. Note that if there’re any files in your current working directory with the same name, they’ll be used instead of the ones in the <cite>ZTFDATA</cite> directory.</p>
+<p>The data directory is crucial for <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code>, thus we provide build-in functions helping setting and checking the data directory.
+One can use the executable file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sdapy_run --checkdir
+</pre></div>
+</div>
+<p>or inside the python:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from sdapy.snerun import check_dir
+&gt;&gt;&gt; check_dir<span class="o">(</span><span class="nv">askifdirmissed</span><span class="o">=</span>True<span class="o">)</span>
+</pre></div>
+</div>
+<p>Nothing will happen if everything is OK, otherwise, a question would appear in the terminal asking:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; as set, xxx was the folder used to deal with data however some sub folder not exists, create them?<span class="o">(</span>Y/N<span class="o">)</span>
+</pre></div>
+</div>
+<p>Here, <strong>xxx</strong> is the <cite>ZTFDATA</cite> variable getting from the shell, if not found, <code class="docutils literal notranslate"><span class="pre">./Data</span></code> will be used instead.
+Type <strong>Y</strong> and enter, then you’ll get <strong>xxx</strong> as the correct data directory.</p>
+<p>After properly set the data directory, <cite>HAFFET</cite> can be invoked via three approaches:</p>
+<div class="section" id="run-as-a-graphical-user-interface-gui">
+<h2><a class="reference internal" href="tutorial/gui.html#gui"><span class="std std-ref">1. Run as a Graphical user interface (GUI)</span></a><a class="headerlink" href="#run-as-a-graphical-user-interface-gui" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/demo.gif"><img alt="_images/demo.gif" src="_images/demo.gif" style="width: 400px;" /></a>
+</div>
+<div class="section" id="run-with-the-executable-file">
+<h2><a class="reference internal" href="tutorial/exe.html#exe"><span class="std std-ref">2. Run with the executable file</span></a><a class="headerlink" href="#run-with-the-executable-file" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/demo1.gif"><img alt="_images/demo1.gif" src="_images/demo1.gif" style="width: 400px;" /></a>
+</div>
+<div class="section" id="run-as-a-python-package">
+<h2><a class="reference internal" href="tutorial/package.html#package"><span class="std std-ref">3. Run as a Python package</span></a><a class="headerlink" href="#run-as-a-python-package" title="Permalink to this headline">¶</a></h2>
+<a class="reference internal image-reference" href="_images/demo2.gif"><img alt="_images/demo2.gif" src="_images/demo2.gif" style="width: 400px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An example data directory can be found at <a class="reference external" href="https://stockholmuniversity.box.com/s/2c3z8yrgvd9zumm4c35u8jtvapyva3e1">https://stockholmuniversity.box.com/s/2c3z8yrgvd9zumm4c35u8jtvapyva3e1</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="install.html" title="previous chapter">Installation</a></li>
+      <li>Next: <a href="reference.html" title="next chapter">Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/tutorial.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

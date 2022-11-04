@@ -1,0 +1,6 @@
+sdapy.snerun.snobject.clip\_df
+==============================
+
+.. currentmodule:: sdapy.snerun
+
+.. automethod:: snobject.clip_df

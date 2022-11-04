@@ -1,0 +1,14 @@
+.. sdapy:
+   
+:mod:`Gaussian Process` -- Gaussian Process
+=================================================================================
+
+These classes provide various packages used by `snerun`.
+
+Gaussian Process
+--------------------
+.. currentmodule:: sdapy.gaussian_process
+.. autosummary::
+   :toctree: generated/
+
+   fit_gp

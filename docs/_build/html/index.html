@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to the HAFFET documentation &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="shortcut icon" href="_static/logo.ico"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="install.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-the-haffet-documentation">
+<h1>Welcome to the HAFFET documentation<a class="headerlink" href="#welcome-to-the-haffet-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<p>The progenitor scenarios of supernovae (SNe) are still open questions, and one approach to diagnose their physical origins is to investigate the bolometric light curves of a large set of SNe, and fit them to theoretical models to estimate their physical parameter distributions.
+Such analysis from different studies often use different approaches and codes which makes the comparisons more difficult. A generic code-package to handle light curve fitting for transients with different types, from different surveys, in different cadences, is therefore useful to provide reliable results for comparison. For this purpose, we present <cite>HAFFET</cite>, a data-driven model fitter for transients.</p>
+</div>
+<div class="section" id="what-is-haffet">
+<h2>What is HAFFET?<a class="headerlink" href="#what-is-haffet" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/saberyoung/HAFFET">HAFFET: Hybrid Analytic Flux FittEr for Transients</a> is an open source Python package to help analyze SN photometric and spectroscopic data.</p>
+<p>The aim of <cite>HAFFET</cite> is to handle observational data for a set of targets, to estimate their physical parameters, and visualize the population of inferred parameters. Therefore, there are two classes defined, i.e. <cite>snobject</cite> is to deal with data and fittings for one specific object, and <cite>snelist</cite> is to organise the overall running for a list of objects. The inheritance scheme of <cite>HAFFET</cite> is shown as a directed flowchart below:</p>
+<a class="reference internal image-reference" href="_images/sdapy.png"><img alt="_images/sdapy.png" src="_images/sdapy.png" style="width: 800px;" /></a>
+<p>As shown, <cite>HAFFET</cite> provides utilities to:</p>
+<ul>
+<li><p>download SN data from online sources:</p>
+<ol class="arabic simple">
+<li><p>ZTF alert photometry/spectra from Growth marshal/fritz via <a class="reference external" href="https://github.com/MickaelRigault/ztfquery/tree/master/ztfquery">ztfquery</a> (an account is needed; for ZTF internal collaborators).</p></li>
+<li><p><a class="reference external" href="https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi/">ZTF forced photometry services</a> (an account is needed; open public).</p></li>
+<li><p><a class="reference external" href="https://fallingstar-data.com/forcedphot/">ATLAS forced phtometry services</a> (an account is needed; open public).</p></li>
+<li><p><a class="reference external" href="https://github.com/astrocatalogs/OACAPI">Open Astronomy Catalog</a> (open public).</p></li>
+<li><p>Private lightcurves/spectra from users (take care of data format).</p></li>
+</ol>
+</li>
+<li><p>intepolated multi band lightcurves with:</p>
+<ol class="arabic simple">
+<li><p>Gaussian Process regression (via <a class="reference external" href="https://george.readthedocs.io/en/latest//">george</a>).</p></li>
+<li><p>fittings to analytic SNe lightcurve models, e.g. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2009A%26A...499..653B/abstract">Bazin et al. (2009)</a>, <a class="reference external" href="https://iopscience.iop.org/article/10.3847/1538-4357/ab418c">Villar et al. (2019)</a>, and the <a class="reference external" href="http://supernovae.in2p3.fr/salt/doku.php">SALT</a> model for SNe Ia.</p></li>
+</ol>
+</li>
+<li><p>characterise the first light and rising of SNe with power law fits:</p>
+<ol class="arabic simple">
+<li><p>on multi band photometry simultaneously, developed based on <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2020ApJ...902...47M/abstract">Miller et al. (2020)</a> (<a class="reference external" href="https://github.com/adamamiller/ztf_early_Ia_2018">Github</a>).</p></li>
+<li><p>on different bands seperately.</p></li>
+</ol>
+</li>
+<li><p>match epochs of different bands, via:</p>
+<ol class="arabic simple">
+<li><p>binning</p></li>
+<li><p>GP interpolation</p></li>
+<li><p>model fittings</p></li>
+</ol>
+<p>calculate colours, and/or construct the spectral energy distribution (SED) by assuming e.g. a blackbody distribution.</p>
+</li>
+<li><p>estimate bolometric LCs via:</p>
+<ol class="arabic simple">
+<li><p>bolometric corrections defined in <a class="reference external" href="https://academic.oup.com/mnras/article/437/4/3848/1011706">Lyman et al. (2014)</a> for stripped envelope SNe or SNe II, and <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2022arXiv220202059C">Chen et al. (2022)</a> for SLSNe.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Black_body">diluted black body fits</a> on the estimated SEDs constructed from multi-band photometry. The blackbody fits are developed following <a class="reference external" href="https://github.com/mnicholl/superbol">superbol</a>, and the dilution factor are based on <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2005A%26A...439..671D/abstract">Dessart &amp; Hillier (2005)</a>.</p></li>
+<li><p>integration of the absolute calibrated spectra.</p></li>
+</ol>
+</li>
+<li><p>estimate host galaxy extinction by:</p>
+<ol class="arabic simple">
+<li><p>comparing colours to intrinsic colours, e.g. <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2018A&amp;A...609A.135S">Stritzinger et al. (2018)</a>, <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2015A%26A...574A..60T/abstract">Taddia et al. (2015)</a>, etc.</p></li>
+<li><p>the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2012MNRAS.426.1465P">pEW of Na ID line doublets</a>.</p></li>
+</ol>
+</li>
+<li><p>fit the constructed bolometric lightcurves to different models, e.g.:</p>
+<ol class="arabic simple">
+<li><p>the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/1982ApJ...253..785A">Arnett models</a> for SNe Ia and core collapse during their main peaks.</p></li>
+<li><p>the <a class="reference external" href="https://ui.adsabs.harvard.edu/abs/2019MNRAS.484.3941W">gamma ray leakage tail model</a> for SNe Ia and core collapse at tail phases.</p></li>
+<li><p>the <a class="reference external" href="https://arxiv.org/pdf/2007.08543.pdf">shock cooling emission model</a> for SNe IIb or some Ibc that have early shock cooling tails.</p></li>
+</ol>
+</li>
+<li><p>identify and fit the absorption minima of spectral lines with, e.g.:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Normal_distribution">Gaussian</a> function.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Voigt_profile">Viglot</a> function.</p></li>
+</ol>
+</li>
+<li><p>fit the spectral line velocity evolution with, e.g.:</p>
+<ol class="arabic simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Exponential_function">Exponential</a> function.</p></li>
+</ol>
+</li>
+<li><p>scatter all above features into parameter spaces for sample exploration.</p></li>
+</ul>
+<p>It should be noted that besides above build-in models, we provide possibility for users to add their own models, or import models from other python packages (e.g. <a class="reference external" href="https://mosfit.readthedocs.io/en/latest/">MOSFIT</a>, <a class="reference external" href="https://redback.readthedocs.io/en/latest/">redback</a>, etc) into <cite>HAFFET</cite>, to fit on data prepared by our build-in engines. For instance, for those transients that are unlikely to be explained by the Arnett model, one could try fit their bolometric lightcurves with the magnetar/CSM models for the SLSNe, kilonovae/afterglow models for the fast transients, etc. Some demo codes show how to implement these can be found <a class="reference internal" href="models/extmodels.html#esternalmodels"><span class="std std-ref">here</span></a>.</p>
+<p>In <cite>HAFFET</cite>, there are two approaches implemented as hyperparameter optimization routine:</p>
+<ul class="simple">
+<li><p>scipy.optimize (<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/optimize.html">https://docs.scipy.org/doc/scipy/reference/optimize.html</a>), which is fast.</p></li>
+<li><p>emcee (<a class="reference external" href="https://emcee.readthedocs.io/en/stable/">https://emcee.readthedocs.io/en/stable/</a>), which is reliable.</p></li>
+</ul>
+</div>
+<div class="section" id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Licenses</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Permalink to this headline">¶</a></h2>
+<p>If you need additional help, you’re welcome to join <a class="reference external" href="https://join.slack.com/t/haffets/shared_invite/zt-1f9qkkapx-DDKdv3vhAZe9fgdY8evWnw">our slack channel</a>, or report any issues <a class="reference external" href="https://github.com/saberyoung/sn_data_analysis/issues">here</a>, or drop us an <a class="reference external" href="mailto:saberyoung&#37;&#52;&#48;gmail&#46;com">email</a>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="#">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+      <li>Next: <a href="install.html" title="next chapter">Installation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

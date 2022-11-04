@@ -1,0 +1,589 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snobject &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snobject.add_flux" href="sdapy.snerun.snobject.add_flux.html" />
+    <link rel="prev" title="snobject – class deal with one single object" href="../snobject.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snobject">
+<h1>sdapy.snerun.snobject<a class="headerlink" href="#sdapy-snerun-snobject" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sdapy.snerun.snobject">
+<em class="property">class </em><code class="sig-prename descclassname">sdapy.snerun.</code><code class="sig-name descname">snobject</code><span class="sig-paren">(</span><em class="sig-param">objid</em>, <em class="sig-param">errors='ignore'</em>, <em class="sig-param">aliasid=None</em>, <em class="sig-param">z=None</em>, <em class="sig-param">ra=None</em>, <em class="sig-param">dec=None</em>, <em class="sig-param">mkwebv=None</em>, <em class="sig-param">hostebv=None</em>, <em class="sig-param">sntype=None</em>, <em class="sig-param">dm=None</em>, <em class="sig-param">jdpeak=None</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">ax1=None</em>, <em class="sig-param">ax2=None</em>, <em class="sig-param">ax3=None</em>, <em class="sig-param">ax4=None</em>, <em class="sig-param">ax5=None</em>, <em class="sig-param">updatepar=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>snobject: define <em>snobject</em> for one SN, handle its data and fittings.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snelist.html#sdapy.snerun.snelist" title="sdapy.snerun.snelist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snelist</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.add_flux.html#sdapy.snerun.snobject.add_flux" title="sdapy.snerun.snobject.add_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_flux</span></code></a>(self[, source])</p></td>
+<td><p>add <strong>flux</strong> and <strong>eflux</strong> column, based on <strong>mag</strong>, <strong>emag</strong>, and/or <strong>limmag</strong> column.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.add_lc.html#sdapy.snerun.snobject.add_lc" title="sdapy.snerun.snobject.add_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_lc</span></code></a>(self, df[, source])</p></td>
+<td><p>Add a lightcurve into self.lc, with a given source name</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.add_mag.html#sdapy.snerun.snobject.add_mag" title="sdapy.snerun.snobject.add_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mag</span></code></a>(self[, source])</p></td>
+<td><p>add <strong>mag</strong> and/or <em>limmag</em>/<strong>emag</strong> column, based on <strong>flux</strong>, <strong>eflux</strong> column.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.all_fittings.html#sdapy.snerun.snobject.all_fittings" title="sdapy.snerun.snobject.all_fittings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_fittings</span></code></a>(self)</p></td>
+<td><p>Show all fittings done so far.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bb_bol.html#sdapy.snerun.snobject.bb_bol" title="sdapy.snerun.snobject.bb_bol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_bol</span></code></a>(self[, index, returnv, fastsedfitting])</p></td>
+<td><p>Calculate bolometric LCs with diluted blackbody fits (that were fitted with the <code class="docutils literal notranslate"><span class="pre">snobject.run_fit</span></code> on <strong>sed</strong> engine).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bb_colors.html#sdapy.snerun.snobject.bb_colors" title="sdapy.snerun.snobject.bb_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_colors</span></code></a>(self[, xpred, index, returnv])</p></td>
+<td><p>Match or interpolate multiple band LCs, for blackbody (BB) construction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bin_df.html#sdapy.snerun.snobject.bin_df" title="sdapy.snerun.snobject.bin_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_df</span></code></a>(df[, deltah, xkey])</p></td>
+<td><p>Bin dataframe.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bin_fp_atlas.html#sdapy.snerun.snobject.bin_fp_atlas" title="sdapy.snerun.snobject.bin_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_fp_atlas</span></code></a>(self[, binDays, resultsPath, …])</p></td>
+<td><p>Bin ATLAS forced photometry with Dave’s code, <a class="reference external" href="https://gist.github.com/thespacedoctor/86777fa5a9567b7939e8d84fd8cf6a76">https://gist.github.com/thespacedoctor/86777fa5a9567b7939e8d84fd8cf6a76</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bin_lc.html#sdapy.snerun.snobject.bin_lc" title="sdapy.snerun.snobject.bin_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_lc</span></code></a>(self[, returnv])</p></td>
+<td><p>Bin multiband LCs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.calc_colors.html#sdapy.snerun.snobject.calc_colors" title="sdapy.snerun.snobject.calc_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_colors</span></code></a>(self[, xpred, index, returnv])</p></td>
+<td><p>Calculate colors for two bands.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.calibrate_baseline.html#sdapy.snerun.snobject.calibrate_baseline" title="sdapy.snerun.snobject.calibrate_baseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibrate_baseline</span></code></a>(self[, ax, key, source, …])</p></td>
+<td><p>Calculate ZTF forced photometry baseline from different fields with different filters.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.clip_lc.html#sdapy.snerun.snobject.clip_lc" title="sdapy.snerun.snobject.clip_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip_lc</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Removes outlier data points using GP interpolation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.combine_multi_obs.html#sdapy.snerun.snobject.combine_multi_obs" title="sdapy.snerun.snobject.combine_multi_obs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_multi_obs</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Bin and combine observations from common epoch.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.correct_baseline.html#sdapy.snerun.snobject.correct_baseline" title="sdapy.snerun.snobject.correct_baseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correct_baseline</span></code></a>(self, baseline[, key, source])</p></td>
+<td><p>Correct baseline for ZTF, when targets was covered by multiple CCDs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.cut_lc.html#sdapy.snerun.snobject.cut_lc" title="sdapy.snerun.snobject.cut_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cut_lc</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Cut LC if it’s too long.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.dm_error.html#sdapy.snerun.snobject.dm_error" title="sdapy.snerun.snobject.dm_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dm_error</span></code></a>(self, filt[, verbose])</p></td>
+<td><p>Estimate the distance module errors, including errors from milky ebv, redshift and hubble constants.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.est_hostebv_with_colours.html#sdapy.snerun.snobject.est_hostebv_with_colours" title="sdapy.snerun.snobject.est_hostebv_with_colours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_hostebv_with_colours</span></code></a>(self[, index, returnv])</p></td>
+<td><p>Estimate host ebv with color comparison approach.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.flux_to_mag.html#sdapy.snerun.snobject.flux_to_mag" title="sdapy.snerun.snobject.flux_to_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flux_to_mag</span></code></a>(flux[, dflux, sigma, units, zp, …])</p></td>
+<td><p>Converts from fluxes into magnitudes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_alert_ztf.html#sdapy.snerun.snobject.get_alert_ztf" title="sdapy.snerun.snobject.get_alert_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_alert_ztf</span></code></a>(self[, source])</p></td>
+<td><p>Parse and add local ZTF alert photometic data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_external_phot.html#sdapy.snerun.snobject.get_external_phot" title="sdapy.snerun.snobject.get_external_phot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_external_phot</span></code></a>(self, filename[, source])</p></td>
+<td><p>Parse and add user defined photometric data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_external_spectra.html#sdapy.snerun.snobject.get_external_spectra" title="sdapy.snerun.snobject.get_external_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_external_spectra</span></code></a>(self, filename, epoch)</p></td>
+<td><p>Parse and add user defined photometric data to <code class="docutils literal notranslate"><span class="pre">snobject.spec</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_fp_atlas.html#sdapy.snerun.snobject.get_fp_atlas" title="sdapy.snerun.snobject.get_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fp_atlas</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Parse and add local ATLAS forced (binned or not binned) photometric data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code> (with source name as <strong>atlasfp</strong>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_fp_ztf.html#sdapy.snerun.snobject.get_fp_ztf" title="sdapy.snerun.snobject.get_fp_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fp_ztf</span></code></a>(self[, seeing_cut])</p></td>
+<td><p>Parse and add local ZTF forced photometic data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_local_spectra.html#sdapy.snerun.snobject.get_local_spectra" title="sdapy.snerun.snobject.get_local_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_local_spectra</span></code></a>(self[, source])</p></td>
+<td><p>Parse amd add local ZTF fritz/marshal spectra to <code class="docutils literal notranslate"><span class="pre">snobject.spec</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_model.html#sdapy.snerun.snobject.get_model" title="sdapy.snerun.snobject.get_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_model</span></code></a>(self[, engine, model, source])</p></td>
+<td><p>Get model with specific model name, and/or engine name, and/or source name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_oac.html#sdapy.snerun.snobject.get_oac" title="sdapy.snerun.snobject.get_oac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_oac</span></code></a>(self[, which])</p></td>
+<td><p>Parse and add local Open Astronomical Catalog data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code> (with source name as <code class="docutils literal notranslate"><span class="pre">oac</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_par.html#sdapy.snerun.snobject.get_par" title="sdapy.snerun.snobject.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a>(self, par[, index, engine, model, …])</p></td>
+<td><p>Get specific parameter value and error, of a fitted model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.lyman_bol.html#sdapy.snerun.snobject.lyman_bol" title="sdapy.snerun.snobject.lyman_bol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lyman_bol</span></code></a>(self[, xpred, index, returnv])</p></td>
+<td><p>Calculate bolometric LC from colours, with Lyman bolometric correction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.mag_to_flux.html#sdapy.snerun.snobject.mag_to_flux" title="sdapy.snerun.snobject.mag_to_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mag_to_flux</span></code></a>(mag[, magerr, limmag, sigma, …])</p></td>
+<td><p>Convert from magnitude to fluxes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.match_colors.html#sdapy.snerun.snobject.match_colors" title="sdapy.snerun.snobject.match_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">match_colors</span></code></a>(self[, style])</p></td>
+<td><p>Match colors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.merge_df_cols.html#sdapy.snerun.snobject.merge_df_cols" title="sdapy.snerun.snobject.merge_df_cols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_df_cols</span></code></a>(_snobject__df)</p></td>
+<td><p>Merge dataframes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.mjd_now.html#sdapy.snerun.snobject.mjd_now" title="sdapy.snerun.snobject.mjd_now"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mjd_now</span></code></a>(self[, jd])</p></td>
+<td><p>Get current juliand date via astropy.time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.oac_phot_url.html#sdapy.snerun.snobject.oac_phot_url" title="sdapy.snerun.snobject.oac_phot_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oac_phot_url</span></code></a>(self, url)</p></td>
+<td><p>(static) make url to query OAC</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.parse_coo.html#sdapy.snerun.snobject.parse_coo" title="sdapy.snerun.snobject.parse_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_coo</span></code></a>(self[, verbose, deg, hpx, nside])</p></td>
+<td><p>handle SN coordinate</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_alert_ztf.html#sdapy.snerun.snobject.query_alert_ztf" title="sdapy.snerun.snobject.query_alert_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_alert_ztf</span></code></a>(self[, source])</p></td>
+<td><p>Qeury ZTF alert photometry via ztfquery, see <a class="reference external" href="https://github.com/MickaelRigault/ztfquery">https://github.com/MickaelRigault/ztfquery</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_fp_atlas.html#sdapy.snerun.snobject.query_fp_atlas" title="sdapy.snerun.snobject.query_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_fp_atlas</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Qeury ATLAS forced photometry, see <a class="reference external" href="https://fallingstar-data.com/forcedphot/static/apiexample.py">https://fallingstar-data.com/forcedphot/static/apiexample.py</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_fp_ztf.html#sdapy.snerun.snobject.query_fp_ztf" title="sdapy.snerun.snobject.query_fp_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_fp_ztf</span></code></a>(self[, get_email])</p></td>
+<td><p>Qeury ZTF forced photometry, see documentation: <a class="reference external" href="https://irsa.ipac.caltech.edu/data/ZTF/docs/forcedphot.pdf">https://irsa.ipac.caltech.edu/data/ZTF/docs/forcedphot.pdf</a>, and the web query: <a class="reference external" href="https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi">https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_oac.html#sdapy.snerun.snobject.query_oac" title="sdapy.snerun.snobject.query_oac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_oac</span></code></a>(self[, db, which])</p></td>
+<td><p>Query OAC data, via OACAPI (<a class="reference external" href="https://github.com/astrocatalogs/OACAPI">https://github.com/astrocatalogs/OACAPI</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_spectra.html#sdapy.snerun.snobject.query_spectra" title="sdapy.snerun.snobject.query_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_spectra</span></code></a>(self[, source])</p></td>
+<td><p>Qeury ZTF spectra via ztfquery, see <a class="reference external" href="https://github.com/MickaelRigault/ztfquery">https://github.com/MickaelRigault/ztfquery</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.rapid.html#sdapy.snerun.snobject.rapid" title="sdapy.snerun.snobject.rapid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rapid</span></code></a>(self[, ax, returnv])</p></td>
+<td><p>Run astrorapid codes (a Deep learning classifier to distiinguish LCs between different SNe type) on <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.rapid_plot.html#sdapy.snerun.snobject.rapid_plot" title="sdapy.snerun.snobject.rapid_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rapid_plot</span></code></a>(self, ax, class_names, class_color)</p></td>
+<td><p>(static) Make astrorapid plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.read_c10.html#sdapy.snerun.snobject.read_c10" title="sdapy.snerun.snobject.read_c10"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_c10</span></code></a>([filename, verbose])</p></td>
+<td><p>Read colour templates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.read_kwargs.html#sdapy.snerun.snobject.read_kwargs" title="sdapy.snerun.snobject.read_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_kwargs</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Define a proper way to read and update optional parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.run.html#sdapy.snerun.snobject.run" title="sdapy.snerun.snobject.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Running a lot of actions for one SN, according to default settings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.run_fit.html#sdapy.snerun.snobject.run_fit" title="sdapy.snerun.snobject.run_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_fit</span></code></a>(self, enginetype[, source])</p></td>
+<td><p>Run model fittings on varies of data from different engines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.run_gp.html#sdapy.snerun.snobject.run_gp" title="sdapy.snerun.snobject.run_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_gp</span></code></a>(self[, source])</p></td>
+<td><p>Run Gaussian Process interpolation via george package on multiband lightcurves, i.e.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.savefig.html#sdapy.snerun.snobject.savefig" title="sdapy.snerun.snobject.savefig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefig</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Save snobject.fig to data directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_peak_bol_main.html#sdapy.snerun.snobject.set_peak_bol_main" title="sdapy.snerun.snobject.set_peak_bol_main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak_bol_main</span></code></a>(self[, model_name, …])</p></td>
+<td><p>Set peak time and fluxes with bolometric LC fittings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_peak_gp.html#sdapy.snerun.snobject.set_peak_gp" title="sdapy.snerun.snobject.set_peak_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak_gp</span></code></a>(self[, returnv])</p></td>
+<td><p>Set peak time and fluxes with GP interpolation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_peak_multiband_main.html#sdapy.snerun.snobject.set_peak_multiband_main" title="sdapy.snerun.snobject.set_peak_multiband_main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak_multiband_main</span></code></a>(self[, model_name, …])</p></td>
+<td><p>Set peak time and fluxes with multiband LC fittings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_texp_bol_main.html#sdapy.snerun.snobject.set_texp_bol_main" title="sdapy.snerun.snobject.set_texp_bol_main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_texp_bol_main</span></code></a>(self[, model_name, …])</p></td>
+<td><p>Set the explosion epoch with <code class="docutils literal notranslate"><span class="pre">bol_main</span></code> LC fittings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_texp_midway.html#sdapy.snerun.snobject.set_texp_midway" title="sdapy.snerun.snobject.set_texp_midway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_texp_midway</span></code></a>(self[, returnv])</p></td>
+<td><p>Set the explosion epoch with the first detection and the last non-detection of <code class="docutils literal notranslate"><span class="pre">sbobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_texp_pl.html#sdapy.snerun.snobject.set_texp_pl" title="sdapy.snerun.snobject.set_texp_pl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_texp_pl</span></code></a>(self[, model_name, returnv])</p></td>
+<td><p>Set the explosion epoch with <code class="docutils literal notranslate"><span class="pre">multiband_early</span></code> LC fittings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_vexp.html#sdapy.snerun.snobject.set_vexp" title="sdapy.snerun.snobject.set_vexp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vexp</span></code></a>(self[, model_name, returnv])</p></td>
+<td><p>Return peak velocity from models with <code class="docutils literal notranslate"><span class="pre">specv_evolution</span></code> engine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.show_corner.html#sdapy.snerun.snobject.show_corner" title="sdapy.snerun.snobject.show_corner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_corner</span></code></a>(self, ax[, index, gp, engine, …])</p></td>
+<td><p>Make contour plots for model samplings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.showfig.html#sdapy.snerun.snobject.showfig" title="sdapy.snerun.snobject.showfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showfig</span></code></a>(self[, ax])</p></td>
+<td><p>Show the stored figure, that was saved by the snobject.savefig.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.summarize_plot.html#sdapy.snerun.snobject.summarize_plot" title="sdapy.snerun.snobject.summarize_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summarize_plot</span></code></a>(self[, ax, savefig])</p></td>
+<td><p>Show a summarize plot, including flux/mag/bolometric LCs, colour curve and the spectra.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.sym_mag.html#sdapy.snerun.snobject.sym_mag" title="sdapy.snerun.snobject.sym_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sym_mag</span></code></a>(w, f, filt[, verbose])</p></td>
+<td><p>Synthetic magnitudes with filter transmission curves.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sdapy.snerun.snobject.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">objid</em>, <em class="sig-param">errors='ignore'</em>, <em class="sig-param">aliasid=None</em>, <em class="sig-param">z=None</em>, <em class="sig-param">ra=None</em>, <em class="sig-param">dec=None</em>, <em class="sig-param">mkwebv=None</em>, <em class="sig-param">hostebv=None</em>, <em class="sig-param">sntype=None</em>, <em class="sig-param">dm=None</em>, <em class="sig-param">jdpeak=None</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">ax1=None</em>, <em class="sig-param">ax2=None</em>, <em class="sig-param">ax3=None</em>, <em class="sig-param">ax4=None</em>, <em class="sig-param">ax5=None</em>, <em class="sig-param">updatepar=False</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>initialize <em>snelist</em></p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>objid</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>object ID string</p>
+</dd>
+<dt><strong>errors</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Control raising of exceptions on invalid data for provided dtype.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">raise</span></code> : allow exceptions to be raised</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ignore</span></code>  : suppress exceptions. On error return original object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">warning</span></code> : suppress exceptions. On error print it as warning</p></li>
+</ul>
+</dd>
+<dt><strong>aliasid</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>other name of object</p>
+</dd>
+<dt><strong>z</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>redshift</p>
+</dd>
+<dt><strong>ra</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>R.A. in <code class="docutils literal notranslate"><span class="pre">hh:mm:ss</span></code></p>
+</dd>
+<dt><strong>dec</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>Dec. in <code class="docutils literal notranslate"><span class="pre">dd:mm:dd</span></code></p>
+</dd>
+<dt><strong>mkwebv</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>milky way extinction, E(B-V)</p>
+</dd>
+<dt><strong>hostebv</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>host galaxy extinction, E(B-V)</p>
+</dd>
+<dt><strong>sntype</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>transient/supernova type</p>
+</dd>
+<dt><strong>dm</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>distance module</p>
+</dd>
+<dt><strong>jdpeak</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>julian date of peak epoch</p>
+</dd>
+<dt><strong>fig</strong><span class="classifier"><cite>matplotlib.subplot</cite></span></dt><dd><p>for figures</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>for flux lightcurve plot</p>
+</dd>
+<dt><strong>ax1</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>for spectra plot</p>
+</dd>
+<dt><strong>ax2</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>for magnitude lightcurve plot</p>
+</dd>
+<dt><strong>ax3</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>for colour plot</p>
+</dd>
+<dt><strong>ax4</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>for luminosoty plot</p>
+</dd>
+<dt><strong>ax4</strong><span class="classifier"><cite>matplotlib.axes</cite></span></dt><dd><p>for SED plot</p>
+</dd>
+<dt><strong>updatepar</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if update parameter, when reading them</p>
+</dd>
+<dt><strong>kwargs</strong><span class="classifier"><cite>Keyword Arguments</cite></span></dt><dd><p>see <a class="reference external" href="https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt">https://github.com/saberyoung/HAFFET/blob/master/sdapy/data/default_par.txt</a>,
+<strong>snobject</strong> part</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">sdapy</span></code> instead of <code class="docutils literal notranslate"><span class="pre">haffet</span></code></p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdapy</span> <span class="kn">import</span> <span class="n">snerun</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">snerun</span><span class="o">.</span><span class="n">snobject</span><span class="p">(</span><span class="s1">&#39;sss&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">&lt;sdapy.snerun.snobject object at 0x7fa4c8284780&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.__init__.html#sdapy.snerun.snobject.__init__" title="sdapy.snerun.snobject.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, objid[, errors, aliasid, z, …])</p></td>
+<td><p>initialize <em>snelist</em></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.add_flux.html#sdapy.snerun.snobject.add_flux" title="sdapy.snerun.snobject.add_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_flux</span></code></a>(self[, source])</p></td>
+<td><p>add <strong>flux</strong> and <strong>eflux</strong> column, based on <strong>mag</strong>, <strong>emag</strong>, and/or <strong>limmag</strong> column.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.add_lc.html#sdapy.snerun.snobject.add_lc" title="sdapy.snerun.snobject.add_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_lc</span></code></a>(self, df[, source])</p></td>
+<td><p>Add a lightcurve into self.lc, with a given source name</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.add_mag.html#sdapy.snerun.snobject.add_mag" title="sdapy.snerun.snobject.add_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_mag</span></code></a>(self[, source])</p></td>
+<td><p>add <strong>mag</strong> and/or <em>limmag</em>/<strong>emag</strong> column, based on <strong>flux</strong>, <strong>eflux</strong> column.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.all_fittings.html#sdapy.snerun.snobject.all_fittings" title="sdapy.snerun.snobject.all_fittings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">all_fittings</span></code></a>(self)</p></td>
+<td><p>Show all fittings done so far.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bb_bol.html#sdapy.snerun.snobject.bb_bol" title="sdapy.snerun.snobject.bb_bol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_bol</span></code></a>(self[, index, returnv, fastsedfitting])</p></td>
+<td><p>Calculate bolometric LCs with diluted blackbody fits (that were fitted with the <code class="docutils literal notranslate"><span class="pre">snobject.run_fit</span></code> on <strong>sed</strong> engine).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bb_colors.html#sdapy.snerun.snobject.bb_colors" title="sdapy.snerun.snobject.bb_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bb_colors</span></code></a>(self[, xpred, index, returnv])</p></td>
+<td><p>Match or interpolate multiple band LCs, for blackbody (BB) construction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bin_df.html#sdapy.snerun.snobject.bin_df" title="sdapy.snerun.snobject.bin_df"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_df</span></code></a>(df[, deltah, xkey])</p></td>
+<td><p>Bin dataframe.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bin_fp_atlas.html#sdapy.snerun.snobject.bin_fp_atlas" title="sdapy.snerun.snobject.bin_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_fp_atlas</span></code></a>(self[, binDays, resultsPath, …])</p></td>
+<td><p>Bin ATLAS forced photometry with Dave’s code, <a class="reference external" href="https://gist.github.com/thespacedoctor/86777fa5a9567b7939e8d84fd8cf6a76">https://gist.github.com/thespacedoctor/86777fa5a9567b7939e8d84fd8cf6a76</a></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.bin_lc.html#sdapy.snerun.snobject.bin_lc" title="sdapy.snerun.snobject.bin_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bin_lc</span></code></a>(self[, returnv])</p></td>
+<td><p>Bin multiband LCs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.calc_colors.html#sdapy.snerun.snobject.calc_colors" title="sdapy.snerun.snobject.calc_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calc_colors</span></code></a>(self[, xpred, index, returnv])</p></td>
+<td><p>Calculate colors for two bands.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.calibrate_baseline.html#sdapy.snerun.snobject.calibrate_baseline" title="sdapy.snerun.snobject.calibrate_baseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">calibrate_baseline</span></code></a>(self[, ax, key, source, …])</p></td>
+<td><p>Calculate ZTF forced photometry baseline from different fields with different filters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.clip_lc.html#sdapy.snerun.snobject.clip_lc" title="sdapy.snerun.snobject.clip_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clip_lc</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Removes outlier data points using GP interpolation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.combine_multi_obs.html#sdapy.snerun.snobject.combine_multi_obs" title="sdapy.snerun.snobject.combine_multi_obs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">combine_multi_obs</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Bin and combine observations from common epoch.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.correct_baseline.html#sdapy.snerun.snobject.correct_baseline" title="sdapy.snerun.snobject.correct_baseline"><code class="xref py py-obj docutils literal notranslate"><span class="pre">correct_baseline</span></code></a>(self, baseline[, key, source])</p></td>
+<td><p>Correct baseline for ZTF, when targets was covered by multiple CCDs.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.dm_error.html#sdapy.snerun.snobject.dm_error" title="sdapy.snerun.snobject.dm_error"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dm_error</span></code></a>(self, filt[, verbose])</p></td>
+<td><p>Estimate the distance module errors, including errors from milky ebv, redshift and hubble constants.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.est_hostebv_with_colours.html#sdapy.snerun.snobject.est_hostebv_with_colours" title="sdapy.snerun.snobject.est_hostebv_with_colours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">est_hostebv_with_colours</span></code></a>(self[, index, returnv])</p></td>
+<td><p>Estimate host ebv with color comparison approach.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.flux_to_mag.html#sdapy.snerun.snobject.flux_to_mag" title="sdapy.snerun.snobject.flux_to_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flux_to_mag</span></code></a>(flux[, dflux, sigma, units, zp, …])</p></td>
+<td><p>Converts from fluxes into magnitudes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_alert_ztf.html#sdapy.snerun.snobject.get_alert_ztf" title="sdapy.snerun.snobject.get_alert_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_alert_ztf</span></code></a>(self[, source])</p></td>
+<td><p>Parse and add local ZTF alert photometic data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_external_phot.html#sdapy.snerun.snobject.get_external_phot" title="sdapy.snerun.snobject.get_external_phot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_external_phot</span></code></a>(self, filename[, source])</p></td>
+<td><p>Parse and add user defined photometric data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_external_spectra.html#sdapy.snerun.snobject.get_external_spectra" title="sdapy.snerun.snobject.get_external_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_external_spectra</span></code></a>(self, filename, epoch)</p></td>
+<td><p>Parse and add user defined photometric data to <code class="docutils literal notranslate"><span class="pre">snobject.spec</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_fp_atlas.html#sdapy.snerun.snobject.get_fp_atlas" title="sdapy.snerun.snobject.get_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fp_atlas</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Parse and add local ATLAS forced (binned or not binned) photometric data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code> (with source name as <strong>atlasfp</strong>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_fp_ztf.html#sdapy.snerun.snobject.get_fp_ztf" title="sdapy.snerun.snobject.get_fp_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_fp_ztf</span></code></a>(self[, seeing_cut])</p></td>
+<td><p>Parse and add local ZTF forced photometic data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_local_spectra.html#sdapy.snerun.snobject.get_local_spectra" title="sdapy.snerun.snobject.get_local_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_local_spectra</span></code></a>(self[, source])</p></td>
+<td><p>Parse amd add local ZTF fritz/marshal spectra to <code class="docutils literal notranslate"><span class="pre">snobject.spec</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_model.html#sdapy.snerun.snobject.get_model" title="sdapy.snerun.snobject.get_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_model</span></code></a>(self[, engine, model, source])</p></td>
+<td><p>Get model with specific model name, and/or engine name, and/or source name.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_oac.html#sdapy.snerun.snobject.get_oac" title="sdapy.snerun.snobject.get_oac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_oac</span></code></a>(self[, which])</p></td>
+<td><p>Parse and add local Open Astronomical Catalog data to <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code> (with source name as <code class="docutils literal notranslate"><span class="pre">oac</span></code>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.get_par.html#sdapy.snerun.snobject.get_par" title="sdapy.snerun.snobject.get_par"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code></a>(self, par[, index, engine, model, …])</p></td>
+<td><p>Get specific parameter value and error, of a fitted model.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.lyman_bol.html#sdapy.snerun.snobject.lyman_bol" title="sdapy.snerun.snobject.lyman_bol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lyman_bol</span></code></a>(self[, xpred, index, returnv])</p></td>
+<td><p>Calculate bolometric LC from colours, with Lyman bolometric correction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.mag_to_flux.html#sdapy.snerun.snobject.mag_to_flux" title="sdapy.snerun.snobject.mag_to_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mag_to_flux</span></code></a>(mag[, magerr, limmag, sigma, …])</p></td>
+<td><p>Convert from magnitude to fluxes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.match_colors.html#sdapy.snerun.snobject.match_colors" title="sdapy.snerun.snobject.match_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">match_colors</span></code></a>(self[, style])</p></td>
+<td><p>Match colors.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.merge_df_cols.html#sdapy.snerun.snobject.merge_df_cols" title="sdapy.snerun.snobject.merge_df_cols"><code class="xref py py-obj docutils literal notranslate"><span class="pre">merge_df_cols</span></code></a>(_snobject__df)</p></td>
+<td><p>Merge dataframes</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.mjd_now.html#sdapy.snerun.snobject.mjd_now" title="sdapy.snerun.snobject.mjd_now"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mjd_now</span></code></a>(self[, jd])</p></td>
+<td><p>Get current juliand date via astropy.time</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.oac_phot_url.html#sdapy.snerun.snobject.oac_phot_url" title="sdapy.snerun.snobject.oac_phot_url"><code class="xref py py-obj docutils literal notranslate"><span class="pre">oac_phot_url</span></code></a>(self, url)</p></td>
+<td><p>(static) make url to query OAC</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.parse_coo.html#sdapy.snerun.snobject.parse_coo" title="sdapy.snerun.snobject.parse_coo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_coo</span></code></a>(self[, verbose, deg, hpx, nside])</p></td>
+<td><p>handle SN coordinate</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_alert_ztf.html#sdapy.snerun.snobject.query_alert_ztf" title="sdapy.snerun.snobject.query_alert_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_alert_ztf</span></code></a>(self[, source])</p></td>
+<td><p>Qeury ZTF alert photometry via ztfquery, see <a class="reference external" href="https://github.com/MickaelRigault/ztfquery">https://github.com/MickaelRigault/ztfquery</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_fp_atlas.html#sdapy.snerun.snobject.query_fp_atlas" title="sdapy.snerun.snobject.query_fp_atlas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_fp_atlas</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Qeury ATLAS forced photometry, see <a class="reference external" href="https://fallingstar-data.com/forcedphot/static/apiexample.py">https://fallingstar-data.com/forcedphot/static/apiexample.py</a>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_fp_ztf.html#sdapy.snerun.snobject.query_fp_ztf" title="sdapy.snerun.snobject.query_fp_ztf"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_fp_ztf</span></code></a>(self[, get_email])</p></td>
+<td><p>Qeury ZTF forced photometry, see documentation: <a class="reference external" href="https://irsa.ipac.caltech.edu/data/ZTF/docs/forcedphot.pdf">https://irsa.ipac.caltech.edu/data/ZTF/docs/forcedphot.pdf</a>, and the web query: <a class="reference external" href="https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi">https://ztfweb.ipac.caltech.edu/cgi-bin/requestForcedPhotometry.cgi</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_oac.html#sdapy.snerun.snobject.query_oac" title="sdapy.snerun.snobject.query_oac"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_oac</span></code></a>(self[, db, which])</p></td>
+<td><p>Query OAC data, via OACAPI (<a class="reference external" href="https://github.com/astrocatalogs/OACAPI">https://github.com/astrocatalogs/OACAPI</a>)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.query_spectra.html#sdapy.snerun.snobject.query_spectra" title="sdapy.snerun.snobject.query_spectra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query_spectra</span></code></a>(self[, source])</p></td>
+<td><p>Qeury ZTF spectra via ztfquery, see <a class="reference external" href="https://github.com/MickaelRigault/ztfquery">https://github.com/MickaelRigault/ztfquery</a>.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.rapid.html#sdapy.snerun.snobject.rapid" title="sdapy.snerun.snobject.rapid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rapid</span></code></a>(self[, ax, returnv])</p></td>
+<td><p>Run astrorapid codes (a Deep learning classifier to distiinguish LCs between different SNe type) on <code class="docutils literal notranslate"><span class="pre">snobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.rapid_plot.html#sdapy.snerun.snobject.rapid_plot" title="sdapy.snerun.snobject.rapid_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rapid_plot</span></code></a>(self, ax, class_names, class_color)</p></td>
+<td><p>(static) Make astrorapid plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.read_c10.html#sdapy.snerun.snobject.read_c10" title="sdapy.snerun.snobject.read_c10"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_c10</span></code></a>([filename, verbose])</p></td>
+<td><p>Read colour templates.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.read_kwargs.html#sdapy.snerun.snobject.read_kwargs" title="sdapy.snerun.snobject.read_kwargs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_kwargs</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Define a proper way to read and update optional parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.run.html#sdapy.snerun.snobject.run" title="sdapy.snerun.snobject.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Running a lot of actions for one SN, according to default settings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.run_fit.html#sdapy.snerun.snobject.run_fit" title="sdapy.snerun.snobject.run_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_fit</span></code></a>(self, enginetype[, source])</p></td>
+<td><p>Run model fittings on varies of data from different engines.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.run_gp.html#sdapy.snerun.snobject.run_gp" title="sdapy.snerun.snobject.run_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_gp</span></code></a>(self[, source])</p></td>
+<td><p>Run Gaussian Process interpolation via george package on multiband lightcurves, i.e.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.savefig.html#sdapy.snerun.snobject.savefig" title="sdapy.snerun.snobject.savefig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">savefig</span></code></a>(self, \*\*kwargs)</p></td>
+<td><p>Save snobject.fig to data directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_peak_bol_main.html#sdapy.snerun.snobject.set_peak_bol_main" title="sdapy.snerun.snobject.set_peak_bol_main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak_bol_main</span></code></a>(self[, model_name, …])</p></td>
+<td><p>Set peak time and fluxes with bolometric LC fittings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_peak_gp.html#sdapy.snerun.snobject.set_peak_gp" title="sdapy.snerun.snobject.set_peak_gp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak_gp</span></code></a>(self[, returnv])</p></td>
+<td><p>Set peak time and fluxes with GP interpolation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_peak_multiband_main.html#sdapy.snerun.snobject.set_peak_multiband_main" title="sdapy.snerun.snobject.set_peak_multiband_main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak_multiband_main</span></code></a>(self[, model_name, …])</p></td>
+<td><p>Set peak time and fluxes with multiband LC fittings.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_texp_bol_main.html#sdapy.snerun.snobject.set_texp_bol_main" title="sdapy.snerun.snobject.set_texp_bol_main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_texp_bol_main</span></code></a>(self[, model_name, …])</p></td>
+<td><p>Set the explosion epoch with <code class="docutils literal notranslate"><span class="pre">bol_main</span></code> LC fittings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_texp_midway.html#sdapy.snerun.snobject.set_texp_midway" title="sdapy.snerun.snobject.set_texp_midway"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_texp_midway</span></code></a>(self[, returnv])</p></td>
+<td><p>Set the explosion epoch with the first detection and the last non-detection of <code class="docutils literal notranslate"><span class="pre">sbobject.lc</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_texp_pl.html#sdapy.snerun.snobject.set_texp_pl" title="sdapy.snerun.snobject.set_texp_pl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_texp_pl</span></code></a>(self[, model_name, returnv])</p></td>
+<td><p>Set the explosion epoch with <code class="docutils literal notranslate"><span class="pre">multiband_early</span></code> LC fittings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.set_vexp.html#sdapy.snerun.snobject.set_vexp" title="sdapy.snerun.snobject.set_vexp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_vexp</span></code></a>(self[, model_name, returnv])</p></td>
+<td><p>Return peak velocity from models with <code class="docutils literal notranslate"><span class="pre">specv_evolution</span></code> engine.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.show_corner.html#sdapy.snerun.snobject.show_corner" title="sdapy.snerun.snobject.show_corner"><code class="xref py py-obj docutils literal notranslate"><span class="pre">show_corner</span></code></a>(self, ax[, index, gp, engine, …])</p></td>
+<td><p>Make contour plots for model samplings.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.showfig.html#sdapy.snerun.snobject.showfig" title="sdapy.snerun.snobject.showfig"><code class="xref py py-obj docutils literal notranslate"><span class="pre">showfig</span></code></a>(self[, ax])</p></td>
+<td><p>Show the stored figure, that was saved by the snobject.savefig.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.summarize_plot.html#sdapy.snerun.snobject.summarize_plot" title="sdapy.snerun.snobject.summarize_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">summarize_plot</span></code></a>(self[, ax, savefig])</p></td>
+<td><p>Show a summarize plot, including flux/mag/bolometric LCs, colour curve and the spectra.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.sym_mag.html#sdapy.snerun.snobject.sym_mag" title="sdapy.snerun.snobject.sym_mag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sym_mag</span></code></a>(w, f, filt[, verbose])</p></td>
+<td><p>Synthetic magnitudes with filter transmission curves.</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.keys2query_lc.html#sdapy.snerun.snobject.keys2query_lc" title="sdapy.snerun.snobject.keys2query_lc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys2query_lc</span></code></a></p></td>
+<td><p>keys to query LCs from <em>OAC</em> catalog,     if value True, key mush be included by transient, otherwise, could be empty.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.keys2query_spec.html#sdapy.snerun.snobject.keys2query_spec" title="sdapy.snerun.snobject.keys2query_spec"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys2query_spec</span></code></a></p></td>
+<td><p>keys to query spectra from <em>OAC</em> catalog</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="sdapy.snerun.snobject.urllist.html#sdapy.snerun.snobject.urllist" title="sdapy.snerun.snobject.urllist"><code class="xref py py-obj docutils literal notranslate"><span class="pre">urllist</span></code></a></p></td>
+<td><p>different url origins for the Open Astronomical Catalog (<em>OAC</em>) catalog</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="sdapy.snerun.snobject.version.html#sdapy.snerun.snobject.version" title="sdapy.snerun.snobject.version"><code class="xref py py-obj docutils literal notranslate"><span class="pre">version</span></code></a></p></td>
+<td><p>Static version info</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+      <li>Previous: <a href="../snobject.html" title="previous chapter"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+      <li>Next: <a href="sdapy.snerun.snobject.add_flux.html" title="next chapter">sdapy.snerun.snobject.add_flux</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snobject.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

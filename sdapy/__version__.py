@@ -1,0 +1,7 @@
+name = 'HAFFET'
+version = '0.1.2'
+description = 'HAFFET: Hybrid Analytic Flux FittEr for Transients'
+python_requires='>=2.7'
+url='https://github.com/saberyoung/HAFFET.git'
+author='Sheng Yang'
+author_email='saberyoung@gmail.com'

@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.filters &#8212; HAFFET 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-sdapy.filters">
+<span id="sdapy-filters"></span><h1>sdapy.filters<a class="headerlink" href="#module-sdapy.filters" title="Permalink to this headline">¶</a></h1>
+<p>Follow superbol (<a class="reference external" href="https://github.com/mnicholl/superbol/blob/master/superbol.py">https://github.com/mnicholl/superbol/blob/master/superbol.py</a>)</p>
+<p>SDSS filters and AB mags:
+These effective wavelengths for SDSS filters are from Fukugita et al. (1996, AJ, 111, 1748) and are
+the wavelength weighted averages (effective wavelengths in their Table 2a, first row)</p>
+<p>For Swift UVOT: S=UVW2, D=UVM2, A=UVW1
+For GALEX: F=FUV, N=NUV
+For NEOWISE: W=W1, Q=W2
+For Spitzer: C=Ch1, E=Ch2</p>
+<blockquote>
+<div><p>The below zeropoints are needed to convert magnitudes to fluxes</p>
+</div></blockquote>
+<dl>
+<dt>For AB mags,</dt><dd><p>m(AB) = -2.5 log(f_nu) - 48.60. f_nu is in units of ergs/s/cm2/Hz
+m(AB) = -2.5 log(f_nu) - 23.90. f_nu is in units of micor Jansky</p>
+</dd>
+<dt>Therefore, AB magnitudes are directly related to a physical flux.</dt><dd><p>Working through the conversion to ergs/s/cm2/Angs, gives
+f_lam = 0.1089/(lambda_eff^2)  where lambda_eff is the effective wavelength of the filter in angstroms
+Note then that the AB flux zeropoint is defined ONLY by the choice of effective wavelength of the bandpass</p>
+<p>However, not all bands here are AB mag, so for consistency across all filters the zeropoints are stored in the following dictionary</p>
+<p>Matt originally listed the following from  Paul Martini’s page : <a class="reference external" href="http://www.astronomy.ohio-state.edu/~martini/usefuldata.html">http://www.astronomy.ohio-state.edu/~martini/usefuldata.html</a>
+That is not an original source, for AB mags it simply uses the f_lam =0.1089/(lambda_eff^2) relation, and the effective wavelengths from Fukugita et al.</p>
+<p>ugriz and GALEX NUV/FUV are in AB mag system, UBVRI are Johnson-Cousins in Vega mag, JHK are Glass system Vega mags, Swift UVOT SDA and WISE WQ are in Vega mag system</p>
+</dd>
+</dl>
+<p>The values for UBVRIJHK are for the Johnson-Cousins-Glass system and are taken directly from Bessell et al. 1998, A&amp;A, 333, 231 (Paul Martini’s page lists these verbatim)
+Note that these Bessell et al. (1998) values were calculated not from the spectrum of Vega itself, but from a Kurucz model atmosphere of an AOV star.
+GALEX effective wavelengths from here: <a class="reference external" href="http://galex.stsci.edu/gr6/?page=faq">http://galex.stsci.edu/gr6/?page=faq</a>
+WISE data from <a class="reference external" href="http://svo2.cab.inta-csic.es/svo/theory/fps3/index.php?mode=browse&amp;gname=WISE&amp;asttype=">http://svo2.cab.inta-csic.es/svo/theory/fps3/index.php?mode=browse&amp;gname=WISE&amp;asttype=</a>
+ATLAS values taken from Tonry et al 2018</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Engines</span> <span class="pre">and</span> <span class="pre">Models</span></code> – Models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.filters.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

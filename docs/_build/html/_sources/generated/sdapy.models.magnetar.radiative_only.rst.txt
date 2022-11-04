@@ -1,0 +1,6 @@
+sdapy.models.magnetar.radiative\_only
+=====================================
+
+.. currentmodule:: sdapy.models.magnetar
+
+.. autofunction:: radiative_only

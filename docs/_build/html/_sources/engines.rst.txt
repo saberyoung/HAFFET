@@ -1,0 +1,21 @@
+.. sdapy:
+   
+:mod:`Engines` -- Data preparation for model fitters
+=================================================================================
+
+These classes provide various models used by `snerun`.
+
+Engines
+--------------------
+.. currentmodule:: sdapy.engines
+.. autosummary::
+   :toctree: generated/
+
+   multiband_early
+   multiband_main
+   colour
+   bol_early
+   bol_main
+   bol_tail
+   bol_full
+   specline

@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Graphical user interface &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="the-graphical-user-interface">
+<span id="gui"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">The</span> <span class="pre">Graphical</span> <span class="pre">user</span> <span class="pre">interface</span></code><a class="headerlink" href="#the-graphical-user-interface" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="exe.html#exe"><span class="std std-ref">Next: The executable file</span></a></div>
+<div class="line"><a class="reference internal" href="../tutorial.html#getstart"><span class="std std-ref">Back: Getting started</span></a></div>
+</div>
+<div class="section" id="start-the-gui">
+<h2>Start the GUI<a class="headerlink" href="#start-the-gui" title="Permalink to this headline">¶</a></h2>
+<p>The <cite>HAFFET</cite> GUI can be started with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sdapy_gui
+</pre></div>
+</div>
+<p>This terminal command will start an interface as below:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen.png"><img alt="../_images/guiscreen.png" src="../_images/guiscreen.png" style="width: 400px;" /></a>
+<p>The interface can be divided into 3 main parts, i.e. the control frame for user options, the figure frame for plots, and the message frame for notices, warnings and other text outputs.</p>
+<p>In the control frame, there’re four main panels:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen1.png"><img alt="../_images/guiscreen1.png" src="../_images/guiscreen1.png" style="width: 100px;" /></a>
+<p>The red one is used to read and define a meta table, that includes a list objects as well as their informations, e.g. coordinates, redshifts, etc.
+The yellow panel is designed for users to decide which objects should be included for analysis.
+One can run tasks and plots with commands in the blue area, while the green region provides a few options as global settings, e.g. once some fittings had been done, the samplings would be stored in the data directory, checked the <strong>clobber</strong> button will remove the cache and rerun fittings, while if unchecked, the code will restore samplings from exisiting files.</p>
+</div>
+<div class="section" id="parse-meta-table">
+<h2>Parse meta table<a class="headerlink" href="#parse-meta-table" title="Permalink to this headline">¶</a></h2>
+<p>There’re two build-in sources available, i.e. Bright Transient Survey (BTS) and the Open Astronomical Catalog (OAC), that can provide mate table. One can also use their own table (see <a class="reference internal" href="package.html#owntable"><span class="std std-ref">here</span></a> for the table formats).
+The table is read as a <code class="docutils literal notranslate"><span class="pre">pandas.dataframe</span></code>, and the query syntax can be used to select objects, e.g.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span> in <span class="o">[</span><span class="s2">&quot;Ib&quot;</span>, <span class="s2">&quot;Ic&quot;</span><span class="o">]</span>
+</pre></div>
+</div>
+<p>will only remain those objects with type as Ib or Ic.
+The load and save commands are used to store and restore data and fittings into local data directory. For instance to an object with objid as <strong>SN1234</strong>, the store command will make a cache file, <cite>ZTFDATA</cite>/cache/SN1234_data.clf, and the next time, one start the GUI, the load command will bring everything that had been done in the last time back.</p>
+</div>
+<div class="section" id="add-objects">
+<h2>Add objects<a class="headerlink" href="#add-objects" title="Permalink to this headline">¶</a></h2>
+<p>Once a meta table parsed correctly, the next step is to add objects from the meta.
+The yellow panel in the control frame is designed for users to decide which objects should be incldued for analysis.
+Any input string would be matched with the <strong>objid</strong>, <strong>aliasid</strong> and the <strong>type</strong> column. The matching results would be shown in the message frame. If there’re more than one result matched, one should give a more accurate string, till only one object is matched, and then click <strong>add</strong> button to include it into object list. The <strong>del</strong> command is to remove the current object from the list, while the <strong>remove</strong> command will remove the cached file as well if there’re any.</p>
+</div>
+<div class="section" id="input-data">
+<h2>Input data<a class="headerlink" href="#input-data" title="Permalink to this headline">¶</a></h2>
+<p>Once an object is added successfully, we can start the game. Let’s go to the blue part.
+Here there’re two dropdown menus, one for running codes, and the other for running plots.
+In the first drop down menu, there’re 5 main tasks available, i.e. data preparation, multiband LC fits, SED fits, bolometric LC fits, and the spectral line fits.
+And the second drop down menu provides 9 style of plots, i.e. the <strong>flux LC</strong>, <strong>mag LC</strong>, <strong>colour curve</strong>, <strong>bolometric LC</strong>, <strong>spectra</strong> and the <strong>summarize plot</strong> is the gather of all of them.
+Additionally, the <strong>finder</strong> can download images from Panstarrs archive based on the coordinates, and make a finder for the object;
+the <strong>LC baseline</strong> is used dedicated for ZTF forced photometry, that correct the baselines for one filter but from different CCDs.
+Finally, the <strong>SNe scatter</strong> is used to populate parameters into phase space, once a bunch of objects are processed well.</p>
+<p>First of all, one need to load and assign photometric and spectroscopic data to the current object.
+So select <strong>Data Preparation</strong> and click <strong>submit</strong> button, there will be one window popup as:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen2.png"><img alt="../_images/guiscreen2.png" src="../_images/guiscreen2.png" style="width: 400px;" /></a>
+<p>As shown, there’re different build in approaches for user to get data from open public resources,
+e.g. the ZTF forced photometry services.
+User accounts or tokens are needed by parts of the services.
+Before downloading the data with them, one can click the <strong>auth</strong> button,
+that will show all user informations for these services in the message frame.
+One can edit the  <cite>ZTFDATA</cite>/auth.txt file (if one auth.txt file exists in the current folder, it will be used instead)
+to change them.</p>
+<p>Once all the user accounts set properly, one can then click <strong>download</strong> buttons to requst data,
+and <strong>loadlocal</strong> button to read them from local directories.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since it’s time consuming to wait for ZTF forced photometry via the API (the GUI will be stucked while waiting),
+another approach (also as the default), is to get the data via an email. One can click the download button,
+and wait for a while. Once the data link is received, click the loadlocal button, which would print a warning
+in the terminal, say file is missing. One can then cope and paste the data from the link to local machine with
+the provided filename.</p>
+</div>
+<p>The <strong>reset</strong> button is to remove the data.
+Note the <strong>download</strong> button will not work if the target file alreay exists.
+Once checked the <strong>clobber</strong> button in the green part of the control frame,
+and then the <strong>download</strong> button will remove the cached file and download it from online resources again.</p>
+<p>One can use their own table as well in the <strong>external photometry</strong> and <strong>external spectra</strong> parts.
+The provided table should be in a correct format (see <a class="reference internal" href="package.html#package11"><span class="std std-ref">here</span></a> for the table formats).
+One need to provide a source name for the photometry, and an astropy readable datetime for spectrum.</p>
+<p>The <strong>meta</strong> button will show a few meta data of the object, e.g. the coordinates,
+<code class="docutils literal notranslate"><span class="pre">t0</span></code> that could be the peak of a LC serving as the x axis zeropoint for several LC plots throughout the analysis,
+<code class="docutils literal notranslate"><span class="pre">texp</span></code> that is the explosion epoch relative to <code class="docutils literal notranslate"><span class="pre">t0</span></code>, etc.
+<strong>Change meta</strong> can be used as, e.g.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">z</span><span class="o">=</span>.0.1
+</pre></div>
+</div>
+<p>that will manually change the redshift.</p>
+<p>A few buttons below provides varies of functions on LCs:</p>
+<p><strong>clip LC</strong> will remove outlier points (note the mean is taken from Gaussian Process, so clip the LC after the Gaussian Process);</p>
+<p><strong>check LC</strong> will provide LC informations, e.g. there’re how many detections, colour epochs, early points, peak accuracy, etc;</p>
+<p><strong>cut LC</strong> will cut the LC to the MJD range provided in the entries above;</p>
+<p><strong>set texp</strong> button can be used to set the explosion epoch as the middle of last non detection to the first detection (note there’re three different ways to set explotion epochs and this is the first one);</p>
+<p><strong>LC table</strong> button will print the current LC table in the message frame;</p>
+<p><strong>SN type</strong> button is calling <code class="docutils literal notranslate"><span class="pre">astrorapid</span></code> package to guess SN type based on multiband LCs.</p>
+<p>The information of obtained LCs and spectra are shown in red to the upper left of the window.</p>
+<p>Now, one can open the <strong>plot</strong> drop down menu to make plots.</p>
+</div>
+<div class="section" id="gaussian-process-and-multiband-fittings">
+<h2>Gaussian Process and multiband fittings<a class="headerlink" href="#gaussian-process-and-multiband-fittings" title="Permalink to this headline">¶</a></h2>
+<p>Once the demanded data are assigned, let’s close the data preparation window, and open the multiband LC fits popup window:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen3.png"><img alt="../_images/guiscreen3.png" src="../_images/guiscreen3.png" style="width: 400px;" /></a>
+<p>As shown, there’re different ways can be used to interpolate the multiband LCs.
+In the very upper region, there’re options for, e.g. which source of LCs to be fitted (for instance both alert and forced photometry are parsed for one object, probably we want to fit only one forced LCs), how many cores and steps to be used to run the monte carlo, which bands to be interpolated, etc.</p>
+<p>There’re three boxes below: the green one for Gaussian process, the blue one for early LC fittings and the brown one for the fitting in the full range. They can be run on different models, with different routines (mcmc or minimize). The <strong>Contours</strong> button is used to populate the samplings into parameter space as corner plots. If they’re fitted in different bands seperately, modify the <strong>colours</strong> entry above will change the output corner plots in the figure frame.</p>
+<p>In the box located in the very right part, there’re buttons can be used to set <code class="docutils literal notranslate"><span class="pre">t0</span></code> and <code class="docutils literal notranslate"><span class="pre">texp</span></code> from the fitted models.
+Again, the information of all the fitted models would be shown in red at the upper left.</p>
+<p>After a number of fittings are done, all of them will also go into the plots.</p>
+</div>
+<div class="section" id="colours-bolometric-lcs-and-bolometric-lc-fittings">
+<h2>Colours, bolometric LCs and bolometric LC fittings<a class="headerlink" href="#colours-bolometric-lcs-and-bolometric-lc-fittings" title="Permalink to this headline">¶</a></h2>
+<p>The next step is to make bolometric LCs, so let’s open the <strong>SED fits</strong> menu:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen4.png"><img alt="../_images/guiscreen4.png" src="../_images/guiscreen4.png" style="width: 400px;" /></a>
+<p>As shown, there’re two approaches available in <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code>, i.e. blackbody fits and the bolometric correction approach (that use the anylatic bolometric correction vs colour relations from the Lyman et al 2014, mianly for stripped envolop and type II SNe).
+For both of them, one need to define epochs with either photometric observations from multiple filters, or a spectrum.
+In <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code>, one can use <strong>bin</strong> method for the colour match ups, and/or <strong>gp</strong>, <strong>fit</strong> that intepolates to the missing epochs.
+For spectral epochs, <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code> can use interpolated magnitudes to absolute calibrated the spectra, as well as mangle them with data from multiple bands.
+In the meanwhile, the inferred colour can be also used to estimate the host reddenings, by comparing to the templates from the literature.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure estimated host extinction is correct. i.e. click the <strong>meta</strong> button in the <strong>Data preparation</strong> menu, see what it is. There will be problems in making magnitude plots if it’s not a <code class="docutils literal notranslate"><span class="pre">float</span></code>. If user want to include milky way and estimated host extinction into the analysis, donot forget to check the <strong>corr mkw</strong> and <strong>corr host</strong> buttons.</p>
+</div>
+<p>The <strong>bolometric with BB</strong> is mainly followed the <a class="reference external" href="https://github.com/mnicholl/superbol">superbol</a>, to fit blackbody function with the <code class="docutils literal notranslate"><span class="pre">scipy.minimize</span></code> package, as for bolometric LCs. Moreover, <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code> provides mcmc routine for the fitting as well. Click the <strong>SED fitting</strong> button to popup a window for these:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen5.png"><img alt="../_images/guiscreen5.png" src="../_images/guiscreen5.png" style="width: 400px;" /></a>
+<p>As shown, one can fit multiple band photometric data, or the absolute calibrated spectra to different blackbody functions in different ways. Note, the matching options, SNR, binning factor and the extinction options are borrowed from the <strong>SED fits</strong> window, e.g. for <strong>multiband BB fit</strong>, <code class="docutils literal notranslate"><span class="pre">phase=0</span></code> will generate fluxes of all possible bands at peak epoch from <strong>bin</strong> or <strong>gp</strong> or <strong>fit</strong>, while for <strong>spectral BB fit</strong>, <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code> will check if there’re any spectra available within <strong>bin</strong> days relative to <code class="docutils literal notranslate"><span class="pre">phase=0</span></code>, if yes, the spectrum will be absolute calibrated or mangles, and then fitted with the flux models.
+As usual, the <strong>clobber</strong> button is working when one want to redo fittings, the <strong>Contous</strong> button is used to make corner plots for sampled parameters, and the <strong>reset</strong> button will remove all fittings, etc.</p>
+<p>Once bolometric LCs generated correctly (check then by clicking the <strong>luminosity</strong> button in the <strong>plot</strong> dropdown menu), the next step is to fit them to varies of analytic bolometric models, e.g. Arnett model for normal SNe, magnetar model for SLSNe, etc.
+Click the <strong>Bolometric LC fits</strong> button to open a popup window:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen6.png"><img alt="../_images/guiscreen6.png" src="../_images/guiscreen6.png" style="width: 400px;" /></a>
+<p>One can find four boxes for foud different bolometric engines. All of these are quite similar to the <strong>multiband LC fits</strong> and the <strong>SED fits</strong>, <strong>run</strong> button is to start the fitting, <strong>Contour</strong> is to populate the sampled parameter, and <strong>describe</strong> button is to describe the model and the fitted parameters.
+At the bottom of the window, there’re options available to set <code class="docutils literal notranslate"><span class="pre">t0</span></code> and <code class="docutils literal notranslate"><span class="pre">texp</span></code> from the bolometric models.</p>
+</div>
+<div class="section" id="spectral-line-fittings-and-the-photospheric-velocities">
+<h2>Spectral line fittings and the photospheric velocities<a class="headerlink" href="#spectral-line-fittings-and-the-photospheric-velocities" title="Permalink to this headline">¶</a></h2>
+<p>For some bolometric models, e.g. Arnett model wth nickel mass and characteristic time as free parameters, an external input of photospheirc velocities is needed to help break the parameter degeneracy. In the meanwhile, the line velocity is crucial to understand the underlying explosion mechanisms.
+So after photometic analysis, let’s move on to the <strong>spectral line fits</strong> popup window:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen7.png"><img alt="../_images/guiscreen7.png" src="../_images/guiscreen7.png" style="width: 400px;" /></a>
+<p>Here there’s one plotter region and two model engines, i.e. line fit in green and line velocity fit in blue.
+They’re quite similar to other model fitters as well, but I want to mention that the element drop down menu decides the region to fit.
+When selecting <strong>full</strong>, the fits cannot be started, and warn the user to provide a line to fit.
+There’re several lines there, as well as the <strong>sntype</strong> that would decide which line to fit depends on the SN type, e.g. He 5876 for SNe Ib. Note you can add your favourite lines in the <code class="docutils literal notranslate"><span class="pre">sdapy.__path__</span></code>/constants.py file, so that they will show up in the next time when openning the GUI.</p>
+<p>If the forced range is not set, <code class="docutils literal notranslate"><span class="pre">HAFFET</span></code> will try to find peaks and valleys in a range, that was decide with the intrinstic wanelength of selected element as well as the the boundaries of line velocities (<code class="docutils literal notranslate"><span class="pre">v_bounds</span></code> in the def_par.txt), consider the closest two peaks as the absorption features.
+If within the element range, the spectrum is too noisy or polluted, user can decide whether to fit it, or which range to fit by providing numbers (unit in A) cin the <strong>Forced range</strong> entries.</p>
+<p>After at least two spetral line velocities had been decided, the line velocity evolution can be fitted with an exponential function, and the velocity at peak epoch can be also decided.</p>
+<p>A list of plots are available to show all the above data and fittings, which is easy to use.</p>
+</div>
+<div class="section" id="sample-explorer">
+<h2>Sample explorer<a class="headerlink" href="#sample-explorer" title="Permalink to this headline">¶</a></h2>
+<p>We described varies of actions that can be done for one single object above.
+After repeating these for several objects, we would have an object list, thus we can explore the different parameter distributions.
+In the bottom of the <strong>plot</strong> dropdown window, select <strong>SNe scatter</strong>, submitting it will open a popup window:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen8.png"><img alt="../_images/guiscreen8.png" src="../_images/guiscreen8.png" style="width: 400px;" /></a>
+<p>There’re different table and plot actions, but before playing with them, one need to add some datasets and a few parameters first.
+Click <strong>popup</strong> button besides the first box would open a dataset window:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen9.png"><img alt="../_images/guiscreen9.png" src="../_images/guiscreen9.png" style="width: 300px;" /></a>
+<p>This was designed in case users want to explore the difference between two subsets, e.g. compare nickel masses between SNe Ib and Ic. One need to define Ib and Ic subsets, with different plotting styles. Note that the <strong>astype</strong> entry is used to convert column types. For example one would like to build a dataset for all objects with redshift less than 0.01, then should use <strong>astype</strong> to convert redshift to float type first. It could be failed if the redshift of some objects is missing, and one can fix this by changing their meta data, or remove them from the object list.</p>
+<p>Once a number of datasets defined, the next step is to add a few parameters:</p>
+<a class="reference internal image-reference" href="../_images/guiscreen10.png"><img alt="../_images/guiscreen10.png" src="../_images/guiscreen10.png" style="width: 300px;" /></a>
+<p>As shown, there’ll be a number of options in the popup window available to decide parameters.
+For instance, the peak apparent magnitude in r band can be added with <strong>parname</strong> as <strong>mag</strong>, <strong>filter 1</strong> as <strong>r</strong> and <strong>phase 1</strong> as <strong>0</strong>, the g-r colour at 10 days post peak can be parsed with <strong>filter 1</strong> = <strong>g</strong>, <strong>filter 2</strong> = <strong>r</strong>, <strong>phase 1</strong> = <strong>10</strong>, and <strong>interpolation</strong> = <strong>bin</strong> or <strong>gp</strong> or <strong>fit</strong>, or leave it as <strong>None</strong> will use any of the three interpolations that can provide the result, and the nickel mass could be obtained by setting <strong>parname</strong> to <strong>mni</strong>, if there’re multiple models can provide nickel estimation, <strong>engine</strong> and <strong>model</strong> option can be used to decide which one to be used. Again leave them as <strong>None</strong> will provide nickel from the first avaibale model.</p>
+<p>After having datasets and parameters, user can then make scattering plots in the <strong>SNe scatter</strong> window.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The GUI would be slow if there’re a lot of objects added, say more than a hundred, and their fittings are mostly realised via monte carlo. Be patient if the GUI is stucked, otherwise one can use the package or executable file approach to reload them.</p>
+</div>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#gui"><span class="std std-ref">Top</span></a></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/gui.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

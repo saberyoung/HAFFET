@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.model_fitters.fit_model &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.specline_handler.handle_spectra" href="sdapy.specline_handler.handle_spectra.html" />
+    <link rel="prev" title="sdapy.model_fitters.get_pars" href="sdapy.model_fitters.get_pars.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-model-fitters-fit-model">
+<h1>sdapy.model_fitters.fit_model<a class="headerlink" href="#sdapy-model-fitters-fit-model" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="sdapy.model_fitters.fit_model">
+<em class="property">class </em><code class="sig-prename descclassname">sdapy.model_fitters.</code><code class="sig-name descname">fit_model</code><span class="sig-paren">(</span><em class="sig-param">x_data</em>, <em class="sig-param">y_data</em>, <em class="sig-param">yerr_data</em>, <em class="sig-param">filters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.model_fitters.fit_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits data with analytic models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x_data</strong><span class="classifier">array</span></dt><dd><p>Independent values, e.g. (rest frame) phase relative to peak</p>
+</dd>
+<dt><strong>y_data</strong><span class="classifier">array</span></dt><dd><p>Dependent values, e.g. fluxes</p>
+</dd>
+<dt><strong>yerr_data</strong><span class="classifier">array, int</span></dt><dd><p>Dependent value errors, e.g. flux errors</p>
+</dd>
+<dt><strong>filters</strong><span class="classifier">array</span></dt><dd><p>If filters available, will fit for each band simultaneously.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">continue_chains</span></code>(self, t_data, f_data, …[, …])</p></td>
+<td><p>Run MCMC for longer than initial fit</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_samples</span></code>(samples, lnprob[, limit])</p></td>
+<td><p>get samplings with good chi square</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code>(self[, filt, quant, parname])</p></td>
+<td><p>get bestfit and quantiles of a fitted parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_random_samples</span></code>(self[, limit, plotnsamples])</p></td>
+<td><p>get parameters for the random samplings</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnlikelihood1</span></code>(theta, f, t, f_err, func, …)</p></td>
+<td><p>define likelhood for MCMC</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnlikelihood2</span></code>(theta, f, t, f_err, filters, …)</p></td>
+<td><p>define likelhood for MCMC, with filters</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnposterior1</span></code>(theta, f, t, f_err, func, …)</p></td>
+<td><p>define posterior for MCMC</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnposterior2</span></code>(theta, f, t, f_err, filters, …)</p></td>
+<td><p>define posterior for MCMC, with filters</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnprior1</span></code>(theta, bounds)</p></td>
+<td><p>define prior for MCMC</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnprior2</span></code>(theta, filters, cl, bounds)</p></td>
+<td><p>define prior for MCMC, with filters</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(self[, x_pred, step, returnv, quant])</p></td>
+<td><p>re-produce the data with the fitted models</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_random</span></code>(self[, limit, plotnsamples, …])</p></td>
+<td><p>re-produce the data randomly with the fitted models</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>(self, bestv, bounds[, filt])</p></td>
+<td><p>run fitting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_mcmc</span></code>(self, t_data, f_data, f_unc_data, …)</p></td>
+<td><p>Initial MCMC fit</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_scipy</span></code>(func, p0, bounds, x, y, yerr[, …])</p></td>
+<td><p>run model fitting with scipy packages</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_corner</span></code>(self, figpath[, datadir, filts, …])</p></td>
+<td><p>generate corner plots</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak</span></code>(self)</p></td>
+<td><p>get peak infos of the fitting</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>(self[, opt_routine, fit_mean, …])</p></td>
+<td><p>Fits data with analytic models.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="sdapy.model_fitters.fit_model.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">x_data</em>, <em class="sig-param">y_data</em>, <em class="sig-param">yerr_data</em>, <em class="sig-param">filters=None</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.model_fitters.fit_model.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#sdapy.model_fitters.fit_model.__init__" title="sdapy.model_fitters.fit_model.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(self, x_data, y_data, yerr_data[, …])</p></td>
+<td><p>Initialize self.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">continue_chains</span></code>(self, t_data, f_data, …[, …])</p></td>
+<td><p>Run MCMC for longer than initial fit</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_samples</span></code>(samples, lnprob[, limit])</p></td>
+<td><p>get samplings with good chi square</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_par</span></code>(self[, filt, quant, parname])</p></td>
+<td><p>get bestfit and quantiles of a fitted parameter</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_random_samples</span></code>(self[, limit, plotnsamples])</p></td>
+<td><p>get parameters for the random samplings</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnlikelihood1</span></code>(theta, f, t, f_err, func, …)</p></td>
+<td><p>define likelhood for MCMC</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnlikelihood2</span></code>(theta, f, t, f_err, filters, …)</p></td>
+<td><p>define likelhood for MCMC, with filters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnposterior1</span></code>(theta, f, t, f_err, func, …)</p></td>
+<td><p>define posterior for MCMC</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnposterior2</span></code>(theta, f, t, f_err, filters, …)</p></td>
+<td><p>define posterior for MCMC, with filters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnprior1</span></code>(theta, bounds)</p></td>
+<td><p>define prior for MCMC</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lnprior2</span></code>(theta, filters, cl, bounds)</p></td>
+<td><p>define prior for MCMC, with filters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict</span></code>(self[, x_pred, step, returnv, quant])</p></td>
+<td><p>re-produce the data with the fitted models</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">predict_random</span></code>(self[, limit, plotnsamples, …])</p></td>
+<td><p>re-produce the data randomly with the fitted models</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code>(self, bestv, bounds[, filt])</p></td>
+<td><p>run fitting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_mcmc</span></code>(self, t_data, f_data, f_unc_data, …)</p></td>
+<td><p>Initial MCMC fit</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_scipy</span></code>(func, p0, bounds, x, y, yerr[, …])</p></td>
+<td><p>run model fitting with scipy packages</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_corner</span></code>(self, figpath[, datadir, filts, …])</p></td>
+<td><p>generate corner plots</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_peak</span></code>(self)</p></td>
+<td><p>get peak infos of the fitting</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">train</span></code>(self[, opt_routine, fit_mean, …])</p></td>
+<td><p>Fits data with analytic models.</p></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+      <li>Previous: <a href="sdapy.model_fitters.get_pars.html" title="previous chapter">sdapy.model_fitters.get_pars</a></li>
+      <li>Next: <a href="sdapy.specline_handler.handle_spectra.html" title="next chapter">sdapy.specline_handler.handle_spectra</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.model_fitters.fit_model.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

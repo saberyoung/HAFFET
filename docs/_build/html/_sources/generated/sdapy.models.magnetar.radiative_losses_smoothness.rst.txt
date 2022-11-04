@@ -1,0 +1,6 @@
+sdapy.models.magnetar.radiative\_losses\_smoothness
+===================================================
+
+.. currentmodule:: sdapy.models.magnetar
+
+.. autofunction:: radiative_losses_smoothness

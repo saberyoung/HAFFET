@@ -1,0 +1,6 @@
+sdapy.models.sbo.shock\_arnett\_fit\_texp
+=========================================
+
+.. currentmodule:: sdapy.models.sbo
+
+.. autofunction:: shock_arnett_fit_texp

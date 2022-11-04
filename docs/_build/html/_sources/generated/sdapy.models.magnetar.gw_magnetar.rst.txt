@@ -1,0 +1,6 @@
+sdapy.models.magnetar.gw\_magnetar
+==================================
+
+.. currentmodule:: sdapy.models.magnetar
+
+.. autofunction:: gw_magnetar

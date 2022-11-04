@@ -1,0 +1,19 @@
+[marshal]     ;   ------------    Growth marshal
+usr:     -     #  str # username
+pwd:     -     #  str # password
+
+[fritz]       ;   ------------    fritz
+token:   -     # str #  Token
+
+[atlas]       ;   ------------    ATLAS force photometry
+usr:     -     # str # username
+pwd:     -     # str # password
+
+[ztf]         ;   ------------    ZTF force photometry
+email:   -     # str # email
+pwd:     -     # str # password
+
+[tns]         ;   ------------    TNS API
+id:      -     # str # bot id
+name:    -     # str # bot name
+api:     -     # str # bot api key

@@ -1,0 +1,2 @@
+from redback.transient_models.magnetar_models import basic_magnetar
+from redback.transient_models.supernova_models import basic_magnetar_powered_bolometric

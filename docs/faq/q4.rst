@@ -1,0 +1,10 @@
+No plots showing in the Jupyter notebook
+---------------------------------------
+
+- reason: https://stackoverflow.com/questions/43027980/purpose-of-matplotlib-inline
+
+- how to solve::
+    
+    >>> %matplotlib inline
+
+    add this in your juperte notebook, when you import matplotlib

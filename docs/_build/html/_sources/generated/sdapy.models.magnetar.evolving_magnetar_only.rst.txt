@@ -1,0 +1,6 @@
+sdapy.models.magnetar.evolving\_magnetar\_only
+==============================================
+
+.. currentmodule:: sdapy.models.magnetar
+
+.. autofunction:: evolving_magnetar_only

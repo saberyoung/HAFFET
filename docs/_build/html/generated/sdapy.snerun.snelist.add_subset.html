@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snelist.add_subset &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snelist.format_par" href="sdapy.snerun.snelist.format_par.html" />
+    <link rel="prev" title="sdapy.snerun.snelist.add_parameter" href="sdapy.snerun.snelist.add_parameter.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snelist-add-subset">
+<h1>sdapy.snerun.snelist.add_subset<a class="headerlink" href="#sdapy-snerun-snelist-add-subset" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snelist.add_subset">
+<code class="sig-prename descclassname">snelist.</code><code class="sig-name descname">add_subset</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">syntax=None</em>, <em class="sig-param">astype={'z': &lt;class 'float'&gt;}</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snelist.add_subset" title="Permalink to this definition">¶</a></dt>
+<dd><p>add a data subset, and corresponding plotting kwargs</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>syntax</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>syntax used to make subset of meta table, e.g.
+type in [“SN Ib”, “SN Ic”], which will only parse all SNe Ibcs</p>
+</dd>
+<dt><strong>astype</strong><span class="classifier"><cite>dict</cite></span></dt><dd><p>force the syntax column to be a number, or other types for query</p>
+</dd>
+<dt><strong>nbinx</strong><span class="classifier"><cite>int</cite>, <cite>list</cite></span></dt><dd><p>histogram bins in x axis</p>
+</dd>
+<dt><strong>fontsize</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>figure label font size</p>
+</dd>
+<dt><strong>labelpad</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>figure label pad</p>
+</dd>
+<dt><strong>label</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>label for the subset</p>
+</dd>
+<dt><strong>color</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>color for plotting the subset</p>
+</dd>
+<dt><strong>ls</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>linestyle for plotting the subset</p>
+</dd>
+<dt><strong>marker</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>marker for plotting the subset</p>
+</dd>
+<dt><strong>markersize</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>markersize for plotting the subset</p>
+</dd>
+<dt><strong>fillstyle</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>fillstyle for plotting the subset</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sdapy</span> <span class="kn">import</span> <span class="n">snerun</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">snerun</span><span class="o">.</span><span class="n">snelist</span><span class="p">()</span>   
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">syntax</span><span class="o">=</span><span class="s1">&#39;type in [&quot;Ib&quot;]&#39;</span><span class="p">)</span>
+<span class="go">meta 72 objs</span>
+<span class="go">3%|██▋                                                                              | 5/154 [00:00&lt;00:18,  7.93it/s]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dset</span><span class="p">)</span>
+<span class="go">{}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">add_subset</span><span class="p">(</span><span class="s1">&#39;z&gt;.01&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">dset</span><span class="p">)</span>
+<span class="go">{&#39;z&gt;.01&#39;: {&#39;ZTF21abmlldj&#39;: &lt;sdapy.snerun.snobject object at 0x7fd11c9efe80&gt;, &#39;ZTF19abqxibq&#39;: &lt;sdapy.snerun.snobject object at 0x7fd11cbf10b8&gt;, &#39;ZTF19abcegvm&#39;: &lt;sdapy.snerun.snobject object at 0x7fd11dcbdfd0&gt;, &#39;ZTF19abztknu&#39;: &lt;sdapy.snerun.snobject object at 0x7fd11dcc19e8&gt;, &#39;ZTF20acvebcu&#39;: &lt;sdapy.snerun.snobject object at 0x7fd11b4c7be0&gt;, &#39;ZTF19acgjosf&#39;: &lt;sdapy.snerun.snobject object at 0x7fd11cb619b0&gt;, ... ...}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a><ul>
+  <li><a href="sdapy.snerun.snelist.html">sdapy.snerun.snelist</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snelist.add_parameter.html" title="previous chapter">sdapy.snerun.snelist.add_parameter</a></li>
+      <li>Next: <a href="sdapy.snerun.snelist.format_par.html" title="next chapter">sdapy.snerun.snelist.format_par</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snelist.add_subset.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

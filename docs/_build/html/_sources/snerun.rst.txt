@@ -1,0 +1,111 @@
+.. sdapy:
+   
+:mod:`snerun` -- main programmer
+=================================================================================
+
+These classes provide various functions for `snelist` and `snobject` classes.
+
+snelist
+--------------------
+.. currentmodule:: sdapy.snerun
+.. autosummary::
+   :toctree: generated/
+
+   snelist
+   snelist.__init__
+   snelist.read_kwargs
+   snelist.parse_meta
+   snelist.parse_meta_one
+   snelist.parse_meta_all
+   snelist.parse_params   
+   snelist.load_data
+   snelist.save_data
+   snelist.run
+   snelist.add_subset
+   snelist.table
+   snelist.get_par
+   snelist.format_par
+   snelist.show1d
+   snelist.show2d
+   snelist.init_hist_axes
+   snelist.add_hist
+	     
+snobject
+----------------------------
+
+.. currentmodule:: sdapy.snerun
+.. autosummary::
+   :toctree: generated/
+
+   snobject
+   snobject.__init__
+   snobject.read_kwargs
+   snobject.run
+   snobject.config_ztfquery
+   snobject.parse_coo
+   snobject.mjd_now
+   snobject.add_lc
+   snobject.add_flux
+   snobject.add_mag
+   snobject.get_external_phot   
+   snobject.bin_fp_atlas
+   snobject.get_fp_atlas
+   snobject.get_alert_ztf
+   snobject.get_fp_ztf
+   snobject.query_fp_atlas
+   snobject.query_fp_ztf
+   snobject.query_alert_ztf   
+   snobject.query_spectra   
+   snobject.get_local_spectra      
+   snobject.correct_baseline
+   snobject.calibrate_baseline
+   snobject.get_external_spectra
+   snobject.rapid
+   snobject.rapid_plot
+   snobject.run_gp
+   snobject.run_fit
+   snobject.set_peak_gp
+   snobject.set_peak_bol_main
+   snobject.set_peak_multiband_main
+   snobject.set_texp_pl
+   snobject.set_texp_bol_main
+   snobject.set_texp_midway
+   snobject._flux_at
+   snobject._flux_at_list
+   snobject._mag_at
+   snobject._mag_at_list
+   snobject._absmag_at
+   snobject._absmag_at_list
+   snobject._color_at
+   snobject._rate_at
+   snobject.est_hostebv_with_c10
+   snobject.calc_colors
+   snobject.lyman_bol
+   snobject.bb_colors
+   snobject.bb_bol
+   snobject.match_colors
+   snobject.combine_multi_obs
+   snobject.clip_lc
+   snobject._nepochs
+   snobject._ncolors
+   snobject._peak_accuracy
+   snobject.summarize_plot
+   snobject._ax
+   snobject._ax1
+   snobject._ax2
+   snobject._ax3
+   snobject._ax4
+   snobject.show_corner
+   snobject.get_model
+   snobject.savefig
+   snobject.showfig
+   snobject.dm_error
+   snobject.clip_df
+   snobject.read_c10
+   snobject.mag_to_flux
+   snobject.flux_to_mag
+   snobject.bin_df
+   snobject.merge_df_cols
+   snobject.oac_phot_url
+   snobject.get_oac
+   snobject.query_oac

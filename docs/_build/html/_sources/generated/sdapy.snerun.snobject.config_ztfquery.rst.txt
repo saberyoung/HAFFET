@@ -1,0 +1,6 @@
+sdapy.snerun.snobject.config\_ztfquery
+======================================
+
+.. currentmodule:: sdapy.snerun
+
+.. automethod:: snobject.config_ztfquery

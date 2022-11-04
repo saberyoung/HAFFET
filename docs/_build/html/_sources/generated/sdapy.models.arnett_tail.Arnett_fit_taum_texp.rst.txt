@@ -1,0 +1,6 @@
+sdapy.models.arnett\_tail.Arnett\_fit\_taum\_texp
+=================================================
+
+.. currentmodule:: sdapy.models.arnett_tail
+
+.. autofunction:: Arnett_fit_taum_texp

@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>The executable file &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="the-executable-file">
+<span id="exe"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">The</span> <span class="pre">executable</span> <span class="pre">file</span></code><a class="headerlink" href="#the-executable-file" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="gui.html#gui"><span class="std std-ref">Previous: The Graphical user interface</span></a></div>
+<div class="line"><a class="reference internal" href="package.html#package"><span class="std std-ref">Next: Python package, snerun</span></a></div>
+<div class="line"><a class="reference internal" href="../tutorial.html#getstart"><span class="std std-ref">Back: Getting started</span></a></div>
+</div>
+<p>There’s an executable file available in the bin directory, which can be called with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; sdapy_run -h
+welcome to -&gt;
+██╗  ██╗ █████╗ ███████╗███████╗███████╗████████╗
+██║  ██║██╔══██╗██╔════╝██╔════╝██╔════╝╚══██╔══╝
+███████║███████║█████╗  █████╗  █████╗     ██║
+██╔══██║██╔══██║██╔══╝  ██╔══╝  ██╔══╝     ██║
+██║  ██║██║  ██║██║     ██║     ███████╗   ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚══════╝   ╚═╝
+
+usage: sdapy_run <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-s SOURCE<span class="o">]</span> <span class="o">[</span>--syntax SYNTAX<span class="o">]</span> <span class="o">[</span>-z ZTFID<span class="o">]</span> <span class="o">[</span>-i IAUID<span class="o">]</span>
+              <span class="o">[</span>-t SNTYPE<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-c<span class="o">]</span>
+
+run analysis on a list of SNe
+
+optional arguments:
+-h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+-s SOURCE, --source SOURCE
+                     meta <span class="nb">source</span> <span class="o">(</span>default: BTS<span class="o">)</span>
+--syntax SYNTAX       meta syntax <span class="o">(</span>default: <span class="nb">type</span> in <span class="o">[</span><span class="s2">&quot;Ib&quot;</span>,<span class="s2">&quot;Ic&quot;</span><span class="o">])</span>
+-z ZTFID, --ztfid ZTFID
+                     specify ztfid of sn <span class="o">(</span>default: None<span class="o">)</span>
+-i IAUID, --iauid IAUID
+                     specify iauid of sn <span class="o">(</span>default: None<span class="o">)</span>
+-t SNTYPE, --sntype SNTYPE
+                     specify <span class="nb">type</span> of sn <span class="o">(</span>default: None<span class="o">)</span>
+-v, --verbose         Enable progress report <span class="o">(</span>default: False<span class="o">)</span>
+-c, --clobber         Redo analysis <span class="o">(</span>default: False<span class="o">)</span>
+-d, --debug           If failed fittings, ignore or crashed <span class="o">(</span>default: False<span class="o">)</span>
+--checkdir            Check data directory <span class="o">(</span>default: False<span class="o">)</span>
+</pre></div>
+</div>
+<p>The above command will prompt the user to define a list of candidates to run.
+More detailed options can be set via the <strong>default_par.txt</strong> (for general) and <strong>individual_par.txt</strong> (for individual objects), in the data directory.</p>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="#exe"><span class="std std-ref">Top</span></a></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/exe.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

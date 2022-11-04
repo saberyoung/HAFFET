@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>snobject: for specific object &#8212; HAFFET 0.0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="snobject-for-specific-object">
+<span id="single"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject:</span> <span class="pre">for</span> <span class="pre">specific</span> <span class="pre">object</span></code><a class="headerlink" href="#snobject-for-specific-object" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="snelist.html#multiple"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#single1"><span class="std std-ref">1. Initialize a snobject class</span></a></div>
+<div class="line"><a class="reference internal" href="#single2"><span class="std std-ref">2. Input photometric and spectral data</span></a></div>
+<div class="line"><a class="reference internal" href="#single3"><span class="std std-ref">3. Interpolation with Gaussian Process</span></a></div>
+<div class="line"><span class="xref std std-ref">4. Interpolation with analytic models</span></div>
+<div class="line"><a class="reference internal" href="#single5"><span class="std std-ref">5. Build colour curve and bolometric LCs</span></a></div>
+<div class="line"><a class="reference internal" href="#single6"><span class="std std-ref">6. Host galaxy extinction estimation</span></a></div>
+<div class="line"><span class="xref std std-ref">7. Fit bolometric LCs with analytic models</span></div>
+<div class="line"><span class="xref std std-ref">8. Spectral line identification and fits</span></div>
+<div class="line"><span class="xref std std-ref">9. Other functions</span></div>
+</div>
+<div class="section" id="initialize-a-snobject-class">
+<span id="single1"></span><h2>1- Initialize a snobject class<a class="headerlink" href="#initialize-a-snobject-class" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to initialize a <cite>snobject</cite> class with proper meta data:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; from sdapy import snerun
+&gt;&gt;&gt; <span class="nv">ztfp</span> <span class="o">=</span> snerun.snobject<span class="o">(</span>objid, <span class="nv">z</span><span class="o">=</span>.1, <span class="nv">ra</span><span class="o">=</span><span class="s1">&#39;13:26:29.65&#39;</span>, <span class="nv">dec</span><span class="o">=</span><span class="s1">&#39;+36:00:31.1&#39;</span><span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="input-data">
+<span id="single2"></span><h2>2- input data<a class="headerlink" href="#input-data" title="Permalink to this headline">¶</a></h2>
+<p>Then the second step is to assign observational data to the defined <cite>snobject</cite> class. User can either use their own private data or public data via the build-in sources of <cite>HAFFET</cite>. In <cite>HAFFET</cite>, we use <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html">pandas.DataFrame</a> to read csv tables, and asked at least 3 columns (‘mag’, ‘emag’ and ‘jdobs’) to be setted.</p>
+<p>An easiest way to input photometric data is to manually add it:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="c1"># import module</span>
+&gt;&gt;&gt; from sdapy.ztfanalysis import *
+
+&gt;&gt;&gt; <span class="c1"># kwargs description can be found at</span>
+&gt;&gt;&gt; <span class="c1"># https://github.com/saberyoung/sn_data_analysis/blob/a4db8a221eb46bc3141f481665f08b71c4d70f23/sdapy/ztfanalysis.py#L237</span>
+&gt;&gt;&gt; <span class="c1"># and we will detailly describe them later in the tutorial</span>
+&gt;&gt;&gt; <span class="nv">ztfp</span> <span class="o">=</span> ztfsingle<span class="o">(</span>ztfid, <span class="nv">iauid</span><span class="o">=</span>None, <span class="nv">z</span><span class="o">=</span>None, <span class="nv">ra</span><span class="o">=</span>None, <span class="nv">dec</span><span class="o">=</span>None,
+&gt;&gt;&gt; ...             <span class="nv">mkwebv</span><span class="o">=</span>None, <span class="nv">sntype</span><span class="o">=</span>None, <span class="nv">dm</span><span class="o">=</span>None, <span class="nv">jdpeak</span><span class="o">=</span>None,
+&gt;&gt;&gt; ...             <span class="nv">logger</span><span class="o">=</span>None, <span class="nv">axes</span><span class="o">=</span>None, **kwargs**kwargs<span class="o">)</span>
+
+&gt;&gt;&gt; <span class="c1"># make a pandas dataframe from a csv file</span>
+&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; <span class="nv">df</span> <span class="o">=</span> pd.readcsv<span class="o">(</span>...<span class="o">)</span>
+
+&gt;&gt;&gt; <span class="c1"># make sure there&#39;re &#39;mag&#39;, &#39;emag&#39; and &#39;jdobs&#39; columns in the dataframe</span>
+&gt;&gt;&gt; ztfp.lc <span class="o">=</span> df
+
+&gt;&gt;&gt; <span class="c1"># or use add_lc, that will check the column names</span>
+&gt;&gt;&gt; ztfp.add_lc<span class="o">(</span>df<span class="o">)</span>
+</pre></div>
+</div>
+<p>For specific sources, there’re built-in functions that can help download and load local data. <cite>ztfquery</cite> is used to deal with ZTF Growth marshal/fritz data, thus we decide to follow their data structure for other data, e.g. ATLAS, TNS, as well. As shown below, the <cite>targetdir</cite> is a defined parameter, and one should define it as an existing folder, construct it with the following strcuture. You can also find my data as example at <a class="reference external" href="https://stockholmuniversity.box.com/s/2c3z8yrgvd9zumm4c35u8jtvapyva3e1">https://stockholmuniversity.box.com/s/2c3z8yrgvd9zumm4c35u8jtvapyva3e1</a></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="sb">`</span>targetdir<span class="sb">`</span>/
+   marshal/
+      lightcurves/
+         <span class="sb">`</span>ztfid<span class="sb">`</span>/
+            marshal_plot_lc_lightcurve_<span class="sb">`</span>ztfid<span class="sb">`</span>.csv
+      spectra/
+         <span class="sb">`</span>ztfid<span class="sb">`</span>/
+            <span class="sb">`</span>ztfid<span class="sb">`</span>_***.ascii
+   fritz/
+      lightcurves/
+         <span class="sb">`</span>ztfid<span class="sb">`</span>/
+            fritz_<span class="sb">`</span>ztfid<span class="sb">`</span>_lc.csv
+      sample/
+         fritz_groups.json
+      spectra/
+         <span class="sb">`</span>ztfid<span class="sb">`</span>/
+            fritz_spectrum_<span class="sb">`</span>instrument<span class="sb">`</span>_spec_auto_***.ascii
+   ForcePhot/
+      <span class="sb">`</span>ztfid<span class="sb">`</span>/
+         forcedphotometry_<span class="sb">`</span>ztfid<span class="sb">`</span>_lc.csv
+   ForcePhot_atlas/
+      <span class="sb">`</span>ztfid<span class="sb">`</span>/
+         forcedphotometry_<span class="sb">`</span>ztfid<span class="sb">`</span>_lc.csv
+         forcedphotometry_<span class="sb">`</span>ztfid<span class="sb">`</span>_lc_atlas_fp_stacked_<span class="sb">`</span>bindays<span class="sb">`</span>_days.txt
+   TNS/
+      <span class="sb">`</span>ztfid<span class="sb">`</span>/
+         <span class="sb">`</span>ztfid<span class="sb">`</span>_***.txt
+</pre></div>
+</div>
+<p>After define and build up the <cite>targetdir</cite> correctly, the <cite>sdapy</cite> is possible to be used to download and reload ZTF/ATLAS/TNS data. We show examples below (they’re also avaliable in a jupyter-notebook at <a class="reference external" href="https://github.com/saberyoung/sn_data_analysis/blob/master/notebook/loaddata.ipynb">https://github.com/saberyoung/sn_data_analysis/blob/master/notebook/loaddata.ipynb</a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>&gt;&gt;&gt; <span class="c1"># import module</span>
+&gt;&gt;&gt; from sdapy.ztfanalysis import *
+
+&gt;&gt;&gt; <span class="c1"># initialize a ztfsingle class</span>
+&gt;&gt;&gt; <span class="c1"># ra, dec are used if one need to query ZTF/ATLAS forced photometry</span>
+&gt;&gt;&gt; <span class="c1"># ztfid is needed by marshal/fritz pjotometry</span>
+&gt;&gt;&gt; <span class="c1"># one can set them, e.g. ra, to None, and might have assertion errors</span>
+&gt;&gt;&gt; <span class="c1">#    when doing some specific tasks</span>
+&gt;&gt;&gt; <span class="nv">ztfp</span> <span class="o">=</span> ztfsingle<span class="o">(</span><span class="nv">ztfid</span><span class="o">=</span><span class="s1">&#39;ZTF20aajcdad&#39;</span>, <span class="nv">iauid</span><span class="o">=</span><span class="s1">&#39;SN2020bcq&#39;</span>,
+&gt;&gt;&gt; ...     <span class="nv">z</span><span class="o">=</span><span class="m">0</span>.0186, <span class="nv">dm</span><span class="o">=</span><span class="m">34</span>.6, <span class="nv">mkwebv</span><span class="o">=</span><span class="m">0</span>.01387, <span class="nv">sntype</span><span class="o">=</span><span class="s1">&#39;SN Ib&#39;</span>,
+&gt;&gt;&gt; ...     <span class="nv">ra</span><span class="o">=</span><span class="s1">&#39;13:26:29.65&#39;</span>, <span class="nv">dec</span><span class="o">=</span><span class="s1">&#39;+36:00:31.1&#39;</span>, <span class="nv">jdpeak</span><span class="o">=</span>None,
+&gt;&gt;&gt; ...     <span class="nv">logger</span><span class="o">=</span>None, <span class="nv">axes</span><span class="o">=</span>None<span class="o">)</span>
+
+&gt;&gt;&gt; <span class="c1"># make a pandas dataframe</span>
+&gt;&gt;&gt; import pandas as pd
+&gt;&gt;&gt; <span class="nv">df</span> <span class="o">=</span> pd.readcsv<span class="o">(</span>...<span class="o">)</span>
+
+&gt;&gt;&gt; <span class="c1"># make sure there&#39;re &#39;mag&#39;, &#39;emag&#39; and &#39;jdobs&#39; columns in the dataframe</span>
+&gt;&gt;&gt; <span class="c1"># and then give it to ztfsingle</span>
+&gt;&gt;&gt; ztfp.add_lc<span class="o">(</span>df<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interpolation">
+<span id="single3"></span><h2>3- interpolation<a class="headerlink" href="#interpolation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="power-law-fit">
+<span id="single4"></span><h2>4- power law fit<a class="headerlink" href="#power-law-fit" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="build-bolometric-lcs">
+<span id="id1"></span><h2>4- build bolometric LCs<a class="headerlink" href="#build-bolometric-lcs" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="compare-bolometric-lcs-to-analytic-models">
+<span id="single5"></span><h2>5- compare bolometric LCs to analytic models<a class="headerlink" href="#compare-bolometric-lcs-to-analytic-models" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="photospheric-velocities">
+<span id="single6"></span><h2>6- photospheric velocities<a class="headerlink" href="#photospheric-velocities" title="Permalink to this headline">¶</a></h2>
+<div class="line-block">
+<div class="line"><a class="reference internal" href="snelist.html#multiple"><span class="std std-ref">Next</span></a></div>
+<div class="line"><a class="reference internal" href="#single"><span class="std std-ref">Top</span></a></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gallery.html">Gallery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../issues.html">Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../todo.html">Todo List</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../snerun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snerun</span></code> – main programmer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../snegui.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snegui</span></code> – GUI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fitters.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Fitting</span></code> – Fitting packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gp.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Gaussian</span> <span class="pre">Process</span></code> – Gaussian Process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Models</span></code> – Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../engines.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Engines</span></code> – Data preparation for model fitters</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/tutorial/snobject.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

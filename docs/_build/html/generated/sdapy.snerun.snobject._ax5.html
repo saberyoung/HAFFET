@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snobject._ax5 &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snobject._ax6" href="sdapy.snerun.snobject._ax6.html" />
+    <link rel="prev" title="sdapy.snerun.snobject._ax4" href="sdapy.snerun.snobject._ax4.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snobject-ax5">
+<h1>sdapy.snerun.snobject._ax5<a class="headerlink" href="#sdapy-snerun-snobject-ax5" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snobject._ax5">
+<code class="sig-prename descclassname">snobject.</code><code class="sig-name descname">_ax5</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">phase</em>, <em class="sig-param">index=0</em>, <em class="sig-param">interpolation=None</em>, <em class="sig-param">show_title=False</em>, <em class="sig-param">show_legend=False</em>, <em class="sig-param">show_data=True</em>, <em class="sig-param">show_fits=True</em>, <em class="sig-param">show_fit_error=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject._ax5" title="Permalink to this definition">¶</a></dt>
+<dd><p>show constructed SED of specific epochs</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>ax5_ystyle</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>y axis for sed (_ax5) LCs: [linear] or [log] scale</p>
+</dd>
+<dt><strong>ax5_xlim</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>x limit</p>
+</dd>
+<dt><strong>ax5_ylim</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>y limit</p>
+</dd>
+<dt><strong>phase</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>rest frame phase (days) relative to t0</p>
+</dd>
+<dt><strong>tdbin</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>threshold for binning</p>
+</dd>
+<dt><strong>interpolation</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>estimate flux with data epoch less than than <strong>tdbin</strong>, or interpolation from GP/fits</p>
+</dd>
+<dt><strong>corr_mkw</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if correct milky way extinction</p>
+</dd>
+<dt><strong>corr_host</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if host galaxy extinction</p>
+</dd>
+<dt><strong>index</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>if multiple models available, which of them to be used</p>
+</dd>
+<dt><strong>quantile</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>use 50 percentile as mean, and 1 sigma (68%% -&gt; 16%% - 84%%) as errors</p>
+</dd>
+<dt><strong>clobber</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>Redo analysis</p>
+</dd>
+<dt><strong>zp</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>zeropoint to convert magnitude to flux.
+zp = 23.9 for micro Jansky to AB mag
+zp = 48.6 for ergs/s/cm2/Hz to AB mag
+e.g. mab = -2.5 * log10(fv[Jy]/3631) = -2.5 * log10(fv[mJy]) + 2.5*log10(3631*1e6)</p>
+</dd>
+<dt><strong>snrt</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>SNR threshold to distinguish detection/limit</p>
+</dd>
+<dt><strong>do_kcorr</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>K corrected the photometry or spectra</p>
+</dd>
+<dt><strong>ab2vega</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>set it True if input UV/IR data in AB, if they’re vega, set to False</p>
+</dd>
+<dt><strong>sed_type</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>which data to fit the SED: [bb] photometric points from varies of interpolations, or [spec] the spectrum</p>
+</dd>
+<dt><strong>sed_color_interp</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>for SED fitting with multiband photometry, how to estimate the missing bands, 1: epochs with all filters within <em>color_thre</em> hours. 2: epochs with one filter, and the others from analytic fits.  3. epochs with one filter, and the other from Gaussian process</p>
+</dd>
+<dt><strong>sed_bands</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>filters to make blackbody, give a list. e.g.[‘g’,’r’,’i’], or None will use all possible bands</p>
+</dd>
+<dt><strong>sed_abscal_bands</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>which photometry bands to be used to absolute calibrate the selected spectra</p>
+</dd>
+<dt><strong>sed_abscal_method</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>how to use photometry to calibrate the spectra: [cal]ibrate or [mangle] the spetra</p>
+</dd>
+<dt><strong>sed_mangle_func</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>mangling function</p>
+</dd>
+<dt><strong>spec_snr</strong><span class="classifier"><cite>float</cite></span></dt><dd><p>if no error from spectra, add noise level of snr</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snobject._mag_at.html#sdapy.snerun.snobject._mag_at" title="sdapy.snerun.snobject._mag_at"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject._mag_at</span></code></a>, <a class="reference internal" href="sdapy.snerun.snobject._to_luminosity.html#sdapy.snerun.snobject._to_luminosity" title="sdapy.snerun.snobject._to_luminosity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject._to_luminosity</span></code></a>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">self._cal_spectrum</span></code></dt><dd></dd>
+</dl>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snobject._ax4.html" title="previous chapter">sdapy.snerun.snobject._ax4</a></li>
+      <li>Next: <a href="sdapy.snerun.snobject._ax6.html" title="next chapter">sdapy.snerun.snobject._ax6</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snobject._ax5.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

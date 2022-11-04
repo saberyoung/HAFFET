@@ -1,0 +1,14 @@
+.. sdapy:
+   
+:mod:`snegui` -- GUI
+=================================================================================
+
+These classes provide various functions for the GUI.
+
+sneGUI
+--------------------
+.. currentmodule:: sdapy.sneGui
+.. autosummary::
+   :toctree: generated/
+
+   MainMenu

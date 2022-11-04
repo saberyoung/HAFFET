@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sdapy.snerun.snobject.bb_bol &#8212; HAFFET 0.1.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../_static/logo.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="sdapy.snerun.snobject.bb_colors" href="sdapy.snerun.snobject.bb_colors.html" />
+    <link rel="prev" title="sdapy.snerun.snobject.all_fittings" href="sdapy.snerun.snobject.all_fittings.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sdapy-snerun-snobject-bb-bol">
+<h1>sdapy.snerun.snobject.bb_bol<a class="headerlink" href="#sdapy-snerun-snobject-bb-bol" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="sdapy.snerun.snobject.bb_bol">
+<code class="sig-prename descclassname">snobject.</code><code class="sig-name descname">bb_bol</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">index=0</em>, <em class="sig-param">returnv=False</em>, <em class="sig-param">fastsedfitting=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#sdapy.snerun.snobject.bb_bol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate bolometric LCs with diluted blackbody fits (that were fitted with the <code class="docutils literal notranslate"><span class="pre">snobject.run_fit</span></code> on <strong>sed</strong> engine).</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>fastsedfitting</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if no SED model fittings found, fit them in minimize rountine</p>
+</dd>
+<dt><strong>index</strong><span class="classifier"><cite>int</cite></span></dt><dd><p>if multiple models available, which one to use</p>
+</dd>
+<dt><strong>make_bol</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>how to make bolometric lcs: [lyman] with BC defined by Lyman approach, [bb] blackbody fits, or [spec] absolute calibrated spectra</p>
+</dd>
+<dt><strong>sed_bands</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>multiple bands of the BB</p>
+</dd>
+<dt><strong>sed_color_interp</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>how to make blackbody. 1: epochs with all filters within <em>color_thre</em> hours. 2: epochs with one filter, and the others from analytic fits.  3. epochs with one filter, and the other from Gaussian process</p>
+</dd>
+<dt><strong>sed_xrangep</strong><span class="classifier"><cite>str</cite></span></dt><dd><p>after fitting, range to reproduce the SED</p>
+</dd>
+<dt><strong>quantile</strong><span class="classifier"><cite>list</cite></span></dt><dd><p>use 50 percentile as mean, and 1 sigma (68%% -&gt; 16%% - 84%%) as errors</p>
+</dd>
+<dt><strong>clobber</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>Redo analysis</p>
+</dd>
+<dt><strong>verbose</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>show process</p>
+</dd>
+<dt><strong>returnv</strong><span class="classifier"><cite>bool</cite></span></dt><dd><p>if return the luminosities, or store them in the class</p>
+</dd>
+<dt><strong>If activate SED fitting with fastsedfitting, then more parameters are needed to run SED fittings.</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="sdapy.snerun.snobject.run_fit.html#sdapy.snerun.snobject.run_fit" title="sdapy.snerun.snobject.run_fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.run_fit</span></code></a>, <a class="reference internal" href="sdapy.snerun.snobject.bb_colors.html#sdapy.snerun.snobject.bb_colors" title="sdapy.snerun.snobject.bb_colors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">snobject.bb_colors</span></code></a></dt><dd></dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Make sure SED model fittings had been done, otherwise set <code class="docutils literal notranslate"><span class="pre">fastsedfitting</span></code> to fit them with <em>minimize</em> rountine.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">HAFFET</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../version.html">Version History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">Licenses</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../snelist.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snelist</span></code> – class deal with a list of objects</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_model</span></code> – Fitting engines and models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../snobject.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">snobject</span></code> – class deal with one single object</a><ul>
+  <li><a href="sdapy.snerun.snobject.html">sdapy.snerun.snobject</a><ul>
+      <li>Previous: <a href="sdapy.snerun.snobject.all_fittings.html" title="previous chapter">sdapy.snerun.snobject.all_fittings</a></li>
+      <li>Next: <a href="sdapy.snerun.snobject.bb_colors.html" title="next chapter">sdapy.snerun.snobject.bb_colors</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;CC/BY/4.0/International.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/generated/sdapy.snerun.snobject.bb_bol.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

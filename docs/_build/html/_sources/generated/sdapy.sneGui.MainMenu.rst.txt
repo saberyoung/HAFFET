@@ -1,0 +1,210 @@
+sdapy.sneGui.MainMenu
+=====================
+
+.. currentmodule:: sdapy.sneGui
+
+.. autoclass:: MainMenu
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~MainMenu.Message
+      ~MainMenu.SearchObj
+      ~MainMenu.__init__
+      ~MainMenu.add_subplot
+      ~MainMenu.addobj
+      ~MainMenu.after
+      ~MainMenu.after_cancel
+      ~MainMenu.after_idle
+      ~MainMenu.anchor
+      ~MainMenu.baselinetop_popup
+      ~MainMenu.bb_popup
+      ~MainMenu.bb_popup1
+      ~MainMenu.bbox
+      ~MainMenu.bell
+      ~MainMenu.bind
+      ~MainMenu.bind_all
+      ~MainMenu.bind_class
+      ~MainMenu.bindtags
+      ~MainMenu.cget
+      ~MainMenu.checkdata
+      ~MainMenu.clipboard_append
+      ~MainMenu.clipboard_clear
+      ~MainMenu.clipboard_get
+      ~MainMenu.columnconfigure
+      ~MainMenu.config
+      ~MainMenu.configure
+      ~MainMenu.data_popup
+      ~MainMenu.data_popup1
+      ~MainMenu.deletecommand
+      ~MainMenu.delobj
+      ~MainMenu.destroy
+      ~MainMenu.dist_popup
+      ~MainMenu.event_add
+      ~MainMenu.event_delete
+      ~MainMenu.event_generate
+      ~MainMenu.event_info
+      ~MainMenu.fluxfit_popup
+      ~MainMenu.focus
+      ~MainMenu.focus_displayof
+      ~MainMenu.focus_force
+      ~MainMenu.focus_get
+      ~MainMenu.focus_lastfor
+      ~MainMenu.focus_set
+      ~MainMenu.forget
+      ~MainMenu.getboolean
+      ~MainMenu.getdouble
+      ~MainMenu.getint
+      ~MainMenu.getvar
+      ~MainMenu.grab_current
+      ~MainMenu.grab_release
+      ~MainMenu.grab_set
+      ~MainMenu.grab_set_global
+      ~MainMenu.grab_status
+      ~MainMenu.grid
+      ~MainMenu.grid_anchor
+      ~MainMenu.grid_bbox
+      ~MainMenu.grid_columnconfigure
+      ~MainMenu.grid_configure
+      ~MainMenu.grid_forget
+      ~MainMenu.grid_info
+      ~MainMenu.grid_location
+      ~MainMenu.grid_propagate
+      ~MainMenu.grid_remove
+      ~MainMenu.grid_rowconfigure
+      ~MainMenu.grid_size
+      ~MainMenu.grid_slaves
+      ~MainMenu.image_names
+      ~MainMenu.image_types
+      ~MainMenu.info
+      ~MainMenu.initUI
+      ~MainMenu.keys
+      ~MainMenu.lift
+      ~MainMenu.loadall
+      ~MainMenu.location
+      ~MainMenu.lower
+      ~MainMenu.mainloop
+      ~MainMenu.matchstr
+      ~MainMenu.mbolfit_popup
+      ~MainMenu.motion
+      ~MainMenu.move_from
+      ~MainMenu.move_to
+      ~MainMenu.move_to_marker
+      ~MainMenu.move_to_pan
+      ~MainMenu.move_to_zoom
+      ~MainMenu.nametowidget
+      ~MainMenu.option_add
+      ~MainMenu.option_clear
+      ~MainMenu.option_get
+      ~MainMenu.option_readfile
+      ~MainMenu.pack
+      ~MainMenu.pack_configure
+      ~MainMenu.pack_forget
+      ~MainMenu.pack_info
+      ~MainMenu.pack_propagate
+      ~MainMenu.pack_slaves
+      ~MainMenu.place
+      ~MainMenu.place_configure
+      ~MainMenu.place_forget
+      ~MainMenu.place_info
+      ~MainMenu.place_slaves
+      ~MainMenu.propagate
+      ~MainMenu.quit
+      ~MainMenu.register
+      ~MainMenu.rowconfigure
+      ~MainMenu.runplots
+      ~MainMenu.runtasks
+      ~MainMenu.save_figure
+      ~MainMenu.saveall
+      ~MainMenu.selection_clear
+      ~MainMenu.selection_get
+      ~MainMenu.selection_handle
+      ~MainMenu.selection_own
+      ~MainMenu.selection_own_get
+      ~MainMenu.send
+      ~MainMenu.set_limits
+      ~MainMenu.set_title
+      ~MainMenu.setobjid
+      ~MainMenu.setvar
+      ~MainMenu.show_bazinmodel
+      ~MainMenu.show_mbolmodel
+      ~MainMenu.size
+      ~MainMenu.slaves
+      ~MainMenu.spectrafit_popup
+      ~MainMenu.tk_bisque
+      ~MainMenu.tk_focusFollowsMouse
+      ~MainMenu.tk_focusNext
+      ~MainMenu.tk_focusPrev
+      ~MainMenu.tk_setPalette
+      ~MainMenu.tk_strictMotif
+      ~MainMenu.tkraise
+      ~MainMenu.unbind
+      ~MainMenu.unbind_all
+      ~MainMenu.unbind_class
+      ~MainMenu.update
+      ~MainMenu.update_idletasks
+      ~MainMenu.wait_variable
+      ~MainMenu.wait_visibility
+      ~MainMenu.wait_window
+      ~MainMenu.waitvar
+      ~MainMenu.winfo_atom
+      ~MainMenu.winfo_atomname
+      ~MainMenu.winfo_cells
+      ~MainMenu.winfo_children
+      ~MainMenu.winfo_class
+      ~MainMenu.winfo_colormapfull
+      ~MainMenu.winfo_containing
+      ~MainMenu.winfo_depth
+      ~MainMenu.winfo_exists
+      ~MainMenu.winfo_fpixels
+      ~MainMenu.winfo_geometry
+      ~MainMenu.winfo_height
+      ~MainMenu.winfo_id
+      ~MainMenu.winfo_interps
+      ~MainMenu.winfo_ismapped
+      ~MainMenu.winfo_manager
+      ~MainMenu.winfo_name
+      ~MainMenu.winfo_parent
+      ~MainMenu.winfo_pathname
+      ~MainMenu.winfo_pixels
+      ~MainMenu.winfo_pointerx
+      ~MainMenu.winfo_pointerxy
+      ~MainMenu.winfo_pointery
+      ~MainMenu.winfo_reqheight
+      ~MainMenu.winfo_reqwidth
+      ~MainMenu.winfo_rgb
+      ~MainMenu.winfo_rootx
+      ~MainMenu.winfo_rooty
+      ~MainMenu.winfo_screen
+      ~MainMenu.winfo_screencells
+      ~MainMenu.winfo_screendepth
+      ~MainMenu.winfo_screenheight
+      ~MainMenu.winfo_screenmmheight
+      ~MainMenu.winfo_screenmmwidth
+      ~MainMenu.winfo_screenvisual
+      ~MainMenu.winfo_screenwidth
+      ~MainMenu.winfo_server
+      ~MainMenu.winfo_toplevel
+      ~MainMenu.winfo_viewable
+      ~MainMenu.winfo_visual
+      ~MainMenu.winfo_visualid
+      ~MainMenu.winfo_visualsavailable
+      ~MainMenu.winfo_vrootheight
+      ~MainMenu.winfo_vrootwidth
+      ~MainMenu.winfo_vrootx
+      ~MainMenu.winfo_vrooty
+      ~MainMenu.winfo_width
+      ~MainMenu.winfo_x
+      ~MainMenu.winfo_y
+      ~MainMenu.zoom
+   
+   
+
+   
+   
+   

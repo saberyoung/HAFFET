@@ -1,0 +1,6 @@
+sdapy.models.magnetar.collapsing\_radiative\_losses
+===================================================
+
+.. currentmodule:: sdapy.models.magnetar
+
+.. autofunction:: collapsing_radiative_losses

@@ -1,0 +1,6 @@
+sdapy.models.sbo.shock\_fit\_texp\_tc
+=====================================
+
+.. currentmodule:: sdapy.models.sbo
+
+.. autofunction:: shock_fit_texp_tc

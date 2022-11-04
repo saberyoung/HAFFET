@@ -1,0 +1,6 @@
+sdapy.models.arnett\_tail.Arnett\_fit\_Mej\_Ek\_texp
+====================================================
+
+.. currentmodule:: sdapy.models.arnett_tail
+
+.. autofunction:: Arnett_fit_Mej_Ek_texp
